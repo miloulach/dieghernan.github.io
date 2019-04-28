@@ -4,7 +4,7 @@ title: 'My projects'
 subtitle: 'Some pieces of work'
 ---
 <div>
-   {% assign feat = site.projects | sort_natural: 'featured'  %}
+   {% assign feat = site.projects %}
    {% for projects in feat %}
    <article class="post-preview">
       <h3 class="post-title">{{ projects.title }}</h3 >      
