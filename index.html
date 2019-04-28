@@ -6,10 +6,10 @@ use-site-title: true
 ---
 <h1> Blog </h1>
 <div style="background-color:#F3F8F8;
-            padding: 5px;
-            padding-bottom: 10px;
-            border-radius: 10px;
-            -moz-border-radius: 10px">
+   padding: 5px;
+   padding-bottom: 10px;
+   border-radius: 10px;
+   -moz-border-radius: 10px">
    <div class="posts-list"
    {% for post in paginator.posts %} 
    <article class="post-preview">
@@ -56,17 +56,18 @@ use-site-title: true
 </div>
 <h1> Featured Projects</h1>
 <div style="background-color:#F3F8F8;
-            padding: 5px;
-            border-radius: 10px;
-            -moz-border-radius: 10px">
+   padding: 5px;
+   border-radius: 10px;
+   -moz-border-radius: 10px">
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
    {% for projects in feat %}   
-            <div  style="border-bottom:2px solid #008080;">
-                        <h3>{{ projects.title }}</h3 >
-                        <h4>{{ projects.subtitle }}</h4>
-                        <p>{{ projects.content  | strip_html | xml_escape | truncatewords: 10 }}
-                                    <a href="{{ projects.url }}"> [Read more]</a>
-                        </p>
-            </div>
+   <div  style="border-bottom:2px solid #008080;">
+      <h3>{{ projects.title }}</h3 >
+      <h4>{{ projects.subtitle }}</h4>
+      <div class="post-entry">
+         {{ projects.content  | strip_html | xml_escape | truncatewords: 10 }}
+         <a href="{{ projects.url }}"> [Read more]</a>
+      </div>
+   </div>
    {% endfor %}
 </div>
