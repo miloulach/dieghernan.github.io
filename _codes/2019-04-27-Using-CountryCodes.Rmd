@@ -10,6 +10,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(global.par = TRUE)
 rm(list = ls())
 
 ```
@@ -87,6 +88,11 @@ download.file("https://upload.wikimedia.org/wikipedia/commons/e/e2/Member_states
 
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 
+```{r margins, include=FALSE}
+par(mar = c(0, 0, 0, 0))
+``` 
+
+
 ```{r mapfin, warning=FALSE, message=FALSE, tidy=TRUE}
 #Projecting the map
 testmap_rob = st_transform(testmap, "+proj=robin")
@@ -103,7 +109,7 @@ bbox = st_linestring(rbind(c(-180, 90),
   st_transform(crs = "+proj=robin")
 
 #Plotting
-par(mar = c(0, 0, 0, 0))
+
 plot.new()
 plot(bbox,
      col = "#FFFFFF",
