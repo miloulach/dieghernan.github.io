@@ -129,4 +129,4 @@ plot(st_geometry(testmap_rob %>% filter(!is.na(C))), col = "#346733", border = "
     lwd = 0.1, add = T)
 ```
 
-![plot of chunk mapfin](../figs/_2019-04-27/mapfin-1.png)
+![plot of chunk mapfin](../figs/2019-04-27-Using-CountryCodes/mapfin-1.png)
