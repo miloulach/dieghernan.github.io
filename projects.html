@@ -4,13 +4,26 @@ title: 'My projects'
 subtitle: 'Some pieces of work'
 ---
 <div>
-{% for projects in site.projects %}
-  <h2>
-      {{ projects.title }}
-  </h2>
-  <h4>{{ projects.subtitle }}</h4>
-  <p>{{ projects.content  | markdownify | strip_html | truncate: 160 }}
-    <a href="{{ projects.url }}"> [Read more]</a>
-      </p>
-{% endfor %}
+   {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
+   {% for projects in feat %}
+   <article class="post-preview">
+      <h3 class="post-title">{{ projects.title }}</h3 >      
+      <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
+      <div class="post-entry">
+         {{ projects.content  | strip_html | xml_escape | truncatewords: 160 }}
+         <a href="{{ projects.url }}"> [Read more]</a>
+      </div>
+   </article>
+   {% endfor %}
+  {% assign nofeat = site.projects | sort: 'featured' | where_exp:"item","item.featured <0" %}
+   {% for projects in nofeat %}
+   <article class="post-preview">
+      <h3 class="post-title">{{ projects.title }}</h3 >      
+      <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
+      <div class="post-entry">
+         {{ projects.content  | strip_html | xml_escape | truncatewords: 160 }}
+         <a href="{{ projects.url }}"> [Read more]</a>
+      </div>
+   </article>
+   {% endfor %}
 </div>
