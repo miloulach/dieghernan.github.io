@@ -6,6 +6,6 @@ p_load(ezknitr)
 ezknit("../2019-04-27-Using-CountryCodes.Rmd",
        "_codes/wd",
        out_dir="../../_posts",
-       fig_dir="../figs",
+       fig_dir="../figs/2019-04-27-Using-CountryCodes",
        keep_html=FALSE
 )

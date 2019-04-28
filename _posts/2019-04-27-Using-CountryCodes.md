@@ -101,11 +101,9 @@ testmap = ne_countries(50, "countries", returnclass = "sf") %>% select(ISO_3166_
 ##Plotting map: Wikipedia style
 Now we would try to plot a map ressembling the one presented in the [Wikipedia page](https://en.wikipedia.org/wiki/Commonwealth_of_Nations) for the Commonwealth.
 
-<img src="https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/wd/wikiCommonW.png">
+<img src="https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/wiki.png">
 
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
-
-
 
 
 
@@ -119,8 +117,7 @@ bbox = st_linestring(rbind(c(-180, 90), c(180, 90), c(180, -90), c(-180, -90),
     st_transform(crs = "+proj=robin")
 
 # Plotting
-
-plot.new()
+par(mar = c(0, 0, 0, 0))
 plot(bbox, col = "#FFFFFF", border = "#AAAAAA", lwd = 1.5)
 plot(st_geometry(testmap_rob), col = "#B9B9B9", border = "#FFFFFF", lwd = 0.1, 
     add = T)
@@ -129,4 +126,4 @@ plot(st_geometry(testmap_rob %>% filter(!is.na(C))), col = "#346733", border = "
     lwd = 0.1, add = T)
 ```
 
-![plot of chunk mapfin](../figs/2019-04-27-Using-CountryCodes/mapfin-1.png)
+![plot of chunk mapfin](../_codes/2019-04-27-Using-CountryCodes/mapfin-1.png)
