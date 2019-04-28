@@ -15,7 +15,7 @@ rm(list = ls())
 
 
 
-This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://github.com/dieghernan/Country-Codes-and-International-Organizations)
+This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/projects/countrycodes/)
   by using the `sf` package in R.
 
 ## Required R packages
