@@ -1,0 +1,16 @@
+---
+layout: page
+title: 'My projects'
+subtitle: 'Some pieces of work'
+---
+<div>
+{% for projects in site.projects %}
+  <h2>
+      {{ projects.title }}
+  </h2>
+  <h4>{{ projects.subtitle }}</h4>
+  <p>{{ projects.content  | markdownify | strip_html | truncate: 160 }}
+    <a href="{{ projects.url }}"> [Read more]</a>
+      </p>
+{% endfor %}
+</div>
