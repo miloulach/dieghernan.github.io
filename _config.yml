@@ -22,7 +22,6 @@ navbar-links:
     - All: "projects"
     - Country Codes & Organizations: "projects/countrycodes"
     - Textwatch Clima: "projects/textwatchclima"
-    - Sfera: "projects/sfera"
 
   Tags: "tags"
   View on Github: "https://github.com/dieghernan/dieghernan.github.io"
