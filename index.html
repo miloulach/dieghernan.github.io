@@ -7,7 +7,9 @@ use-site-title: true
 <div style="padding-bottom: 35px;
    border-bottom-style: solid;
    border-color: #008080">
-   <h1 style="font-size: 40px"> Blog </h1>
+	<a href="{{ 'blog' | prepend: site.baseurl }}">
+		<h1 style="font-size: 40px"> Blog </h1>
+	</a>
    <div style="background-color:#F3F8F8;
       padding: 5px;
       padding-bottom: 10px;
@@ -65,15 +67,18 @@ use-site-title: true
 	</div>
 </div>
 
-
-<h1 style="font-size: 40px"> Featured Projects</h1>
+<a href="{{ 'projects' | prepend: site.baseurl }}">
+	<h1 style="font-size: 40px"> Featured Projects </h1>
+</a>
 <div style="background-color:#F3F8F8;
    border-radius: 10px;
    -moz-border-radius: 10px">
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
    {% for projects in feat %}
    <article class="post-preview">
-      <h3 class="post-title">{{ projects.title }}</h3 >
+	   <a href="{{ projects.url | prepend: site.baseurl }}">
+		   <h3 class="post-title">{{ projects.title }}</h3 >
+	   </a>
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <div class="post-entry">
          {{ projects.content  | strip_html | xml_escape | truncatewords: 20 }}
