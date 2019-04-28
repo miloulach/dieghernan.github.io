@@ -18,7 +18,7 @@ collections:
 # List of links in the navigation bar
 navbar-links:
   Blog: "blog"
-  Projects: "projects"
+  Projects:
     - All: "projects"
     - Country Codes & Organizations: "projects/countrycodes"
     - Textwatch Clima: "projects/textwatchclima"
