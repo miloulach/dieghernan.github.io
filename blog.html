@@ -4,5 +4,5 @@ title: 'Blog'
 subtitle: 'dieghernan’s site'
 ---
 {% for post in site.posts %}
-      {{ post.title }} {{ post.subtitle }} {{ post.subtitle }} {{ post.date }} {{ post.date }} {{ post.linktormd }}
+    <p>  {{ post.title }} {{ post.subtitle }} {{ post.date | date: "%B %-d, %Y" }} {{ post.linktormd }} </p>
 {% endfor %}
