@@ -59,13 +59,13 @@ use-site-title: true
             border-radius: 10px;
             -moz-border-radius: 10px">
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
-   {% for projects in feat %}            
-   <h3>
-      {{ projects.title }}
-   </h3 >
-   <h4>{{ projects.subtitle }}</h4>
-   <p>{{ projects.content  | strip_html | xml_escape | truncatewords: 10 }}
-      <a href="{{ projects.url }}"> [Read more]</a>
-   </p>
+   {% for projects in feat %}   
+            <div  style="border-bottom:2px solid #008080;">
+                        <h3>{{ projects.title }}</h3 >
+                        <h4>{{ projects.subtitle }}</h4>
+                        <p>{{ projects.content  | strip_html | xml_escape | truncatewords: 10 }}
+                                    <a href="{{ projects.url }}"> [Read more]</a>
+                        </p>
+            </div>
    {% endfor %}
 </div>
