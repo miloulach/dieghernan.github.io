@@ -4,14 +4,14 @@ title: "Home"
 subtitle: "Blog & Projects"
 use-site-title: true
 ---
+<h1> Blog </h1>
 <div style="
-            border-width:1px;
-            border-style:solid;
-            padding: 10px;
-            border-radius: 15px;
-            -moz-border-radius: 15px;border-width:1px;
-            border-color:#008080;">
-   <h1> Blog </h1>
+   border-width:1px;
+   border-style:solid;
+   padding: 10px;
+   border-radius: 15px;
+   -moz-border-radius: 15px;border-width:1px;
+   border-color:#008080;">
    <div class="posts-list"
    {% for post in paginator.posts %} 
    <article class="post-preview">
@@ -25,10 +25,6 @@ use-site-title: true
       {% endif %}
       <p class="post-meta">
          Posted on {{ post.date | date: "%B %-d, %Y" }}
-         {% if post.linktormd %}
-         <a href="{{ post.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd'  }}">
-         <i class="fa fa-fw fa-github"></i> See source code</a>
-         {% endif %}
       </p>
       {% if post.tags.size > 0 %}
       <div class="blog-tags">
@@ -60,8 +56,14 @@ use-site-title: true
 </ul>
 {% endif %}
 </div>
-<div>
-   <h1>Projects</h1>
+<h1>Projects</h1>
+<div style="
+   border-width:1px;
+   border-style:solid;
+   padding: 10px;
+   border-radius: 15px;
+   -moz-border-radius: 15px;border-width:1px;
+   border-color:#008080;">
    {% for projects in site.projects %}
    <h3>
       {{ projects.title }}
