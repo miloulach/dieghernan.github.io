@@ -4,8 +4,19 @@ title: 'My projects'
 subtitle: 'Some pieces of work'
 ---
 <div>
-   {% assign feat = site.projects | where_exp: "item", "item.featured == nil" %}
+   {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
    {% for projects in feat %}
+   <article class="post-preview">
+      <h3 class="post-title">{{ projects.title }}</h3 >      
+      <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
+      <div class="post-entry">
+         {{ projects.content  | strip_html | xml_escape | truncatewords: 20 }}
+         <a href="{{ projects.url }}"> [Read more]</a>
+      </div>
+   </article>
+   {% endfor %}
+   {% assign nofeat = site.projects | where_exp: "item", "item.featured == nil" %}
+   {% for projects in nofeat %}
    <article class="post-preview">
       <h3 class="post-title">{{ projects.title }}</h3 >      
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
