@@ -7,7 +7,7 @@ subtitle: 'Some pieces of work'
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
    {% for projects in feat %}
    <article class="post-preview">
-      <h3 class="post-title">{{ projects.title }}</h3 >      
+      <h3 class="post-title"><i class="fas fa-star"></i> {{ projects.title }}</h3 >      
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <div class="post-entry">
          {{ projects.content  | strip_html | xml_escape | truncatewords: 20 }}
