@@ -15,7 +15,7 @@ subtitle: 'Some pieces of work'
       </div>
    </article>
    {% endfor %}
-  {% assign nofeat = site.projects | sort: 'featured' | where_exp:"item","item.featured <0" %}
+  {% assign nofeat = site.projects | sort: 'featured' | where_exp:"item","item.featured = nil" %}
    {% for projects in nofeat %}
    <article class="post-preview">
       <h3 class="post-title">{{ projects.title }}</h3 >      
