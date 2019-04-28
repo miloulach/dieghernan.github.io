@@ -27,7 +27,7 @@ use-site-title: true
 		      </h4>
 		      {% endif %}
 		      <p class="post-meta">
-			      {{ post.date | date: "%B %-d, %Y" }}
+			      {{ post.date | date_to_string }}
 			      {% if post.linktormd %}
 			      <a href="{{ post.path |
 				       prepend: site.github_repo | 
