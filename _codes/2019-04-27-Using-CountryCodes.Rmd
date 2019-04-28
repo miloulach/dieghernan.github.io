@@ -93,7 +93,7 @@ par(mar = c(0, 0, 0, 0))
 ``` 
 
 
-```{r mapfin, warning=FALSE, message=FALSE, tidy=TRUE}
+```{r mapfin, warning=FALSE, message=FALSE, tidy=TRUE, dev="png", fig.width=960/96, fig.height=480/96}
 #Projecting the map
 testmap_rob = st_transform(testmap, "+proj=robin")
 
