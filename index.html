@@ -66,7 +66,7 @@ use-site-title: true
       <h3>{{ projects.title }}</h3 >      
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <div class="post-entry">
-         {{ projects.content  | strip_html | xml_escape | truncatewords: 10 }}
+         {{ projects.content  | strip_html | xml_escape | truncatewords: 40 }}
          <a href="{{ projects.url }}"> [Read more]</a>
       </div>
    </div>
