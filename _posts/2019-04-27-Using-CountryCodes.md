@@ -1,15 +1,11 @@
 ---
 layout: post
 title: Using CountryCodes database and sf package.
-subtitle: Easy-to-use Database.
-tags: [blog,R,sf,maps]
+subtitle: vignette of the CountryCodes project.
+tags: [R,sf,maps,vignette]
 linktormd: true
 output: github_document
 ---
-
-
-
-
 
 This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/projects/countrycodes/)
   by using the `sf` package in R.
