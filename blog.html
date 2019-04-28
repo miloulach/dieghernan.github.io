@@ -34,7 +34,7 @@ subtitle: 'dieghernan’s site'
           </div>
           {% endif %}
           <div class="post-entry">
-              {{ projects.content  | strip_html | xml_escape | truncatewords: 70 }}
+              {{ post.excerpt  | strip_html | xml_escape | truncatewords: 70 }}
               <a href="{{ post.url | prepend: site.baseurl }}"> [Read more]</a>
           </div>
       </article>
