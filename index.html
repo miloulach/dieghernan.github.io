@@ -5,13 +5,10 @@ subtitle: "Blog & Projects"
 use-site-title: true
 ---
 <h1> Blog </h1>
-<div style="
-   border-width:1px;
-   border-style:solid;
-   padding: 10px;
-   border-radius: 15px;
-   -moz-border-radius: 15px;border-width:1px;
-   border-color:#008080;">
+<div style="background-color:#F3F8F8;
+            padding: 5px;
+            border-radius: 10px;
+            -moz-border-radius: 10px">
    <div class="posts-list"
    {% for post in paginator.posts %} 
    <article class="post-preview">
@@ -57,13 +54,10 @@ use-site-title: true
 {% endif %}
 </div>
 <h1>Projects</h1>
-<div style="
-   border-width:1px;
-   border-style:solid;
-   padding: 10px;
-   border-radius: 15px;
-   -moz-border-radius: 15px;border-width:1px;
-   border-color:#008080;">
+<div style="background-color:#F3F8F8;
+            padding: 5px;
+            border-radius: 10px;
+            -moz-border-radius: 10px">
    {% for projects in site.projects %}
    <h3>
       {{ projects.title }}
