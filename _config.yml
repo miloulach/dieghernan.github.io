@@ -19,10 +19,11 @@ collections:
 navbar-links:
   Blog: "blog"
   Projects:
+    - All: "projects"
     - Country Codes & Organizations: "projects/countrycodes"
-    - Sfera: "projects/sfera"
     - Textwatch Clima: "projects/textwatchclima"
-    - All my projects: "projects"
+    - Sfera: "projects/sfera"
+
   Tags: "tags"
   View on Github: "https://github.com/dieghernan/dieghernan.github.io"
 
