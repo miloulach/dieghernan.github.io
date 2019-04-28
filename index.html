@@ -57,7 +57,6 @@ use-site-title: true
 <h1> Featured Projects</h1>
 <div style="background-color:#F3F8F8;
    padding: 5px;
-   padding-bottom: 30px;   
    border-radius: 10px;
    -moz-border-radius: 10px">
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
