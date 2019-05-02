@@ -149,4 +149,5 @@ plot(st_geometry(tiny_rob), col = "#000000", lwd = 0.1, add = T)
 plot(bbox, col = NA, border = "#AAAAAA", lwd = 1.5, add = T)
 ```
 
-![plot of chunk mapfin](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/mapfin-1.png)
+<img src="https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/mapfin-1.png">
+
