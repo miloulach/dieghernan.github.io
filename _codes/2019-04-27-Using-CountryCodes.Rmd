@@ -101,12 +101,12 @@ library(rsvg)
 wiki <- rsvg("https://upload.wikimedia.org/wikipedia/commons/e/e2/Member_states_of_the_Commonwealth_of_Nations.svg")
 png::writePNG(wiki, "20190427_wiki.png")
 ```
-![Wiki](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/wiki.png)
+![Wiki](./figs/20190427_wiki.png)
 
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 
 
-```{r 20190427_mapfin, warning=FALSE, message=FALSE, tidy=TRUE, dev="png",fig.width=853/300, fig.height=433/300, dpi=300}
+```{r 20190427_mapfin, warning=FALSE, message=FALSE, tidy=TRUE, dev="png",fig.width=853/90, fig.height=433/90, dpi=90}
 #Projecting the map
 testmap_rob = st_transform(testmap, "+proj=robin")
 tiny_rob = st_transform(tiny, "+proj=robin")
