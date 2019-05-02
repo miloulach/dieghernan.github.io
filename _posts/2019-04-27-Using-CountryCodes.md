@@ -111,7 +111,7 @@ tiny$C = coalesce(tiny$C, tiny$C_sov)
 ## Plotting map: Wikipedia style
 Now we would try to plot a map ressembling the one presented in the [Wikipedia page](https://en.wikipedia.org/wiki/Commonwealth_of_Nations) for the Commonwealth.
 
-<img src="https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/wiki.png">
+![Wiki](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/wiki.png)
 
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 
@@ -149,5 +149,4 @@ plot(st_geometry(tiny_rob), col = "#000000", lwd = 0.1, add = T)
 plot(bbox, col = NA, border = "#AAAAAA", lwd = 1.5, add = T)
 ```
 
-<img src="https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/mapfin-1.png">
-
+![plot of chunk mapfin](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/mapfin-1.png)
