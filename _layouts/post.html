@@ -13,8 +13,8 @@ layout: base
                   <h2 class="post-subheading">
                      {{ page.subtitle }}
                   </h2>
-                  <span class="post-meta">
-                     Posted on {{ page.date | date_to_string }}
+                  <div class="post-meta">
+                     {{ page.date | date_to_string }}
                      {% if page.linktormd %}
                      - 
 			  <a href="{{ page.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd'  }}">
@@ -22,7 +22,7 @@ layout: base
 			  </a>
                      </p>
                      {% endif %}
-                  </span>
+                  </div>
                </div>
             </div>
          </div>
