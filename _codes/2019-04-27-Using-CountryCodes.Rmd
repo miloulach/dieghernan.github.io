@@ -22,7 +22,7 @@ This vignette is an example of use of the database provided in the Github projec
 
 ## Required R packages
 
-```{r libs, warning=FALSE, message=FALSE, tidy=TRUE}
+```{r libs, warning=FALSE, message=FALSE, tidy='styler'}
 library(sf)
 library(jsonlite)
 library(rnaturalearth)
@@ -33,7 +33,7 @@ library(dplyr)
 ## Reading the data
 The first step consists on reading the database provided (in this example the `json` file) and extracting one international organization. In this example we will plot the [Commonwealth of Nations](https://en.wikipedia.org/wiki/Commonwealth_of_Nations).
 
-```{r jsonandext, warning=FALSE, message=FALSE, tidy=TRUE}
+```{r jsonandext, warning=FALSE, message=FALSE, tidy='styler'}
 df = fromJSON("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodesfull.json")
 #Identify Commonwealth acronym
 orgsdb = read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/CountrycodesOrgs.csv") %>%
@@ -41,7 +41,7 @@ orgsdb = read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-an
 orgsdb[grep("Common", orgsdb$org_name), ]
 ```
  In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
-```{r funjson, warning=FALSE, message=FALSE, tidy=TRUE}
+```{r funjson, warning=FALSE, message=FALSE, tidy='styler'}
 ISO_memcol = function(df,
                       orgtosearch 
                       ) {
@@ -57,7 +57,7 @@ df_org = ISO_memcol(df, "C")
 ```
 
 Now `df_org` has a new column, named **C**, containing the membership status of each country.
-```{r checkcol, warning=FALSE, message=FALSE, tidy=TRUE}
+```{r checkcol, warning=FALSE, message=FALSE, tidy='styler'}
 df_org %>% count(C)
 
 df_org %>% filter(!is.na(C)) %>%
@@ -71,7 +71,7 @@ df_org %>% filter(!is.na(C)) %>%
 In this example the `rnaturalearth` package is used for retrieving an `sf` object.  The code below replaces the `data.frame` part of the `sf`object.
 and replacing the `dataframe`for the dedicated database.
 
-```{r mapandrep, warning=FALSE, message=FALSE, tidy=TRUE}
+```{r mapandrep, warning=FALSE, message=FALSE, tidy='styler'}
 testmap = ne_countries(50,
                        "countries",
                        returnclass = "sf") %>% select(ISO_3166_3 = adm0_a3) %>%
@@ -94,7 +94,7 @@ tiny$C=coalesce(tiny$C,tiny$C_sov)
 ```
 
 ## Plotting map: Wikipedia style
-Now we would try to plot a map ressembling the one presented in the [Wikipedia page](https://en.wikipedia.org/wiki/Commonwealth_of_Nations) for the Commonwealth.
+Now we would try to plot a map resembling the one presented in the [Wikipedia page](https://en.wikipedia.org/wiki/Commonwealth_of_Nations) for the Commonwealth.
 ```{r download, include=FALSE}
 #not really needed
 library(rsvg)
@@ -106,7 +106,7 @@ png::writePNG(wiki, "20190427_wiki.png")
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 
 
-```{r 20190427_mapfin, warning=FALSE, message=FALSE, tidy=TRUE, dev="png",fig.width=853/90, fig.height=433/90, dpi=90}
+```{r 20190427_mapfin, warning=FALSE, message=FALSE, tidy='styler', dev="png",fig.width=853/90, fig.height=433/90, dpi=90}
 #Projecting the map
 testmap_rob = st_transform(testmap, "+proj=robin")
 tiny_rob = st_transform(tiny, "+proj=robin")

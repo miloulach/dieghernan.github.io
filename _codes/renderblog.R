@@ -2,12 +2,12 @@
 library(pacman)
 
 p_load(ezknitr)
+p_load(styler)
 
-
-diegpost <- function(dirname) {
+diegpost <- function(file) {
   getwd()
   ezknit(
-    "../_codes/2019-04-27-Using-CountryCodes.Rmd",
+    paste("../_codes/",file,".Rmd",sep = ""),
     wd="./figs",
     out_dir = "../_posts",
     fig_dir = "../figs",
@@ -15,6 +15,9 @@ diegpost <- function(dirname) {
   )
 }
 #Render 2019-04-27-Using-CountryCodes ----
+
 diegpost("2019-04-27-Using-CountryCodes")
 
+
+diegpost("2019-05-05-Cast to subsegments")
 
