@@ -101,7 +101,7 @@ library(rsvg)
 wiki <- rsvg("https://upload.wikimedia.org/wikipedia/commons/e/e2/Member_states_of_the_Commonwealth_of_Nations.svg")
 png::writePNG(wiki, "20190427_wiki.png")
 ```
-![Wiki](./figs/20190427_wiki.png)
+![Wiki](../figs/20190427_wiki.png)
 
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 

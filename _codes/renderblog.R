@@ -5,13 +5,12 @@ p_load(ezknitr)
 
 
 diegpost <- function(dirname) {
-  dir.create(paste("_codes/", dirname,sep=""))
   getwd()
   ezknit(
-    "../2019-04-27-Using-CountryCodes.Rmd",
+    "../_codes/2019-04-27-Using-CountryCodes.Rmd",
     wd="./figs",
-    out_dir = "../../_posts",
-    fig_dir = "./figs",
+    out_dir = "../_posts",
+    fig_dir = "../figs",
     keep_html = FALSE
   )
 }
