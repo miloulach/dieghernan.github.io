@@ -137,16 +137,14 @@ plot(st_geometry(testmap_rob %>% filter(!is.na(C))), col = "#346733", border = "
     lwd = 0.1, add = T)
 
 # By last, add tiny countries All
-plot(st_geometry(tiny_rob), col = "#B9B9B9", lwd = 0.1, add = T, pch = 16)
+plot(st_geometry(tiny_rob), col = "#000000", bg = "#B9B9B9", add = T, pch = 21)
 # Dependencies
 plot(st_geometry(tiny_rob %>% filter(!is.na(C)) %>% filter(!is.na(ISO_3166_3.sov))), 
-    col = "#C6DEBD", lwd = 0.1, pch = 16, add = T)
+    bg = "#C6DEBD", col = "#000000", pch = 21, add = T)
 # Independent
 plot(st_geometry(tiny_rob %>% filter(!is.na(C)) %>% filter(is.na(ISO_3166_3.sov))), 
-    col = "#346733", lwd = 0.1, pch = 16, add = T)
-# Borders
-plot(st_geometry(tiny_rob), col = "#000000", lwd = 0.1, add = T)
+    bg = "#346733", col = "#000000", pch = 21, add = T)
 plot(bbox, col = NA, border = "#AAAAAA", lwd = 1.5, add = T)
 ```
 
-![plot of chunk mapfin](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/mapfin-1.png)
+![plot of chunk 20190427_mapfin](../figs/20190427_mapfin-1.png)

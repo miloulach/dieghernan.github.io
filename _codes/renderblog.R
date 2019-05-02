@@ -9,9 +9,9 @@ diegpost <- function(dirname) {
   getwd()
   ezknit(
     "../2019-04-27-Using-CountryCodes.Rmd",
-    wd=paste("./_codes/", dirname,sep=""),
+    wd="./figs",
     out_dir = "../../_posts",
-    fig_dir = paste("../_codes/", dirname,sep=""),
+    fig_dir = "./figs",
     keep_html = FALSE
   )
 }

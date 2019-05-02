@@ -109,12 +109,14 @@ plot(
 
 #By last, add tiny countries
 #All
+
+
 plot(
   st_geometry(tiny_rob),
-  col = "#B9B9B9",
-  lwd = 0.1,
+  col = "#000000",
+  bg="#B9B9B9",
   add = T,
-  pch = 16
+  pch = 21
 )
 #Dependencies
 plot(
@@ -122,9 +124,9 @@ plot(
                 filter(!is.na(C)) %>%
                 filter(!is.na(ISO_3166_3.sov))
               ),
-  col = "#C6DEBD",
-  lwd = 0.1,
-  pch = 16,
+  bg = "#C6DEBD",
+  col = "#000000",
+  pch = 21,
   add = T
 )
 #Independent
@@ -133,16 +135,9 @@ plot(
                 filter(!is.na(C)) %>%
                 filter(is.na(ISO_3166_3.sov))
   ),
-  col = "#346733",
-  lwd = 0.1,
-  pch = 16,
-  add = T
-)
-#Borders
-plot(
-  st_geometry(tiny_rob),
+  bg = "#346733",
   col = "#000000",
-  lwd = 0.1,
+  pch = 21,
   add = T
 )
 plot(bbox,
