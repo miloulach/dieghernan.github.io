@@ -137,7 +137,7 @@ end - init
 ```
 
 ```
-## Time difference of 0.4747331 secs
+## Time difference of 0.5370431 secs
 ```
 
 ```r
@@ -148,7 +148,7 @@ end - init
 ```
 
 ```
-## Time difference of 6.907552 secs
+## Time difference of 8.502807 secs
 ```
 
 ```r
@@ -160,4 +160,4 @@ plot(st_geometry(t2), col = c("red", "yellow", "blue"))
  
 It can be seen a noticeable difference in terms of performance, noting that `test_europe100` has 61 polygons decomposed in 1919 sub-strings while `test_europe50` has 340 polygons to 21327 sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
-A collection of my user-defined functions can be checked (here)[https://github.com/dieghernan/dieghernan.github.io/tree/master/_codes/functions-R]
+A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/_codes/functions.R)

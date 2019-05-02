@@ -179,4 +179,4 @@ plot(st_geometry(t2), col = c("red", "yellow", "blue"))
  
 It can be seen a noticeable difference in terms of performance, noting that `test_europe100` has `r length(st_geometry(test_europe100))` polygons decomposed in `r length(st_geometry(t1))` sub-strings while `test_europe50` has `r length(st_geometry(test_europe50))` polygons to `r length(st_geometry(t2))` sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
-A collection of my user-defined functions can be checked (here)[https://github.com/dieghernan/dieghernan.github.io/tree/master/_codes/functions-R]
+A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/_codes/functions.R)
