@@ -106,7 +106,7 @@ png::writePNG(wiki, "wiki.png")
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 
 
-```{r mapfin, warning=FALSE, message=FALSE, tidy=TRUE, dev="png", fig.width=853/96, fig.height=433/96}
+```{r mapfin, warning=FALSE, message=FALSE, tidy=TRUE, dev="png",fig.width=1.3*853/90}
 #Projecting the map
 testmap_rob = st_transform(testmap, "+proj=robin")
 tiny_rob = st_transform(tiny, "+proj=robin")
