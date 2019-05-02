@@ -24,10 +24,10 @@ layout: base
 				<span >
 					<i class="fa fa-fw fa-clock-o"></i>
 					{% assign words = content | number_of_words %}
-					{% if words < 360 %}
+					{% if words < 400 %}
 							 1 min
 							 {% else %}
-							 {{ words | divided_by:180 }} mins
+							 {{ words | divided_by:200 }} mins
 							 {% endif %}
 							 </span>
 
