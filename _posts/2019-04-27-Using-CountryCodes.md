@@ -96,6 +96,16 @@ and replacing the `dataframe`for the dedicated database.
 ```r
 testmap = ne_countries(50, "countries", returnclass = "sf") %>% select(ISO_3166_3 = adm0_a3) %>% 
     full_join(df_org)
+
+# We add also tiny countries
+tiny = ne_countries(50, "tiny_countries", returnclass = "sf") %>% select(ISO_3166_3 = adm0_a3) %>% 
+    full_join(df_org)
+
+# Identify dependencies
+ISOCommon = df_org %>% filter(!is.na(C)) %>% select(ISO_3166_3.sov = ISO_3166_3, 
+    C_sov = C)
+tiny = left_join(tiny, ISOCommon)
+tiny$C = coalesce(tiny$C, tiny$C_sov)
 ```
 
 ##Plotting map: Wikipedia style
@@ -110,6 +120,7 @@ The map we will generate is presented under a Robinson projection and the color 
 ```r
 # Projecting the map
 testmap_rob = st_transform(testmap, "+proj=robin")
+tiny_rob = st_transform(tiny, "+proj=robin")
 
 # Bounding box
 bbox = st_linestring(rbind(c(-180, 90), c(180, 90), c(180, -90), c(-180, -90), 
@@ -117,13 +128,25 @@ bbox = st_linestring(rbind(c(-180, 90), c(180, 90), c(180, -90), c(-180, -90),
     st_transform(crs = "+proj=robin")
 
 # Plotting
-par(mar = c(0, 0, 0, 0))
+par(mar = c(0, 0, 0, 0), bg = NA)
 plot(bbox, col = "#FFFFFF", border = "#AAAAAA", lwd = 1.5)
 plot(st_geometry(testmap_rob), col = "#B9B9B9", border = "#FFFFFF", lwd = 0.1, 
     add = T)
 
 plot(st_geometry(testmap_rob %>% filter(!is.na(C))), col = "#346733", border = "#FFFFFF", 
     lwd = 0.1, add = T)
+
+# By last, add tiny countries All
+plot(st_geometry(tiny_rob), col = "#B9B9B9", lwd = 0.1, add = T, pch = 16)
+# Dependencies
+plot(st_geometry(tiny_rob %>% filter(!is.na(C)) %>% filter(!is.na(ISO_3166_3.sov))), 
+    col = "#C6DEBD", lwd = 0.1, pch = 16, add = T)
+# Independent
+plot(st_geometry(tiny_rob %>% filter(!is.na(C)) %>% filter(is.na(ISO_3166_3.sov))), 
+    col = "#346733", lwd = 0.1, pch = 16, add = T)
+# Borders
+plot(st_geometry(tiny_rob), col = "#000000", lwd = 0.1, add = T)
+plot(bbox, col = NA, border = "#AAAAAA", lwd = 1.5, add = T)
 ```
 
 ![plot of chunk mapfin](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/mapfin-1.png)
