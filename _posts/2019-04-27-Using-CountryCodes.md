@@ -109,6 +109,7 @@ tiny$C = coalesce(tiny$C, tiny$C_sov)
 ```
 
 ##Plotting map: Wikipedia style
+
 Now we would try to plot a map ressembling the one presented in the [Wikipedia page](https://en.wikipedia.org/wiki/Commonwealth_of_Nations) for the Commonwealth.
 
 <img src="https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/_codes/2019-04-27-Using-CountryCodes/wiki.png">
