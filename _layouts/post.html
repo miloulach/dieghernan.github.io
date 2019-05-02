@@ -20,6 +20,16 @@ layout: base
 			  <a href="{{ page.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd'  }}">
 				  <i class="fa fa-fw fa-github"></i> Source code
 			  </a>
+			  <p>
+				<span >
+					{% assign words = content | number_of_words %}
+					{% if words < 360 %}
+							 1 min
+							 {% else %}
+							 {{ words | divided_by:180 }} mins
+							 {% endif %}
+							 </span>
+
                      </p>
                      {% endif %}
                   </div>
