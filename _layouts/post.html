@@ -13,16 +13,16 @@ layout: base
                   <h2 class="post-subheading">
                      {{ page.subtitle }}
                   </h2>
-                  <span class="post-meta">
-                     Posted on {{ page.date | date_to_string }}
-                     {% if page.linktormd %}
-                     - 
-			  <a href="{{ page.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd'  }}">
-				  <i class="fa fa-fw fa-github"></i> Source code on <b>GitHub</b> 
-			  </a>
-                     </p>
+                  <div class="post-meta">
+                     {{ page.date | date_to_string }} -
+                     <i class="fa fa-fw fa-clock-o"></i> 
+                     {% assign words = content | number_of_words %}
+                     {% if words < 400 %}
+                     1 min
+                     {% else %}
+                     {{ words | divided_by:200 }} mins
                      {% endif %}
-                  </span>
+                  </div>
                </div>
             </div>
          </div>
@@ -32,6 +32,13 @@ layout: base
 <div class="container">
    <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+         {% if page.linktormd %}
+         <div class="blog-tags">
+            <a href="{{ page.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd'  }}">
+            <i class="fa fa-fw fa-github"></i> Source code
+            </a>
+         </div>
+         {% endif %}
          <div class="blog-tags">
             Tags:
             {% if site.link-tags %}
