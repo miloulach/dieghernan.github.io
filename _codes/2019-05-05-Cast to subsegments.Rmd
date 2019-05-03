@@ -108,7 +108,7 @@ plot(st_geometry(geom), col = c("red", "yellow", "blue"),main="AFTER FUNCTION")
 
 ```
 
-## The function `stdh_cast_subtring`
+## The function `stdh_cast_substring`
 
 Finally, I wrapped the solution into a function and extended it a little bit:
 
