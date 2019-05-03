@@ -72,7 +72,7 @@ plot(st_geometry(geom), col = c("red", "yellow", "blue"), main = "AFTER FUNCTION
 
 <img src="../figs/20190505_testspain-1.png" title="plot of chunk 20190505_testspain" alt="plot of chunk 20190505_testspain" style="display: block; margin: auto;" />
 
-## The function `stdh_cast_subtring`
+## The function `stdh_cast_substring`
 
 Finally, I wrapped the solution into a function and extended it a little bit:
 
