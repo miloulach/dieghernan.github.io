@@ -125,39 +125,40 @@ stdh_cast_substring <- function(x, to = "MULTILINESTRING") {
  
 
 ```r
-test_europe100 <- ne_countries(continent = "europe", returnclass = "sf") %>%
+test100 <- ne_countries(continent = "south america", returnclass = "sf") %>%
   st_cast("POLYGON")
-test_europe50 <- ne_countries(50, continent = "europe", returnclass = "sf") %>%
+test50 <- ne_countries(50, continent = "south america", returnclass = "sf") %>%
   st_cast("POLYGON")
 
 init <- Sys.time()
-t1 <- stdh_cast_substring(test_europe100, "LINESTRING")
+t1 <- stdh_cast_substring(test100, "LINESTRING")
 end <- Sys.time()
 end - init
 ```
 
 ```
-## Time difference of 0.5370431 secs
+## Time difference of 0.223402 secs
 ```
 
 ```r
 init <- Sys.time()
-t2 <- stdh_cast_substring(test_europe50, "LINESTRING")
+t2 <- stdh_cast_substring(test50, "LINESTRING")
 end <- Sys.time()
 end - init
 ```
 
 ```
-## Time difference of 8.502807 secs
+## Time difference of 2.871316 secs
 ```
 
 ```r
 par(mfrow = c(1, 1), mar = c(0, 0, 0, 0))
-plot(st_geometry(t2), col = c("red", "yellow", "blue"))
+plot(st_geometry(test50), col = "#FEFEE9", bg = "#C6ECFF", border = "#646464")
+plot(st_geometry(t2), col = c("red", "yellow", "blue"), add = T, lwd = 0.5)
 ```
 
-![plot of chunk 20190505_benchmarkfunction](../figs/20190505_benchmarkfunction-1.png)
+<img src="../figs/20190505_benchmarkfunction-1.png" title="plot of chunk 20190505_benchmarkfunction" alt="plot of chunk 20190505_benchmarkfunction" style="display: block; margin: auto;" />
  
-It can be seen a noticeable difference in terms of performance, noting that `test_europe100` has 61 polygons decomposed in 1919 sub-strings while `test_europe50` has 340 polygons to 21327 sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
+It can be seen a difference in terms of performance, noting that `test100` has 15 polygons decomposed in 914 sub-strings while `test50` has 80 polygons to 8414 sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
 A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/_codes/functions.R)

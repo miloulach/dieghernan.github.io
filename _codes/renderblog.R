@@ -16,8 +16,6 @@ diegpost <- function(file) {
 }
 #Render 2019-04-27-Using-CountryCodes ----
 
-diegpost("2019-04-27-Using-CountryCodes")
-
-
+#diegpost("2019-04-27-Using-CountryCodes")
 diegpost("2019-05-05-Cast to subsegments")
 
