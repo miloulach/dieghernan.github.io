@@ -173,7 +173,9 @@ t2=stdh_cast_substring(test50,"LINESTRING")
 end=Sys.time()
 end-init
 par(mfrow=c(1,1),mar=c(0,0,0,0))
-plot(st_geometry(test50),col="#FEFEE9",bg="#C6ECFF",border="#646464")
+plot(st_geometry(test50),col=NA,bg="#C6ECFF")
+plot(st_geometry(ne_countries(50,returnclass = "sf")), col="#F6E1B9",border="#646464",add=T)
+plot(st_geometry(test50),col="#FEFEE9",border="#646464",add=T)
 plot(st_geometry(t2), col = c("red", "yellow", "blue"),add=T, lwd=0.5)
 
 ```

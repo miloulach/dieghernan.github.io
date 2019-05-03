@@ -137,7 +137,7 @@ end - init
 ```
 
 ```
-## Time difference of 0.223402 secs
+## Time difference of 0.2373638 secs
 ```
 
 ```r
@@ -148,12 +148,14 @@ end - init
 ```
 
 ```
-## Time difference of 2.871316 secs
+## Time difference of 2.563142 secs
 ```
 
 ```r
 par(mfrow = c(1, 1), mar = c(0, 0, 0, 0))
-plot(st_geometry(test50), col = "#FEFEE9", bg = "#C6ECFF", border = "#646464")
+plot(st_geometry(test50), col = NA, bg = "#C6ECFF")
+plot(st_geometry(ne_countries(50, returnclass = "sf")), col = "#F6E1B9", border = "#646464", add = T)
+plot(st_geometry(test50), col = "#FEFEE9", border = "#646464", add = T)
 plot(st_geometry(t2), col = c("red", "yellow", "blue"), add = T, lwd = 0.5)
 ```
 
