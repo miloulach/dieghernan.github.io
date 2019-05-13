@@ -136,3 +136,4 @@ map <-   addLayersControl(map,
 map <- hideGroup(map,c("Destinies","Flights"))
 map
 
+names=read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv")
