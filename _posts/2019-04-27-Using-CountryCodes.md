@@ -49,7 +49,11 @@ kable(orgsdb[grep("Common", orgsdb$org_name), ], format = "markdown")
 |43  |COMESA   |Common Market for Eastern and Southern Africa |
 |115 |MERCOSUR |Southern Cone Common Market                   |
  
+<<<<<<< HEAD
 In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
+=======
+ In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
+>>>>>>> 057fd8ed27b32abf54a940d6e2fc4247694c577a
 
 ```r
 ISO_memcol <- function(df,
