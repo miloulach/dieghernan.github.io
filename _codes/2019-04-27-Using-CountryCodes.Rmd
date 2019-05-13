@@ -44,7 +44,8 @@ orgsdb = read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-an
 
 kable(orgsdb[grep("Common", orgsdb$org_name), ],format = 'markdown')
 ```
- In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
+ 
+In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
 ```{r funjson, warning=FALSE, message=FALSE, tidy='styler'}
 ISO_memcol = function(df,
                       orgtosearch 
