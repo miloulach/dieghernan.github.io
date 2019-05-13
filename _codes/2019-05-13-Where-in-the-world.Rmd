@@ -5,8 +5,9 @@ subtitle: A leaflet map with the places I have flown
 tags: [R,sf,maps,leaflet]
 linktormd: true
 leafletmap: true
-output: github_document
-always_allow_html: yes
+output: 
+  html_document: 
+    self_contained: no
 ---
 
 
