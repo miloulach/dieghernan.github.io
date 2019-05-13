@@ -174,7 +174,9 @@ map
 
 
 
+
 ## Top Cities
+
 ```{r Cities,echo=FALSE,  warning=FALSE, message=FALSE, tidy='styler'}
 names=read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv")
 
@@ -213,6 +215,7 @@ format = 'markdown')
 ```
 
 ## Top Continents
+
 ```{r Continents, echo=FALSE, warning=FALSE, message=FALSE, tidy='styler'}
 
 knitr::kable(head(
