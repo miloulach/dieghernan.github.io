@@ -1,6 +1,7 @@
 #0. Cleaning and set-up R----
 rm(list = ls())
-GEONAMES_USER = "dieghernan"
+source("pass.R")
+
 library(pacman)
 p_load(dplyr,
        jsonlite)
@@ -41,8 +42,6 @@ airports <- function(place, n = 1, lang = "en") {
   )
   return(geonames)
 }
-
-
 #Return
 for (i in 1:nrow(tosearch)) {
   res = airports(tosearch[i, c("tofun")])
@@ -59,6 +58,7 @@ for (i in 1:nrow(tosearch)) {
 rm(i)
 final$long=as.numeric(final$long)
 final$lat=as.numeric(final$lat)
+
 #Some statistics----
 #Number times per city----
 ndots=left_join(tosearch,final) %>% 
@@ -71,27 +71,7 @@ ndots=left_join(tosearch,final) %>%
     lat
 )
 
-
-# Leaflet-----
-library(leaflet)
-
-map <- leaflet( options = leafletOptions(minZoom = 2)) %>%
-  addProviderTiles(providers$CartoDB.DarkMatter,
-                   options = list(detectRetina = TRUE,
-                                  noWrap = TRUE)) %>%
-  setView(-3.56948,  40.49181, zoom = 3) %>%
-  setMaxBounds(-180,-90,180,90) %>%
-  addCircles(
-    data=ndots,
-    lng = ~ long,
-    lat = ~ lat,
-    weight = 5,
-    radius =  1000,
-    popup = ~ name,
-    color = "green"
-  )
-map
-#Connecting Routes
+# Connecting Routes----
 connect=myflights %>% count(start,end) %>% arrange(desc(n))
 connect=left_join(connect,
                   ndots %>%
@@ -116,21 +96,43 @@ connectflights = gcIntermediate(
   breakAtDateLine = T,
   sp = T
 )
-connect$n/(2*max(connect$n))
 
-map3 <-  addPolylines(map,weight=2*sqrt(connect$n),data = connectflights, opacity = sqrt(connect$n)/5,
-                    col="green" ,group = "Flights")
+# Leaflet-----
+library(leaflet)
 
-map4 <-   addEasyButton(map3,easyButton(
+map <- leaflet( options = leafletOptions(minZoom = 2)) %>%
+  addProviderTiles(providers$CartoDB.DarkMatter,
+                   options = list(detectRetina = TRUE,
+                                  noWrap = TRUE)) %>%
+  setView(-3.56948,  40.49181, zoom = 3) %>%
+  setMaxBounds(-180,-90,180,90) %>%
+  addCircles(
+    data=ndots,
+    lng = ~ long,
+    lat = ~ lat,
+    weight = 5,
+    radius =  sqrt(ndots$n) * 8000,
+    popup = ~ name,
+    color = "blue",
+    group = "Destinies"
+  )
+
+map <-  addPolylines(map,weight=2*sqrt(connect$n),data = connectflights, opacity = sqrt(connect$n)/5,
+                    col="blue" ,group = "Flights")
+
+map <-   addEasyButton(map,easyButton(
   icon="fa-globe", title="Zoom to Level 1",
   onClick=JS("function(btn, map){ map.setZoom(1); }")))
-map4 <-   addLayersControl(map3,
-    overlayGroups = c("Flights"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
-map4
+
 
 library(leaflet.extras)
-map5 <- addHeatmap(map,data = ndots, intensity = ~ n,
-                   radius = 40,max=10, blur=40 )
-map5
+addH
+map <- addHeatmap(map,data = ndots, intensity = ~ n,
+                   radius = 10,max=30, blur=50, group = "Heatmap")
+map <-   addLayersControl(map,
+                          overlayGroups = c("Destinies","Flights","Heatmap"),
+                          options = layersControlOptions(collapsed = FALSE)
+)
+map <- hideGroup(map,c("Destinies","Flights"))
+map
+
