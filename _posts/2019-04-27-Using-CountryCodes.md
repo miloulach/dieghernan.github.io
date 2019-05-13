@@ -1,3 +1,12 @@
+---
+layout: post
+title: Using CountryCodes database and sf package.
+subtitle: vignette of the CountryCodes project.
+tags: [R,sf,maps,vignette]
+linktormd: true
+output: github_document
+---
+
 Using CountryCodes database and sf package.
 ================
 
