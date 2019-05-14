@@ -1,5 +1,14 @@
-Where in the world?
-================
+---
+layout: post
+title: Where in the world?
+subtitle: A leaflet map with the places I have flown
+tags: [R,maps,leaflet]
+linktormd: true
+leafletmap: true
+output: github_document 
+always_allow_html: yes
+---
+
 
 This is a very personal post, where I just show the map of all the places I have traveled by plain
 
