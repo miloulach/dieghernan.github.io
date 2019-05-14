@@ -1,8 +1,7 @@
 ---
 layout: post
 title: Exploring resolutions with leaflet
-subtitle: aaaaa.
-tags: [R,sf,maps,vignette]
+subtitle: A test
 linktormd: true
 leafletmap: true
 output: github_document
@@ -12,10 +11,7 @@ always_allow_html: yes
 Exploring resolutions with leaflet
 ================
 
-Reading the data
-----------------
 
-The first step consists on reading the database provided (in this example the `json` file) and extracting one international organization. In this example we will plot the [Commonwealth of Nations](https://en.wikipedia.org/wiki/Commonwealth_of_Nations).
 
 <!--html_preserve-->
 <div id="htmlwidget-ff516d74fbec24f31bb3" style="position: relative; width: 100%;padding-top: 70%;" class="leaflet html-widget"></div>
