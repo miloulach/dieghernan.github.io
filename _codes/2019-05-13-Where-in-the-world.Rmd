@@ -124,7 +124,7 @@ connect = left_join(connect,
 connectflights = gcIntermediate(
   connect[, c("long_init", "lat_init")],
   connect[, c("long_end", "lat_end")],
-  n = 1000,
+  n = 100,
   breakAtDateLine = T,
   sp = T
 )
@@ -134,10 +134,9 @@ data=st_sf(connect,st_geometry(linessf))
 kms=sum((as.numeric(st_length(data))*data$n)/1000)
 
 # Leaflet-----
-map <- leaflet(options = leafletOptions(minZoom = 1)) %>%
+map <- leaflet(options = leafletOptions(minZoom = 1.25)) %>%
   addProviderTiles(providers$CartoDB.DarkMatter,
-                   options = list(detectRetina = TRUE,
-                                  noWrap = TRUE)) %>%
+                   options = list(noWrap = TRUE)) %>%
   setView(-3.56948,  40.49181, zoom = 3) %>%
   setMaxBounds(-180,-90, 180, 90) %>%
   addCircles(
@@ -150,7 +149,6 @@ map <- leaflet(options = leafletOptions(minZoom = 1)) %>%
     color = "blue",
     group = "Destinations"
   )
-
 map <-
   addPolylines(
     map,
@@ -165,7 +163,7 @@ map <-   addEasyButton(map,
                        easyButton(
                          icon = "fa-globe",
                          title = "Zoom to Level 1",
-                         onClick = JS("function(btn, map){ map.setZoom(1); }")
+                         onClick = JS("function(btn, map){ map.setView([ 40.49181,-3.56948],1.25); }")
                        ))
 
 map <- addHeatmap(
@@ -196,7 +194,7 @@ map
 ## Top Cities
 
 ```{r Cities,echo=FALSE,  warning=FALSE, message=FALSE, tidy='styler'}
-names=read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv", fileEncoding="latin1")
+names=read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv")
 Cities =inner_join(ndots %>%
                      select(
                        City=name,
