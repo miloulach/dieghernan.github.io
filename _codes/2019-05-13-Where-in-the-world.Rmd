@@ -167,13 +167,21 @@ map <-   addEasyButton(map,
                          onClick = JS("function(btn, map){ map.setView([ 40.49181,-3.56948],1.25); }")
                        ))
 
+explode = data.frame(name = 
+                        (sort(append(
+                          myflights$start, 
+                          myflights$end))),
+                      stringsAsFactors = F)
+
+explodefin=left_join(explode,ndots)
+
 map <- addHeatmap(
   map,
-  data = ndots,
+  data = explodefin,
   intensity = ~ n*10,
   radius = 30,
-  max = 10,
-  blur = 50,
+  max = 400,
+  blur = 30,
   group = "Heatmap"
 )
 map <-   addLayersControl(
