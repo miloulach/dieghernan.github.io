@@ -136,7 +136,7 @@ data=st_sf(connect,st_geometry(linessf))
 kms=sum((as.numeric(st_length(data))*data$n)/1000)
 
 # Leaflet-----
-map <- leaflet(options = leafletOptions(minZoom = 0)) %>%
+map <- leaflet(options = leafletOptions(minZoom = 1)) %>%
   addProviderTiles(providers$CartoDB.DarkMatter,
                    options = list(detectRetina = TRUE,
                                   noWrap = TRUE)) %>%
