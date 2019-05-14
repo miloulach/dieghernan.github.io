@@ -1,31 +1,7 @@
----
-layout: post
-title: Where in the world?
-subtitle: A leaflet map with the places I have flown
-tags: [R,maps,leaflet]
-linktormd: true
-leafletmap: true
-output: github_document 
-always_allow_html: yes
----
-
-
-This is a very personal post, where I just show the map of all the places I have traveled by plain
-
-
-
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
-
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(global.par = TRUE)
 rm(list = ls())
-
-#output: github_document always_allow_html: yes
-
-library(pacman)
-rm(list = ls())
-
-source("../pass.R")
+source("./pass.R")
 
 library(pacman)
 p_load(dplyr,
@@ -33,13 +9,11 @@ p_load(dplyr,
        readxl,
        geosphere,
        leaflet,
-       leaflet.extras,
-       sf, htmlwidgets,
-       webshot)
+       leaflet.extras)
 
 
 # Find airports----
-myflights <- read_excel("../_data/flights.xlsx")
+myflights <- read_excel("./_data/flights.xlsx")
 tosearch = data.frame(toloc = 
                         (sort(append(
                           myflights$start, 
@@ -129,12 +103,8 @@ connectflights = gcIntermediate(
   sp = T
 )
 
-linessf=st_as_sf(connectflights)
-data=st_sf(connect,st_geometry(linessf))
-kms=sum((as.numeric(st_length(data))*data$n)/1000)
-
 # Leaflet-----
-map <- leaflet(options = leafletOptions(minZoom = 1)) %>%
+map <- leaflet(options = leafletOptions(minZoom = 2)) %>%
   addProviderTiles(providers$CartoDB.DarkMatter,
                    options = list(detectRetina = TRUE,
                                   noWrap = TRUE)) %>%
@@ -148,7 +118,7 @@ map <- leaflet(options = leafletOptions(minZoom = 1)) %>%
     radius =  sqrt(ndots$n) * 8000,
     popup = ~ name,
     color = "blue",
-    group = "Destinations"
+    group = "Destinies"
   )
 
 map <-
@@ -156,7 +126,7 @@ map <-
     map,
     weight = 2 * sqrt(connect$n),
     data = connectflights,
-    opacity = 2*sqrt(connect$n) / 5,
+    opacity = sqrt(connect$n) / 5,
     col = "blue" ,
     group = "Flights"
   )
@@ -168,77 +138,22 @@ map <-   addEasyButton(map,
                          onClick = JS("function(btn, map){ map.setZoom(1); }")
                        ))
 
-map <- addHeatmap(
+map2 <- addHeatmap(
   map,
   data = ndots,
-  intensity = ~ n*10,
+  intensity = ~ n,
   radius = 30,
-  max = 10,
+  max = 5,
   blur = 50,
   group = "Heatmap"
 )
+map2
 map <-   addLayersControl(
   map,
-  overlayGroups = c("Destinations", "Flights", "Heatmap"),
+  overlayGroups = c("Destinies", "Flights", "Heatmap"),
   options = layersControlOptions(collapsed = FALSE)
 )
-map <- hideGroup(map, c("Destinations", "Flights"))
+map <- hideGroup(map, c("Destinies", "Flights"))
+
+
 map
-```
-
-
-
-## `r format(kms, nsmall=1, big.mark=",")` kms. flown so far.
-
-
-
-## Top Cities
-
-```{r Cities,echo=FALSE,  warning=FALSE, message=FALSE, tidy='styler'}
-names=read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv", fileEncoding="latin1")
-Cities =inner_join(ndots %>%
-                     select(
-                       City=name,
-                       countryCode,
-                       n
-                     ), names %>% select(
-                       countryCode=ISO_3166_2,
-                       Country=NAME.EN,
-                       Continent=CONTINENT.EN,
-                       Region=SUBREGION.EN
-                     ))
-
-knitr::kable(head(Cities %>% select(
-  City,
-  Country,
-  N=n
-) %>% filter(City != "Madrid") %>% arrange(desc(N)),10),format = 'markdown')
-
-```
-
-## Top Countries
-
-```{r Countries,echo=FALSE, warning=FALSE, message=FALSE, tidy='styler'}
-
-knitr::kable(head(
-  Cities  %>% filter(City != "Madrid") %>%
-    select(Country,
-           Continent, n) %>% group_by(Country, Continent) %>% summarise(N = sum(n)) %>%
-    arrange(desc(N)),
-  5),
-format = 'markdown')
-  
-```
-
-## Top Continents
-
-```{r Continents, echo=FALSE, warning=FALSE, message=FALSE, tidy='styler'}
-
-knitr::kable(head(
-  Cities  %>% filter(City != "Madrid") %>%
-    select(Continent, Region, n) %>% group_by(Continent, Region) %>% summarise(N = sum(n)) %>%
-    arrange(desc(N)),
-  5
-),
-format = 'markdown')
-```
