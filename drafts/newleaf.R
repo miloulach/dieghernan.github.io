@@ -1,30 +1,3 @@
----
-layout: post
-title: Where in the world?
-subtitle: A leaflet map with the places I have flown
-tags: [R,sf,maps,leaflet]
-linktormd: true
-leafletmap: true
-
-output:   
-  html_document:
-       self_contained: no
----
-
-
-This is a very personal post, where I just show the map of all the places I have traveled by plain
-
-
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
-
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(global.par = TRUE)
-rm(list = ls())
-GEONAMES_USER="dieghernan"
-
-#output: github_document always_allow_html: yes
-
-library(pacman)
 rm(list = ls())
 
 GEONAMES_USER="dieghernan"
@@ -36,12 +9,11 @@ p_load(dplyr,
        geosphere,
        leaflet,
        leaflet.extras,
-       sf, htmlwidgets,
-       webshot)
+       sf)
 
 
 # Find airports----
-myflights <- read_excel("../_data/flights.xlsx")
+myflights <- read_excel("./_data/flights.xlsx")
 tosearch = data.frame(toloc = 
                         (sort(append(
                           myflights$start, 
@@ -186,61 +158,4 @@ map <-   addLayersControl(
 )
 map <- hideGroup(map, c("Destinations", "Flights"))
 map
-```
 
-
-
-## `r format(kms, nsmall=1, big.mark=",")` kms. flown so far.
-
-
-
-## Top Cities
-
-```{r Cities,echo=FALSE,  warning=FALSE, message=FALSE, tidy='styler'}
-names=read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv", fileEncoding="latin1")
-Cities =inner_join(ndots %>%
-                     select(
-                       City=name,
-                       countryCode,
-                       n
-                     ), names %>% select(
-                       countryCode=ISO_3166_2,
-                       Country=NAME.EN,
-                       Continent=CONTINENT.EN,
-                       Region=SUBREGION.EN
-                     ))
-
-knitr::kable(head(Cities %>% select(
-  City,
-  Country,
-  N=n
-) %>% filter(City != "Madrid") %>% arrange(desc(N)),10),format = 'markdown')
-
-```
-
-## Top Countries
-
-```{r Countries,echo=FALSE, warning=FALSE, message=FALSE, tidy='styler'}
-
-knitr::kable(head(
-  Cities  %>% filter(City != "Madrid") %>%
-    select(Country,
-           Continent, n) %>% group_by(Country, Continent) %>% summarise(N = sum(n)) %>%
-    arrange(desc(N)),
-  5),
-format = 'markdown')
-  
-```
-
-## Top Continents
-
-```{r Continents, echo=FALSE, warning=FALSE, message=FALSE, tidy='styler'}
-
-knitr::kable(head(
-  Cities  %>% filter(City != "Madrid") %>%
-    select(Continent, Region, n) %>% group_by(Continent, Region) %>% summarise(N = sum(n)) %>%
-    arrange(desc(N)),
-  5
-),
-format = 'markdown')
-```
