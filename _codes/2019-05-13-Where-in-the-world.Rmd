@@ -10,6 +10,7 @@ output:
     self_contained: no
 ---
 
+#output: github_document always_allow_html: yes
 
 This is a very personal post, where I just show the map of all the places I have traveled by plain
 
