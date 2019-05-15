@@ -1,6 +1,10 @@
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(global.par = TRUE)
 rm(list = ls())
+
+#output: github_document always_allow_html: yes
+
+library(pacman)
+rm(list = ls())
+
 source("./pass.R")
 
 library(pacman)
@@ -9,7 +13,8 @@ p_load(dplyr,
        readxl,
        geosphere,
        leaflet,
-       leaflet.extras)
+       leaflet.extras,
+       sf)
 
 
 # Find airports----
@@ -98,62 +103,114 @@ connect = left_join(connect,
 connectflights = gcIntermediate(
   connect[, c("long_init", "lat_init")],
   connect[, c("long_end", "lat_end")],
-  n = 1000,
+  n = 200,
+  addStartEnd=TRUE,
   breakAtDateLine = T,
   sp = T
 )
 
+linessf=st_as_sf(connectflights)
+data=st_sf(connect,st_geometry(linessf))
+kms=sum((as.numeric(st_length(data))*data$n)/1000)
+outline <- ndots[chull(ndots$long, ndots$lat),]
 # Leaflet-----
-map <- leaflet(options = leafletOptions(minZoom = 2)) %>%
+map <- leaflet(options = leafletOptions(minZoom = 1.25)) %>%
   addProviderTiles(providers$CartoDB.DarkMatter,
-                   options = list(detectRetina = TRUE,
-                                  noWrap = TRUE)) %>%
+                   options = list(noWrap = TRUE,
+                                  detectRetina=TRUE)) %>%
   setView(-3.56948,  40.49181, zoom = 3) %>%
   setMaxBounds(-180,-90, 180, 90) %>%
-  addCircles(
-    data = ndots,
-    lng = ~ long,
-    lat = ~ lat,
-    weight = 5,
-    radius =  sqrt(ndots$n) * 8000,
-    popup = ~ name,
-    color = "blue",
-    group = "Destinies"
-  )
-
+  addCircleMarkers(data=ndots,radius = ndots$n^(1/5)*5,
+                  stroke=T, fillOpacity = 0.3,group = "Destinations")
+map <-addPolygons(map=map,data = outline,
+            lng = ~long, lat = ~lat,
+            fillColor = "white", 
+            fillOpacity = 0.05,
+            stroke = F,
+            group = "Outline")
 map <-
   addPolylines(
     map,
-    weight = 2 * sqrt(connect$n),
+    weight = log(connect$n)*6+3,
+    opacity = 0.3,
     data = connectflights,
-    opacity = sqrt(connect$n) / 5,
-    col = "blue" ,
+    col = "green" ,
     group = "Flights"
   )
-
 map <-   addEasyButton(map,
                        easyButton(
                          icon = "fa-globe",
                          title = "Zoom to Level 1",
-                         onClick = JS("function(btn, map){ map.setZoom(1); }")
+                         onClick = JS("function(btn, map){ map.setView([ 40.49181,-3.56948],1.25); }")
                        ))
-
-map2 <- addHeatmap(
+map <- addHeatmap(
   map,
   data = ndots,
-  intensity = ~ n,
-  radius = 30,
-  max = 5,
-  blur = 50,
+  intensity = ndots$n^(1/5),
+  max=max(ndots$n^(1/5)),
+  minOpacity = 0.3,
+  radius = 35,
+  blur = 30,
   group = "Heatmap"
 )
-map2
+
 map <-   addLayersControl(
   map,
-  overlayGroups = c("Destinies", "Flights", "Heatmap"),
-  options = layersControlOptions(collapsed = FALSE)
+  overlayGroups = c("Heatmap","Destinations", "Flights","Outline"),
+  options = layersControlOptions(collapsed = TRUE)
 )
-map <- hideGroup(map, c("Destinies", "Flights"))
+
+map <- hideGroup(map, c("Destinations", "Flights","Outline"))
+map
+
+#----
+
+explode = data.frame(name = 
+                       (sort(append(
+                         myflights$start, 
+                         myflights$end))),
+                     stringsAsFactors = F)
+
+explodefin=left_join(explode,ndots)
+
+map2 <- leaflet(options = leafletOptions(minZoom = 1.25)) %>%
+  addProviderTiles(providers$CartoDB.DarkMatter,
+                   options = list(noWrap = TRUE,
+                                  detectRetina=TRUE)) %>%
+  setView(-3.56948,  40.49181, zoom = 3) %>%
+  setMaxBounds(-180,-90, 180, 90)
 
 
+map3 <-  addPolygons(map=map2,data = outline,
+                     lng = ~long, lat = ~lat,
+                     fillColor = "white", 
+                     fillOpacity = 0.05,
+                     stroke = F,
+                     group = "Outline")
+
+map3
+addP
+map3 <- addHeatmap(
+  map2,
+  data = ndots,
+  intensity = ndots$n^(1/5),
+  max=max(ndots$n^(1/5)),
+  minOpacity = 0.3,
+  radius = 35,
+  blur = 30
+)
+map3
+map4 <- addCircleMarkers(map=map2,data=ndots,radius = ndots$n^(1/5)*5,
+                         stroke=T, fillOpacity = 0.3)
+map4
+map3
+ndots$n^(1/5)
+addC
+map <-   addLayersControl(
+  map,
+  overlayGroups = c("Heatmap","Destinations", "Flights","Outline"),
+  options = layersControlOptions(collapsed = TRUE)
+)
+
+map <- hideGroup(map, c("Destinations", "Flights",))
 map

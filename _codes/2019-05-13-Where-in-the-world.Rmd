@@ -127,71 +127,73 @@ connectflights = gcIntermediate(
   n = 100,
   breakAtDateLine = T,
   sp = T
-)
-
-linessf=st_as_sf(connectflights)
-data=st_sf(connect,st_geometry(linessf))
-kms=sum((as.numeric(st_length(data))*data$n)/1000)
-
-# Leaflet-----
-map <- leaflet(options = leafletOptions(minZoom = 1.25)) %>%
-  addProviderTiles(providers$CartoDB.DarkMatter,
-                   options = list(noWrap = TRUE,
-                                  detectRetina=TRUE)) %>%
-  setView(-3.56948,  40.49181, zoom = 3) %>%
-  setMaxBounds(-180,-90, 180, 90) %>%
-  addCircles(
-    data = ndots,
+  )
+  
+  linessf = st_as_sf(connectflights)
+  data = st_sf(connect, st_geometry(linessf))
+  kms = sum((as.numeric(st_length(data)) * data$n) / 1000)
+  outline <- ndots[chull(ndots$long, ndots$lat), ]
+  # Leaflet-----
+  map <- leaflet(options = leafletOptions(minZoom = 1.25)) %>%
+    addProviderTiles(providers$CartoDB.DarkMatter,
+                     options = list(noWrap = TRUE,
+                                    detectRetina = TRUE)) %>%
+    setView(-3.56948,  40.49181, zoom = 3) %>%
+    setMaxBounds(-180, -90, 180, 90) %>%
+    addCircleMarkers(
+      data = ndots,
+      radius = ndots$n ^ (1 / 5) * 5,
+      stroke = T,
+      fillOpacity = 0.3,
+      group = "Destinations"
+    )
+  map <- addPolygons(
+    map = map,
+    data = outline,
     lng = ~ long,
     lat = ~ lat,
-    weight = 5,
-    radius =  sqrt(ndots$n) * 8000,
-    popup = ~ name,
-    color = "blue",
-    group = "Destinations"
+    fillColor = "white",
+    fillOpacity = 0.05,
+    stroke = F,
+    group = "Outline"
   )
-map <-
-  addPolylines(
+  map <-
+    addPolylines(
+      map,
+      weight = log(connect$n) * 6 + 3,
+      opacity = 0.3,
+      data = connectflights,
+      col = "green" ,
+      group = "Flights"
+    )
+  map <-   addEasyButton(map,
+                         easyButton(
+                           icon = "fa-globe",
+                           title = "Zoom to Level 1",
+                           onClick = JS(
+                             "function(btn, map){ map.setView([ 40.49181,-3.56948],1.25); }"
+                           )
+                         ))
+  map <- addHeatmap(
     map,
-    weight = 2 * sqrt(connect$n),
-    data = connectflights,
-    opacity = 2*sqrt(connect$n) / 5,
-    col = "blue" ,
-    group = "Flights"
+    data = ndots,
+    intensity = ndots$n ^ (1 / 5),
+    max = max(ndots$n ^ (1 / 5)),
+    minOpacity = 0.3,
+    radius = 35,
+    blur = 30,
+    group = "Heatmap"
   )
-
-map <-   addEasyButton(map,
-                       easyButton(
-                         icon = "fa-globe",
-                         title = "Zoom to Level 1",
-                         onClick = JS("function(btn, map){ map.setView([ 40.49181,-3.56948],1.25); }")
-                       ))
-
-explode = data.frame(name = 
-                        (sort(append(
-                          myflights$start, 
-                          myflights$end))),
-                      stringsAsFactors = F)
-
-explodefin=left_join(explode,ndots)
-
-map <- addHeatmap(
-  map,
-  data = explodefin,
-  intensity = ~ n*10,
-  radius = 30,
-  max = 400,
-  blur = 30,
-  group = "Heatmap"
-)
-map <-   addLayersControl(
-  map,
-  overlayGroups = c("Heatmap","Destinations", "Flights"),
-  options = layersControlOptions(collapsed = TRUE)
-)
-
-map <- hideGroup(map, c("Destinations", "Flights"))
-map
+  
+  map <-   addLayersControl(
+    map,
+    overlayGroups = c("Heatmap", "Destinations", "Flights", "Outline"),
+    options = layersControlOptions(collapsed = TRUE)
+  )
+  
+  map <- hideGroup(map, c("Destinations", "Flights", "Outline"))
+  map
+  
 ```
 
 
