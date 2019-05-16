@@ -8,13 +8,13 @@ p_load(
   dplyr,
   cartography,
   rnaturalearth,
-  openxlsx)
+  openxlsx,
+  rmapshaper,sp)
 
 testmap=getData("GADM",country="ESP",level=1)
 testmap_sf=st_as_sf(testmap)
+testmap_sf=testmap_sf[1:3,]
 plot(st_geometry(testmap_sf))
-test2=testmap_sf[1:3,]
-plot(st_geometry(test2))
 
 
 hexsquaremap <- function(sf,
@@ -104,5 +104,7 @@ plot(st_geometry(hexsi),col=colors()[60:90])
 plot(st_geometry(squno),col=colors()[60:90])
 plot(st_geometry(squsi),col=colors()[60:90])
 plot(st_geometry(dots),col=colors()[60:90])
-convex=st_convex_hull(testmap_sf)
-plot(st_geometry(convex),col=colors()[60:90])
+simply=ms_simplify(testmap_sf,keep=0.001) %>% st_as_sf()
+plot(st_geometry(simply),col=colors()[60:90])
+file.remove("gadm36_ESP_1_sp.rds")
+
