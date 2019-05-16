@@ -116,4 +116,64 @@ par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
+data=fromJSON("_data/shp/sharing/ecooltra_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+motosharing_madrid=data_sf
+#
+data=fromJSON("_data/shp/sharing/movo_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
 
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+data=fromJSON("_data/shp/sharing/muving_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+
+data=fromJSON("_data/shp/sharing/coup_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+data=fromJSON("_data/shp/sharing/acciona_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+
+data=fromJSON("_data/shp/sharing/ioscoot_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+st_crs(motosharing_madrid) <- 4326
+
+motosharing_madrid$area_km2=as.integer(st_area(motosharing_madrid))/1000000
+
+plot(motosharing_madrid[,"provider"],axes=T)
