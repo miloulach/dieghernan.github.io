@@ -16,6 +16,11 @@ carto:
   baseURL: "https://{{ site.author.carto }}.carto.com"
   icon: "fa-dot-circle-o"  
 
+rpubs:
+  name: "RPubs"
+  baseURL: "https://rpubs.com/"
+  icon: "fa-file-powerpoint-o"
+
 github:
   name: "GitHub"
   baseURL: "https://github.com/"
