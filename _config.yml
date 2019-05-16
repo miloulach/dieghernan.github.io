@@ -51,10 +51,10 @@ author:
 # Select your active Social Network Links.
 social-network-links:
   rss: true
-  github: dieghernan
-  reddit: dieghernan
   stackoverflow: 7877917/dieghernan
+  github: dieghernan
   carto: dieghernan
+  reddit: dieghernan
   rpubs: dieghernan
 #  reddit: yourname
 #  google-plus: +DeanAttali
