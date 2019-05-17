@@ -14,13 +14,13 @@ implementation created by [daattali](https://github.com/daattali).
 
 3.  TBD
 
-\#\#\# 1. The GitHub/Jekyll part <a name="gitjek"></a>
+### 1. The GitHub/Jekyll part <a name="gitjek"></a>
 
 The first step is to call the requested libraries in your GitHub page.
 As Jekyll basicaly transforms `markdown` into `html`, this step is a
 matter of **what to include** and **where** in your own repository.
 
-\#\#\#\# What to include
+#### What to include
 
 This part is not complicated. When having a look to the source code of
 [Leaflet for R](https://rstudio.github.io/leaflet/) site it can be seen
