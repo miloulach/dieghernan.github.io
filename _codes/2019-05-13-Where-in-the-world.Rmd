@@ -39,7 +39,7 @@ p_load(dplyr,
 
 
 # Find airports----
-myflights <- read_excel("../_data/flights.xlsx")
+myflights <- read_excel("../assets/flights.xlsx")
 tosearch = data.frame(toloc = 
                         (sort(append(
                           myflights$start, 
