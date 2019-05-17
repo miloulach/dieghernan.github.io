@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rproj
+*.Rproj
 dieghernan.github.io.Rproj
 pass.R
