@@ -9,8 +9,13 @@
    <meta name="description" content="{{ page.subtitle }}">
    {% endif %}
 	
-   {% include leaflet.html %}	
-   {% include leaflet_extras.html %}	
+   {% if page.leafletmap %}	
+     {% include leaflet.html %}	
+     {% include leaflet_extras.html %}	
+	{% endif %}
+	
+	
+	
    <link rel="alternate" type="application/rss+xml" title="{{ site.title }} {{ site.title-separator }} {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
    {% include gtag.html %}
    {% include gtm_head.html %}
