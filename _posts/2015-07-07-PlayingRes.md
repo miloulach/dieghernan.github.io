@@ -2,7 +2,6 @@
 layout: post
 title: Exploring sizes of leaflet maps
 subtitle: A test
-linktormd: true
 leafletmap: true
 output: github_document
 always_allow_html: yes
@@ -11,11 +10,11 @@ always_allow_html: yes
 Exploring sizes with leaflet
 ================
 
-`
+```html
 <div id="htmlwidget-ff516d74fbec24f31bb3" style="position: relative; width: 100%;padding-top: 70%;" class="leaflet html-widget">
-
+...
 minZoom":1.5
-`
+```
 
 <!--html_preserve-->
 <div id="htmlwidget-ff516d74fbec24f31bb3" style="position: relative; width: 100%;padding-top: 70%;" class="leaflet html-widget"></div>
