@@ -38,11 +38,11 @@ plot(st_geometry(italy_lin), col = c("red", "yellow", "blue"), main = "LINE")
 plot(st_geometry(italy_pt), col = c("red", "yellow", "blue"), main = "POINT")
 ```
 
-<img src="../figs/20190505_italycast-1.png" title="plot of chunk 20190505_italycast" alt="plot of chunk 20190505_italycast" style="display: block; margin: auto;" />
+<img src="../figs//20190505_italycast-1.png" title="plot of chunk 20190505_italycast" alt="plot of chunk 20190505_italycast" style="display: block; margin: auto;" />
 
 What I missed when using `st_cast`is the possibility to "break" the `LINESTRING`objects into sub-segments:
 
-<img src="../figs/20190505_italycastsub-1.png" title="plot of chunk 20190505_italycastsub" alt="plot of chunk 20190505_italycastsub" style="display: block; margin: auto;" />
+<img src="../figs//20190505_italycastsub-1.png" title="plot of chunk 20190505_italycastsub" alt="plot of chunk 20190505_italycastsub" style="display: block; margin: auto;" />
 
 ## An approach
 
@@ -70,7 +70,7 @@ geom <- lapply(
 plot(st_geometry(geom), col = c("red", "yellow", "blue"), main = "AFTER FUNCTION")
 ```
 
-<img src="../figs/20190505_testspain-1.png" title="plot of chunk 20190505_testspain" alt="plot of chunk 20190505_testspain" style="display: block; margin: auto;" />
+<img src="../figs//20190505_testspain-1.png" title="plot of chunk 20190505_testspain" alt="plot of chunk 20190505_testspain" style="display: block; margin: auto;" />
 
 ## The function `stdh_cast_substring`
 
@@ -137,7 +137,7 @@ end - init
 ```
 
 ```
-## Time difference of 0.2373638 secs
+## Time difference of 0.1967165 secs
 ```
 
 ```r
@@ -148,7 +148,7 @@ end - init
 ```
 
 ```
-## Time difference of 2.563142 secs
+## Time difference of 2.594973 secs
 ```
 
 ```r
@@ -159,8 +159,8 @@ plot(st_geometry(test50), col = "#FEFEE9", border = "#646464", add = T)
 plot(st_geometry(t2), col = c("red", "yellow", "blue"), add = T, lwd = 0.5)
 ```
 
-<img src="../figs/20190505_benchmarkfunction-1.png" title="plot of chunk 20190505_benchmarkfunction" alt="plot of chunk 20190505_benchmarkfunction" style="display: block; margin: auto;" />
+<img src="../figs//20190505_benchmarkfunction-1.png" title="plot of chunk 20190505_benchmarkfunction" alt="plot of chunk 20190505_benchmarkfunction" style="display: block; margin: auto;" />
  
 It can be seen a difference in terms of performance, noting that `test100` has 15 polygons decomposed in 914 sub-strings while `test50` has 80 polygons to 8414 sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
-A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/_codes/functions.R)
+A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/functions)
