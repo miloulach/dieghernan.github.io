@@ -37,7 +37,6 @@ p_load(dplyr,
        sf, htmlwidgets,
        webshot)
 
-
 # Find airports----
 myflights <- read_excel("../assets/flights.xlsx")
 tosearch = data.frame(toloc = 
