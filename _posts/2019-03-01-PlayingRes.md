@@ -7,6 +7,25 @@ output: github_document
 always_allow_html: yes
 ---
 
+## Boxes
+You can add notification, warning and error boxes like this:
+
+### Notification
+
+{: .box-note}
+**Note:** This is a notification box.
+
+### Warning
+
+{: .box-warning}
+**Warning:** This is a warning box.
+
+### Error
+
+{: .box-error}
+**Error:** This is an error box.
+
+
 
 ### 100% width 70% height
 
