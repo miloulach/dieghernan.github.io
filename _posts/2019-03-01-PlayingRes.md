@@ -12,8 +12,10 @@ You can add notification, warning and error boxes like this:
 
 ### Notification
 
+<i class="fa fa-file-powerpoint-o fa-stack-1x fa-inverse"></i>
+
 {: .box-note}
-**Note:** This is a notification box.
+**Note:** This is a notification box. <i class="fa fa-file-powerpoint-o fa-stack-1x fa-inverse"></i>
 
 ### Warning
 
