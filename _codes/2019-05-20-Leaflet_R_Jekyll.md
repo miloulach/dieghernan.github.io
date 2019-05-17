@@ -38,7 +38,8 @@ this chunk
 ```
 
 So now we have it\! The only thing to remember is **to reference that
-part to the source repository (Leaflet for R)**, like
+part to the source repository (`https://rstudio.github.io/leaflet`)**,
+like
 this:
 
 ``` html

@@ -40,7 +40,7 @@ Recently I have been struggling when trying to embed a [leaflet](https://rstudio
 <script src="libs/leaflet-binding/leaflet.js"></script>
 ```
 
-So now we have it! The only thing to remember is **to reference that part to the source repository (Leaflet for R)**, like this:
+So now we have it! The only thing to remember is **to reference that part to the source repository (`https://rstudio.github.io/leaflet`)**, like this:
 
 ```html
 	<script src="https://rstudio.github.io/leaflet/libs/jquery/jquery.min.js"></script>
