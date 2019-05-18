@@ -107,7 +107,6 @@ markdown: kramdown
 highlighter: rouge
 permalink: /:year-:y_day-:title/
 paginate: 3
-paginate_path: "/_posts/page:num/"
 
 kramdown:
   input: GFM
