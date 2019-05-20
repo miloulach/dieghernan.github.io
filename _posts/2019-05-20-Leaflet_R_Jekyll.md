@@ -9,15 +9,7 @@ always_allow_html: yes
 output: github_document
 ---
 
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(global.par = TRUE)
-rm(list = ls())
-library(rmarkdown)
-library(htmlwidgets)
-library(webshot)
-```
 
 Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**: [I succeeded](https://dieghernan.github.io/2019-133-Where-in-the-world)). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [daattali](https://github.com/daattali).
 
@@ -99,7 +91,8 @@ You can just copy/paste the amended code there.
 
 Now it's time to create a leaflet map with **RStudio**. I just keep it simple for this post, so I took the first example provided in [Leaflet for R - Introduction](https://rstudio.github.io/leaflet/)
 
-```{r example1, warning=FALSE, message=FALSE, eval=FALSE}
+
+```r
 library(leaflet)
 
 m <- leaflet() %>%
@@ -108,10 +101,7 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-```{r a_note, echo=FALSE}
-#For the post I just prevented the previous code to run, but setting eval=TRUE would produce the desired results.
 
-```
 
 It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file. `
 
