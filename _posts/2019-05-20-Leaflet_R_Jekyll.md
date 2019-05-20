@@ -79,7 +79,8 @@ This a little bit more complicated. The code chunk should be included in the `<h
 
 You can just copy/paste the amended code there.
 
-{: .box-note} \*\*<i class="fa fa-star"></i> Pro <tip:**> For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
+{: .box-note}
+ **<i class="fa fa-star"></i> Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
 
 ### The RStudio part <a name="rstudio"></a>
 
@@ -143,7 +144,8 @@ Now you just need to paste this piece of code before that chunk:
 <!--/html_preserve-->
 ```
 
-{: .box-warning} **<i class="fa fa-exclamation-triangle"></i> Warning:** Please be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part.
+{: .box-warning} 
+**<i class="fa fa-exclamation-triangle"></i> Warning:** Please be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part.
 
 The `style="width:100%;height:216px;`part controls the actual size of the leaflet widget. I put some examples in the end of the post so you can have a look on how to control the size of the widgets.
 
@@ -161,7 +163,8 @@ Now if you preview your `.md` file you are not seeing your map. What you need no
  
 Now you just have to publish your post as usual!!
 
-{: .box-warning} **<i class="fa .fa-exclamation-triangle"> Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
+{: .box-warning}
+ **<i class="fa fa-exclamation-triangle"> Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
 
 ### Extra: Resolutions of a leaflet map <a name="#extra"></a>
 
