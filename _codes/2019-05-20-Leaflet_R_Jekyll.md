@@ -8,26 +8,28 @@ So here I present a guide on how I got it, hopefully it is easy to follow:
 [The GitHub/Jekyll part](#gitjek)
 ---------------------------------
 
-### 1. [What to include](#step1)
+1.  [What to include](#step1)
 
-### 2. [Where to include](#step2)
+2.  [Where to include](#step2)
 
 [The RStudio part](#rstudio)
 ----------------------------
 
-### 3. [Creating the leaflet map](#step3)
+1.  [Creating the leaflet map](#step3)
 
-### 4. [Set up the YAML front matter](#step4)
+2.  [Set up the YAML front matter](#step4)
 
 [The Markdown part](#md)
 ------------------------
 
-### 5. [Modifying the `.md`file](#step5)
+1.  [Modifying the `.md`file](#step5)
 
-### 6. [Publish your post](#step6)
+2.  [Publish your post](#step6)
 
-Extra: Resolutions of a leaflet map
------------------------------------
+[Extra: Resolutions of a leaflet map](#extra)
+---------------------------------------------
+
+So let's start!
 
 ### The GitHub/Jekyll part <a name="gitjek"></a>
 
@@ -92,15 +94,11 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-<!--html_preserve-->
-
-<script type="application/json" data-for="htmlwidget-28473d1891dd2d0b4f2d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script>
-<!--/html_preserve-->
-It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file. \`
+It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.
 
 #### 4. Set up the YAML front matter <a name="step4"></a>
 
-Before knitting your `.Rmd`, you have to set up the YAML front matter. Here it is important to set up the option `always_allow_html: yes`, as well as `output: github_document`. As an example, this post was created with the fron matter:
+Before knitting your `.Rmd`, you have to set up the YAML front matter. Here it is important to set up the option `always_allow_html: yes`, as well as `output: github_document`. As an example, this post was created with the front matter:
 
       ---
       layout: post
@@ -122,7 +120,6 @@ Now you just have to "Knit" your file and get the corresponding `.md`file.
 Now that you have knitted your code have a look to the `.md` code itself. Although not displayed in the preview, you can see in the file itself a code that looks like this:
 
 ``` html
-
 <!--html_preserve-->
 
   <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
@@ -136,21 +133,30 @@ Now that you have knitted your code have a look to the `.md` code itself. Althou
 Now you just need to paste this piece of code before that chunk:
 
 ``` html
+<!--html_preserve-->
 <div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget">
+
   <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
   ...
+<!--/html_preserve-->
 ```
 
-{: .box-warning} **<i class="fa .fa-exclamation-triangle"> Warning:** Please be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part.
+{: .box-warning} **<i class="fa fa-exclamation-triangle"></i> Warning:** Please be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part.
 
 The `style="width:100%;height:216px;`part controls the actual size of the leaflet widget. I put some examples in the end of the post so you can have a look on how to control the size of the widgets.
 
 #### 6. Publish your post <a name="step6"></a>
 
-Now if you preview your `.md` file you are not seeing your map. What you need now is just to post it on GitHub, and when Jekyll builds your post it would include the libraries and make the magic happens, just like this: <!--html_preserve-->
-<div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget">
-<script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script>
+Now if you preview your `.md` file you are not seeing your map. What you need now is just to post it on GitHub, and when Jekyll builds your post it would include the libraries and make the magic happens, just like this:
+
+<!--html_preserve-->
+
+<script type="application/json" data-for="htmlwidget-d01c200c4987ecc5427b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script>
 <!--/html_preserve-->
-You just have to publish your post as usual!!
+Now you just have to publish your post as usual!!
 
 {: .box-warning} **<i class="fa .fa-exclamation-triangle"> Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
+
+### Extra: Resolutions of a leaflet map <a name="#extra"></a>
+
+Soon...
