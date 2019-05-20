@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Leaflet, R, Markdown, Jekyll and GitHub
-subtitle: Make it work
+subtitle: Make it work in 6 steps - a short tutorial
 tags: [R,leaflet,Jekyll, html, maps]
 leafletmap: true
 linktormd: true
@@ -37,7 +37,7 @@ Recently I have been struggling when trying to embed a [leaflet](https://rstudio
 
 [The Markdown part](#md)
 
-3. TBD
+5. [Modifying the `.md`file](#step5)
 
  
  
@@ -118,3 +118,6 @@ output: github_document
 Now you just have to "Knit" your file and get the corrsponding `.md`file.
 
 ### The Markdown part <a name="#md"></a>
+
+#### 5. Modifying the `.md`file  <a name="step5"></a>
+
