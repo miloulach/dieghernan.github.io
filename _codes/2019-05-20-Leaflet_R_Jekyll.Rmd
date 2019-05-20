@@ -21,27 +21,22 @@ library(webshot)
 
 Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**: [I succeeded](https://dieghernan.github.io/2019-133-Where-in-the-world)). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [daattali](https://github.com/daattali).
 
-So here I present a guide on how I got it, hopefully it is easy to follow:
+So here I present a guide on how I got it, hopefully it is easy to follow
 
-## [The GitHub/Jekyll part](#gitjek)
 
 1. [What to include](#step1)
 
 2. [Where to include](#step2)
 
-## [The RStudio part](#rstudio)
-
 3. [Creating the leaflet map](#step3)
 
 4. [Set up the YAML front matter](#step4)
-
-## [The Markdown part](#md)
 
 5. [Modifying the `.md`file](#step5)
 
 6. [Publish your post](#step6)
 
-## [Extra: Resolutions of a leaflet map](#extra)
+**[Extra: Resolutions of a leaflet map](#extra)**
 
 So let's start!
  
@@ -157,7 +152,7 @@ Now that you have knitted your code have a look to the `.md` code itself. Althou
 Now you just need to paste this piece of code before that chunk:
 ```html
 <!--html_preserve-->
-<div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget">
+<div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 
   <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
   ...
