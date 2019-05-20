@@ -123,7 +123,7 @@ with the structure:
     tags: [R,leaflet,Jekyll, html, maps]
     leafletmap: true
     linktormd: true
-   **always_allow_html: yes**
+    **always_allow_html: yes**
     output: github_document
     ---
 
