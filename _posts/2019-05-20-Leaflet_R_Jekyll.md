@@ -164,7 +164,7 @@ Now if you preview your `.md` file you are not seeing your map. What you need no
 Now you just have to publish your post as usual!!
 
 {: .box-warning}
-**<i class="fa fa-exclamation-triangle"> Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
+<i class="fa fa-exclamation-triangle"> **Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
 
 ### Extra: Resolutions of a leaflet map <a name="#extra"></a>
 
