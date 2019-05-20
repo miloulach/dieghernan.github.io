@@ -89,7 +89,7 @@ You can just copy/paste the ammended code there.
 
 Now it's time to create a leaflet map with **RStudio**. I just keep it simple for this post, so I took the first example provided in [Leaflet for R - Introduction](https://rstudio.github.io/leaflet/)
 
-```{r example1, warning=FALSE, message=FALSE, eval=FALSE}
+```{r example1, warning=FALSE, message=FALSE}
 library(leaflet)
 
 m <- leaflet() %>%
