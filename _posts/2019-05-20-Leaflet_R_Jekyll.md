@@ -35,7 +35,7 @@ So here I present a guide on how I got it, hopefully it is easy to follow:
 
 ## [Extra: Resolutions of a leaflet map](#extra)
 
-
+So let's start!
  
 ### The GitHub/Jekyll part  <a name="gitjek"></a>
  
@@ -106,7 +106,7 @@ m  # Print the map
 
 
 
-It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file. `
+It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.
 
 #### 4. Set up the YAML front matter <a name="step4"></a>
 
@@ -136,7 +136,7 @@ Now that you have knitted your code have a look to the `.md` code itself. Althou
 ```html
 <!--html_preserve-->
 
-  <script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">
+  <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
     {"x":{"options":
       ...
       "jsHooks":[]}
@@ -149,7 +149,7 @@ Now you just need to paste this piece of code before that chunk:
 <!--html_preserve-->
 <div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget">
 
-  <script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">
+  <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
   ...
 <!--/html_preserve-->
 ```
@@ -168,7 +168,10 @@ Now if you preview your `.md` file you are not seeing your map. What you need no
 <!--/html_preserve-->
 
 
-You just have to publish your post as usual!!
+
+
+
+Now you just have to publish your post as usual!!
 
 {: .box-warning}
 **<i class="fa .fa-exclamation-triangle"> Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
