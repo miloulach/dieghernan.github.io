@@ -19,9 +19,9 @@ library(htmlwidgets)
 library(webshot)
 ```
 
-Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [daattali](https://github.com/daattali).
+Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**:[I succeeded](https://dieghernan.github.io/2019-133-Where-in-the-world/). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [daattali](https://github.com/daattali).
 
-
+So here I present a guide on how I got it, hopefully it is easy to follow:
 
 [The GitHub/Jekyll part](#gitjek)
 
