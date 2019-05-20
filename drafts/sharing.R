@@ -41,9 +41,9 @@ cleansharing <- function(data) {
 
 #Coup----
 download.file("https://storage.googleapis.com/providers/a/coup-madrid.json",
-              destfile = "_data/shp/sharing/coup_madrid.json")
+              destfile = "assets/shp/sharing/coup_madrid.json")
 
-data=fromJSON("_data/shp/sharing/coup_madrid.json")
+data=fromJSON("assets/shp/sharing/coup_madrid.json")
 init="Coup"
 data_init=origsharing(data)
 data_clean=cleansharing(data)
@@ -55,10 +55,10 @@ plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 #Muving----
 download.file("https://storage.googleapis.com/providers/a/muving-madrid.json",
-              destfile = "_data/shp/sharing/muving_madrid.json")
+              destfile = "assets/shp/sharing/muving_madrid.json")
 
 
-data=fromJSON("_data/shp/sharing/muving_madrid.json")
+data=fromJSON("assets/shp/sharing/muving_madrid.json")
 init="Muving"
 data_init=origsharing(data)
 data_clean=cleansharing(data)
@@ -68,12 +68,21 @@ plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 #ecooltra----
  download.file("https://storage.googleapis.com/providers/a/cooltra-madrid.json",
-              destfile = "_data/shp/sharing/ecooltra_madrid.json")
+              destfile = "assets/shp/sharing/ecooltra_madrid.json")
 
 
-data=fromJSON("_data/shp/sharing/ecooltra_madrid.json")
+data=fromJSON("assets/shp/sharing/ecooltra_madrid.json")
 init="eCooltra"
 data_init=origsharing(data)
+plot(data_init,col=NA,border="black")
+plot(data_init[[1]],add=T,col="green")
+plot(data_init[[2]],add=T,col="green")
+#plot(data_init[[3]],add=T,col="green")
+plot(data_init[[4]],add=T,col="green")
+p=st_coordinates(data_init[[4]]) %>% as.data.frame()
+p[1:3,]
+
+
 data_clean=cleansharing(data)
 par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
@@ -83,8 +92,8 @@ plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 #Movo----
 download.file("https://storage.googleapis.com/providers/a/movo-madrid.json",
-              destfile = "_data/shp/sharing/movo_madrid.json")
-data=fromJSON("_data/shp/sharing/movo_madrid.json")
+              destfile = "assets/shp/sharing/movo_madrid.json")
+data=fromJSON("assets/shp/sharing/movo_madrid.json")
 init="Movo"
 data_init=origsharing(data)
 data_clean=cleansharing(data)
@@ -95,8 +104,8 @@ plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 #acciona----
 download.file("https://storage.googleapis.com/providers/a/acciona-madrid.json",
-              destfile = "_data/shp/sharing/acciona_madrid.json")
-data=fromJSON("_data/shp/sharing/acciona_madrid.json")
+              destfile = "assets/shp/sharing/acciona_madrid.json")
+data=fromJSON("assets/shp/sharing/acciona_madrid.json")
 init="Acciona"
 data_init=origsharing(data)
 data_clean=cleansharing(data)
@@ -107,16 +116,24 @@ plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 #ioscoot----
 download.file("https://storage.googleapis.com/providers/a/ioscoot-madrid.json",
-              destfile = "_data/shp/sharing/ioscoot_madrid.json")
-data=fromJSON("_data/shp/sharing/ioscoot_madrid.json")
+              destfile = "assets/shp/sharing/ioscoot_madrid.json")
+data=fromJSON("assets/shp/sharing/ioscoot_madrid.json")
 init="ioscoot"
 data_init=origsharing(data)
 data_clean=cleansharing(data)
+
+
+
+
+
 par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
-data=fromJSON("_data/shp/sharing/ecooltra_madrid.json")
+
+
+# End------
+data=fromJSON("assets/shp/sharing/ecooltra_madrid.json")
 data_geom=cleansharing(data)
 data_sf = st_sf(
   cbind(provider = unique(data[["areas"]][["provider"]]),
@@ -125,7 +142,7 @@ data_sf = st_sf(
 )
 motosharing_madrid=data_sf
 #
-data=fromJSON("_data/shp/sharing/movo_madrid.json")
+data=fromJSON("assets/shp/sharing/movo_madrid.json")
 data_geom=cleansharing(data)
 data_sf = st_sf(
   cbind(provider = unique(data[["areas"]][["provider"]]),
@@ -134,26 +151,7 @@ data_sf = st_sf(
 )
 
 motosharing_madrid=rbind(motosharing_madrid,data_sf)
-data=fromJSON("_data/shp/sharing/muving_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
-
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
-
-data=fromJSON("_data/shp/sharing/coup_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
-
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
-data=fromJSON("_data/shp/sharing/acciona_madrid.json")
+data=fromJSON("assets/shp/sharing/muving_madrid.json")
 data_geom=cleansharing(data)
 data_sf = st_sf(
   cbind(provider = unique(data[["areas"]][["provider"]]),
@@ -163,7 +161,26 @@ data_sf = st_sf(
 
 motosharing_madrid=rbind(motosharing_madrid,data_sf)
 
-data=fromJSON("_data/shp/sharing/ioscoot_madrid.json")
+data=fromJSON("assets/shp/sharing/coup_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+data=fromJSON("assets/shp/sharing/acciona_madrid.json")
+data_geom=cleansharing(data)
+data_sf = st_sf(
+  cbind(provider = unique(data[["areas"]][["provider"]]),
+        city = unique(data[["areas"]][["city"]])),
+  coordinates = st_geometry(data_geom)
+)
+
+motosharing_madrid=rbind(motosharing_madrid,data_sf)
+
+data=fromJSON("assets/shp/sharing/ioscoot_madrid.json")
 data_geom=cleansharing(data)
 data_sf = st_sf(
   cbind(provider = unique(data[["areas"]][["provider"]]),
