@@ -17,32 +17,34 @@ So here I present a guide on how I got it, hopefully it is easy to follow:
 
 ## [The GitHub/Jekyll part](#gitjek)
 
-### 1. [What to include](#step1)
+1. [What to include](#step1)
 
-### 2. [Where to include](#step2)
+2. [Where to include](#step2)
 
 ## [The RStudio part](#rstudio)
 
-### 3. [Creating the leaflet map](#step3)
+3. [Creating the leaflet map](#step3)
 
-### 4. [Set up the YAML front matter](#step4)
+4. [Set up the YAML front matter](#step4)
 
 ## [The Markdown part](#md)
 
-### 5. [Modifying the `.md`file](#step5)
+5. [Modifying the `.md`file](#step5)
 
-### 6. [Publish your post](#step6)
+6. [Publish your post](#step6)
 
-## Extra: Resolutions of a leaflet map
+## [Extra: Resolutions of a leaflet map](#extra)
+
+
  
 ### The GitHub/Jekyll part  <a name="gitjek"></a>
  
- The first step is to call the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.
+The first step is to call the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.
  
  
 #### 1. What to include <a name="step1"></a>
 
- This part is not complicated. When having a look to the source code of [Leaflet for R](https://rstudio.github.io/leaflet/) site it can be seen this chunk
+This part is not complicated. When having a look to the source code of [Leaflet for R](https://rstudio.github.io/leaflet/) site it can be seen this chunk
  
 ```html
 <head>
@@ -86,6 +88,7 @@ You can just copy/paste the amended code there.
 **<i class="fa fa-star"></i> Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
 
 ### The RStudio part <a name="rstudio"></a>
+
 
 #### 3. Creating the leaflet map <a name="step3"></a>
 
@@ -131,28 +134,28 @@ Now you just have to "Knit" your file and get the corresponding `.md`file.
 Now that you have knitted your code have a look to the `.md` code itself. Although not displayed in the preview, you can see in the file itself a code that looks like this:
 
 ```html
-
 <!--html_preserve-->
 
-  <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
+  <script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">
     {"x":{"options":
       ...
       "jsHooks":[]}
   </script>
 <!--/html_preserve-->
-
 ```
 
 Now you just need to paste this piece of code before that chunk:
 ```html
+<!--html_preserve-->
 <div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget">
-  <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
-  ...
 
+  <script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">
+  ...
+<!--/html_preserve-->
 ```
 
 {: .box-warning}
-**<i class="fa .fa-exclamation-triangle"> Warning:** Please be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part.
+**<i class="fa fa-exclamation-triangle"></i> Warning:** Please be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part.
 
 The `style="width:100%;height:216px;`part controls the actual size of the leaflet widget. I put some examples in the end of the post so you can have a look on how to control the size of the widgets.
 
@@ -170,3 +173,7 @@ You just have to publish your post as usual!!
 {: .box-warning}
 **<i class="fa .fa-exclamation-triangle"> Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
 
+
+### Extra: Resolutions of a leaflet map <a name="#extra"></a>
+
+Soon...
