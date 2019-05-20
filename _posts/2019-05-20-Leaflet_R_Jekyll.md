@@ -1,5 +1,13 @@
-Leaflet, R, Markdown, Jekyll and GitHub
-================
+---
+layout: post
+title: Leaflet, R, Markdown, Jekyll and GitHub
+subtitle: Make it work
+tags: [R,leaflet,Jekyll, html, maps]
+leafletmap: true
+linktormd: true
+always_allow_html: yes
+output: github_document
+---
 
 Recently I have been struggling when trying to embed a
 [leaflet](https://rstudio.github.io/leaflet) map created with
@@ -73,7 +81,8 @@ put it. In the case of **Beautiful Jekyll** it is on
 
 You can just copy/paste the ammended code there.
 
-{: .box-note} **<i class="fa fa-star"></i> Pro tip:** For a better
+{: .box-note} 
+**<i class="fa fa-star"></i> Pro tip:** For a better
 performance of the site, include these libraries only when you need it.
 In my case, I added a custom variable in my YAML front matter for those
 posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for
@@ -114,7 +123,7 @@ with the structure:
     tags: [R,leaflet,Jekyll, html, maps]
     leafletmap: true
     linktormd: true
-    always_allow_html: yes
+    **always_allow_html: yes**
     output: github_document
     ---
 
