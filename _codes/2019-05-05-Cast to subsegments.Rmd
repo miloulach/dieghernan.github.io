@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Cast a line to subsegments in R.
-subtitle: User-defined function using sf package .
+title: Cast a line to subsegments in R
+subtitle: User-defined function using sf package
 tags: [R,sf,function]
 linktormd: true
 output: github_document
@@ -13,6 +13,7 @@ This post introduces a used-defined function used for casting `sf` objects of `c
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(global.par = TRUE)
+library(knitr)
 rm(list = ls())
 ```
 
@@ -125,20 +126,28 @@ stdh_cast_substring = function(x, to = "MULTILINESTRING") {
  The function could be improved in terms of performance. Given that it works at a coordinate level, for high-resolution objects it has some degree of delay
  
 ```{r 20190505_benchmarkfunction, warning=FALSE, message=FALSE, tidy='styler', dev="png",fig.width=400/90, fig.height=500/90, dpi=90, fig.align='center'}
-test100=ne_countries(continent = "south america",returnclass = "sf") %>% 
+test100=ne_countries(continent = "south america",
+                     returnclass = "sf") %>% 
   st_cast("POLYGON")
-test50=ne_countries(50,continent = "south america",returnclass = "sf") %>% 
+
+test50=ne_countries(50,continent = "south america",
+                    returnclass = "sf") %>%
   st_cast("POLYGON")
+
+
 
 init=Sys.time()
 t1=stdh_cast_substring(test100, "LINESTRING")
 end=Sys.time()
-end-init
+kable(end-init,format = 'markdown')
+
 
 init=Sys.time()
 t2=stdh_cast_substring(test50,"LINESTRING")
 end=Sys.time()
-end-init
+kable(end-init,format = 'markdown')
+
+
 par(mfrow=c(1,1),mar=c(0,0,0,0))
 plot(st_geometry(test50),col=NA,bg="#C6ECFF")
 plot(st_geometry(ne_countries(50,returnclass = "sf")), col="#F6E1B9",border="#646464",add=T)
@@ -147,6 +156,6 @@ plot(st_geometry(t2), col = c("red", "yellow", "blue"),add=T, lwd=0.5)
 
 ```
  
-It can be seen a difference in terms of performance, noting that `test100` has `r length(st_geometry(test100))` polygons decomposed in `r length(st_geometry(t1))` sub-strings while `test50` has `r length(st_geometry(test50))` polygons to `r length(st_geometry(t2))` sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
+It can be seen a difference in terms of performance, noting that `test100` has `r length(st_geometry(test100))` polygons decomposed in `r format(length(st_geometry(t1)), nsmall=1, big.mark=",")` sub-strings while `test50` has `r length(st_geometry(test50))` polygons to `r format(length(st_geometry(t2)), nsmall=1, big.mark=",")` sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
 A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/functions)

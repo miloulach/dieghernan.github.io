@@ -1,32 +1,23 @@
----
-layout: post
-title: Cast a line to subsegments in R
-subtitle: User-defined function using sf package
-tags: [R,sf,function]
-linktormd: true
-output: github_document
----
-
+Cast a line to subsegments in R
+================
 
 This post introduces a used-defined function used for casting `sf` objects of `class` `LINESTRING` or `POLYGON` into sub-strings.
 
+Required R packages
+-------------------
 
-
-## Required R packages
-
-
-```r
+``` r
 library(sf)
 library(rnaturalearth)
 library(dplyr)
 ```
 
-## The problem
+The problem
+-----------
 
-The `sf`package includes [`st_cast`]([https://r-spatial.github.io/sf/reference/st_cast.html), a very powerful function that transforms geometries into other different types of geometries (i.e. `LINESTRING`to `POLYGON`, etc.). 
+The `sf`package includes [`st_cast`](%5Bhttps://r-spatial.github.io/sf/reference/st_cast.html), a very powerful function that transforms geometries into other different types of geometries (i.e. `LINESTRING`to `POLYGON`, etc.).
 
-
-```r
+``` r
 italy <- ne_countries(country = "italy", returnclass = "sf")
 italy_pol <- italy %>% st_cast("POLYGON")
 italy_lin <- italy_pol %>% st_cast("LINESTRING")
@@ -38,18 +29,18 @@ plot(st_geometry(italy_lin), col = c("red", "yellow", "blue"), main = "LINE")
 plot(st_geometry(italy_pt), col = c("red", "yellow", "blue"), main = "POINT")
 ```
 
-<img src="../figs/20190505_italycast-1.png" title="plot of chunk 20190505_italycast" alt="plot of chunk 20190505_italycast" style="display: block; margin: auto;" />
+<img src="2019-05-05-Cast_to_subsegments_files/figure-markdown_github/20190505_italycast-1.png" style="display: block; margin: auto;" />
 
 What I missed when using `st_cast`is the possibility to "break" the `LINESTRING`objects into sub-segments:
 
-<img src="../figs/20190505_italycastsub-1.png" title="plot of chunk 20190505_italycastsub" alt="plot of chunk 20190505_italycastsub" style="display: block; margin: auto;" />
+<img src="2019-05-05-Cast_to_subsegments_files/figure-markdown_github/20190505_italycastsub-1.png" style="display: block; margin: auto;" />
 
-## An approach
+An approach
+-----------
 
 So one possible solution could be to create `LINESTRING` objects for each consecutive pair of `POINT`objects across the original geometry. Let's check it:
 
-
-```r
+``` r
 par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
 test <- ne_countries(country = "spain", returnclass = "sf") %>%
   st_cast("POLYGON") %>%
@@ -70,20 +61,20 @@ geom <- lapply(
 plot(st_geometry(geom), col = c("red", "yellow", "blue"), main = "AFTER FUNCTION")
 ```
 
-<img src="../figs/20190505_testspain-1.png" title="plot of chunk 20190505_testspain" alt="plot of chunk 20190505_testspain" style="display: block; margin: auto;" />
+<img src="2019-05-05-Cast_to_subsegments_files/figure-markdown_github/20190505_testspain-1.png" style="display: block; margin: auto;" />
 
-## The function `stdh_cast_substring`
+The function `stdh_cast_substring`
+----------------------------------
 
 Finally, I wrapped the solution into a function and extended it a little bit:
 
-* When the input is not a `LINESTRING` or a `POLYGON`returns an error and stops.
+-   When the input is not a `LINESTRING` or a `POLYGON`returns an error and stops.
 
-* The function accepts `sf` with several rows or `sfc` objects with several geometries, and returns the same class of input. In the case of `sf` objects, the input `data.frame` is added.
+-   The function accepts `sf` with several rows or `sfc` objects with several geometries, and returns the same class of input. In the case of `sf` objects, the input `data.frame` is added.
 
-* By default, the output is a `MULTILINESTRING` geometry. This has the benefit that output has the same number of geometries than the input. This can be modified setting the parameter `to` as `LINESTRING`, that in fact only casts the `MULTILINESTRING`object into `LINESTRING`.
+-   By default, the output is a `MULTILINESTRING` geometry. This has the benefit that output has the same number of geometries than the input. This can be modified setting the parameter `to` as `LINESTRING`, that in fact only casts the `MULTILINESTRING`object into `LINESTRING`.
 
-
-```r
+``` r
 stdh_cast_substring <- function(x, to = "MULTILINESTRING") {
   ggg <- st_geometry(x)
 
@@ -121,10 +112,10 @@ stdh_cast_substring <- function(x, to = "MULTILINESTRING") {
   return(endgeom)
 }
 ```
- The function could be improved in terms of performance. Given that it works at a coordinate level, for high-resolution objects it has some degree of delay
- 
 
-```r
+The function could be improved in terms of performance. Given that it works at a coordinate level, for high-resolution objects it has some degree of delay
+
+``` r
 test100 <- ne_countries(
   continent = "south america",
   returnclass = "sf"
@@ -145,26 +136,22 @@ end <- Sys.time()
 kable(end - init, format = "markdown")
 ```
 
-
-
-|x              |
+| x             |
 |:--------------|
-|0.2212591 secs |
+| 0.238117 secs |
 
-```r
+``` r
 init <- Sys.time()
 t2 <- stdh_cast_substring(test50, "LINESTRING")
 end <- Sys.time()
 kable(end - init, format = "markdown")
 ```
 
-
-
-|x             |
+| x            |
 |:-------------|
-|2.996987 secs |
+| 2.13576 secs |
 
-```r
+``` r
 par(mfrow = c(1, 1), mar = c(0, 0, 0, 0))
 plot(st_geometry(test50), col = NA, bg = "#C6ECFF")
 plot(st_geometry(ne_countries(50, returnclass = "sf")), col = "#F6E1B9", border = "#646464", add = T)
@@ -172,8 +159,8 @@ plot(st_geometry(test50), col = "#FEFEE9", border = "#646464", add = T)
 plot(st_geometry(t2), col = c("red", "yellow", "blue"), add = T, lwd = 0.5)
 ```
 
-<img src="../figs/20190505_benchmarkfunction-1.png" title="plot of chunk 20190505_benchmarkfunction" alt="plot of chunk 20190505_benchmarkfunction" style="display: block; margin: auto;" />
- 
+<img src="2019-05-05-Cast_to_subsegments_files/figure-markdown_github/20190505_benchmarkfunction-1.png" style="display: block; margin: auto;" />
+
 It can be seen a difference in terms of performance, noting that `test100` has 15 polygons decomposed in 914 sub-strings while `test50` has 80 polygons to 8,414 sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
 A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/functions)

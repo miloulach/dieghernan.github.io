@@ -5,8 +5,8 @@ subtitle: A leaflet map with the places I have flown
 tags: [R,maps,leaflet]
 linktormd: true
 leafletmap: true
-output: github_document 
 always_allow_html: yes
+output: github_document
 ---
 
 
@@ -34,8 +34,8 @@ p_load(dplyr,
        geosphere,
        leaflet,
        leaflet.extras,
-       sf, htmlwidgets,
-       webshot)
+       sf)
+
 
 # Find airports----
 myflights <- read_excel("../assets/flights.xlsx")

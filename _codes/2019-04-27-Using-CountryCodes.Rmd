@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Using CountryCodes database and sf package.
-subtitle: vignette of the CountryCodes project.
+title: Using CountryCodes database and sf package
+subtitle: vignette of the CountryCodes project
 tags: [R,sf,maps,vignette]
 linktormd: true
 output: github_document
@@ -12,6 +12,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(global.par = TRUE)
 rm(list = ls())
+
 library("knitr")
 library("rmarkdown")
 
