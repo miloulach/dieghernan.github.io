@@ -167,7 +167,7 @@ Now you just have to publish your post as usual!! If everything has been properl
 
 
 {: .box-warning}
-<i class="fa fa-exclamation-triangle"> **Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
+<i class="fa fa-exclamation-triangle"></i> **Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
 
 ### Extra: Resolutions of a leaflet map <a name="#extra"></a>
 
