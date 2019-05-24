@@ -26,6 +26,7 @@ h1,h2,h3,h4,h5,h6 {
   font-weight: 800;
 }
 a {
+  font-weight: bold;
   color: {{ site.link-col }};
 }
 a:hover,
@@ -336,7 +337,7 @@ footer .theme-by {
 
 .post-preview a {
   text-decoration: none;
-  color: #404040;
+  color: {{ site.link-col }};
 }
 
 .post-preview a:focus,
