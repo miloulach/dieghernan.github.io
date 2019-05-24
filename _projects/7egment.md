@@ -2,6 +2,7 @@
 layout: project
 title: 7egment 
 subtitle: A Pebble (RIP) project
+share-img: https://raw.githubusercontent.com/dieghernan/7egment/master/store/Banner.png
 githuburl: https://github.com/dieghernan/7egment
 ---
 

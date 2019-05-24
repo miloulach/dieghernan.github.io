@@ -2,6 +2,7 @@
 layout: project
 title: Bzel 
 subtitle: A Pebble (RIP) project
+share-img: https://raw.githubusercontent.com/dieghernan/Bzel/master/store/BannerBzel.png
 githuburl: https://github.com/dieghernan/Bzel
 ---
 

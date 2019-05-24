@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Exploring sizes of leaflet maps
-subtitle: A test
 leafletmap: true
 output: github_document
 always_allow_html: yes

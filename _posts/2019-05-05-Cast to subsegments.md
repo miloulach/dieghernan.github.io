@@ -3,6 +3,7 @@ layout: post
 title: Cast a line to subsegments in R
 subtitle: User-defined function using sf package
 tags: [R,sf,function]
+share-img: https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/figs/20190505_testspain-1.png
 linktormd: true
 output: github_document
 ---
@@ -23,7 +24,7 @@ library(dplyr)
 
 ## The problem
 
-The `sf`package includes [`st_cast`]([https://r-spatial.github.io/sf/reference/st_cast.html), a very powerful function that transforms geometries into other different types of geometries (i.e. `LINESTRING`to `POLYGON`, etc.). 
+The `sf`package includes [`st_cast`](https://r-spatial.github.io/sf/reference/st_cast.html), a very powerful function that transforms geometries into other different types of geometries (i.e. `LINESTRING`to `POLYGON`, etc.). 
 
 
 ```r

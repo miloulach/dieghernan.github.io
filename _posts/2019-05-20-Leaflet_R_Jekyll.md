@@ -9,10 +9,11 @@ always_allow_html: yes
 output: github_document
 ---
 
+Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**: [I succeeded <i class="fa fa-thumbs-up"></i>](https://dieghernan.github.io/2019-133-Where-in-the-world)). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [@daattali](https://github.com/daattali).
 
-Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**: [I succeeded](https://dieghernan.github.io/2019-133-Where-in-the-world)). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [daattali](https://github.com/daattali).
+So I decided to spend a good amount of time shaping this small tutorial. It can be longer than expected but after doing this process 3 or 4 times it becomes almost trivial.
 
-**Index**
+## Index
 
 1.  [What to include](#step1)
 
@@ -22,15 +23,15 @@ Recently I have been struggling when trying to embed a [leaflet](https://rstudio
 
 4.  [Set up the YAML front matter](#step4)
 
-5.  [Modifying the `.md`file](#step5)
+5.  [Modifying the `.md` file](#step5)
 
 6.  [Publish your post](#step6)
-
-**[Extra: Resolutions of a leaflet map](#extra)**
-
+ 
+**[Gallery: Size of a leaflet map](#extra)**
+ 
 Ready? Let's go!
 
-### The GitHub/Jekyll part <a name="gitjek"></a>
+### The GitHub/Jekyll part
 
 The first step is to install the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.
 
@@ -85,7 +86,7 @@ So now you just have to paste in the `<head>` the code that you got on [step 1](
 {: .box-note}
 <i class="fa fa-star"></i> **Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
 
-### The RStudio part <a name="rstudio"></a>
+### The RStudio part
 
 #### 3. Creating the leaflet map <a name="step3"></a>
 
@@ -105,31 +106,31 @@ It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.
 #### 4. Set up the YAML front matter <a name="step4"></a>
 
 Before knitting your `.Rmd`, you have to set up the [YAML front matter](https://bookdown.org/yihui/rmarkdown/markdown-document.html). Here it is **essential** to set up the option `always_allow_html: yes`, as well as `output: github_document`. As an example, this post was created with the front matter:
-
-      ---
-      layout: post
-      title: Leaflet, R, Markdown, Jekyll and GitHub
-      subtitle: Make it work in 6 steps - a short tutorial
-      tags: [R,leaflet,Jekyll, html, maps]
-      linktormd: true
-      leafletmap: true
-      always_allow_html: yes
-      output: github_document
-      ---
-      
+``` 
+layout: post
+title: Leaflet, R, Markdown, Jekyll and GitHub
+subtitle: Make it work in 6 steps - a short tutorial
+tags: [R,leaflet,Jekyll, html, maps]
+linktormd: true
+leafletmap: true
+always_allow_html: yes
+output: github_document
+``` 
 
 We are almost there! Now "Knit" your code and get the corresponding `.md`file.
 
-### The Markdown part <a name="#md"></a>
+### The Markdown part
 
-#### 5. Modifying the `.md`file <a name="step5"></a>
+#### 5. Modifying the `.md` file <a name="step5"></a>
+
+*Update: Depending on how you render your file this step may not be neccesary.*
 
 Have a look to the `.md` code that you have just created. Although not displayed in the preview, you can see in the file itself a chunk that looks like this:
 
 ``` html
 <!--html_preserve-->
 
-  <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
+  <script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">
     {"x":{"options":
       ...
       "jsHooks":[]}
@@ -144,15 +145,14 @@ Now you just need to paste this piece of code before that chunk:
 ``` html
 <!--html_preserve-->
 <div id="htmlwidget-7ab57412f7b1df4d5773" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-
-  <script type="application/json"data-for="htmlwidget-7ab57412f7b1df4d5773">
+  <script type="application/json" data-for="htmlwidget-7ab57412f7b1df4d5773">
   ...
 ```
 
 {: .box-warning}
 <i class="fa fa-exclamation-triangle"></i> **Warning:** Be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part. If not your map would not load.
 
-The `style="width:100%;height:216px;`part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put some examples in the end of the post of diferent size options so you can have a look and see which one is more suitable for you.
+The `style="width:100%; height:216px;` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.
 
 #### 6. Publish your post <a name="step6"></a>
 
@@ -165,10 +165,142 @@ Now you just have to publish your post as usual!! If everything has been properl
 
 
 
-
 {: .box-warning}
 <i class="fa fa-exclamation-triangle"></i> **Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
+ 
+ 
+---
+ 
+---
+## Gallery: Size of a leaflet map <a name="extra"></a>
 
-### Extra: Resolutions of a leaflet map <a name="#extra"></a>
+{: .box-note}
+For a complete understanding of this section it is recommended to access it on multiple devices, so you can see the different behavior on different screens.
 
-Soon...
+Let's start creating a new leaflet map: <a name="setleaf"></a>
+
+``` r
+map <- leaflet(options = leafletOptions(minZoom = 1.25, maxZoom = 8)) %>%
+  addTiles() %>%
+  setMaxBounds(-200, -90, 200, 90) %>%
+  setView(-3.56948,  40.49181, zoom = 3) %>%
+  addEasyButton(easyButton(
+    icon = "fa-globe",
+    title = "World view",
+    onClick = JS("function(btn, map){ map.setZoom(1.25); }")
+  )) %>%
+  addEasyButton(easyButton(
+    icon = "fa-crosshairs",
+    title = "Locate Me",
+    onClick = JS("function(btn, map){ map.locate({setView: true}); }")
+  ))
+```
+---
+### Fixed size
+
+With these examples you can see how to control the absolute size of the leaflet map. The disadvantage of this method is that the size would be fixed for all the devices, so maps sized for smartphones or tables wouldn't look as nice in laptops, etc. and vice versa. To test it, just zoom in and out this post from your smartphone and have a look on how **Example 1** looks like compared with the rest of maps.
+
+---
+#### Example 1: 672x480px
+
+Fixed size in pixels. By default in my machine is `"width:672px;height:480px;"`, so if i want to keep it the next `<div>` should be included:
+
+``` html
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:672px; height:480px;" class="leaflet html-widget"></div>
+```
+
+<!--html_preserve-->
+<div id="htmlwidget-96518065375607980e8e" style="width:672px; height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-96518065375607980e8e">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
+<!--/html_preserve-->
+
+
+---
+#### Example 2: 200x300px
+
+Let's go narrow and long with `"width:200px;height:300px;"`:
+
+``` html
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:200px; height:300px;" class="leaflet html-widget"></div>
+```
+
+<!--html_preserve-->
+<div id="htmlwidget-4c16fbc18b7ff85979fe" style="width:200px; height:300px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4c16fbc18b7ff85979fe">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
+<!--/html_preserve-->
+
+---
+### Dynamic size
+
+**Recommended option.** These maps would adapt to the width of your screen, no matter what device you are using. Additionally, you can adapt the aspect ratio to different flavours.
+
+---
+#### Example 3: 16:9 aspect ratio
+
+Most common aspect ratio for televisions and computer monitors. Note that the value `56.25%` is just the result of dividing 9 by 16.
+
+``` html
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="position: relative; width: 100%;padding-top: 56.25%;" class="leaflet html-widget"></div>
+```
+
+<!--html_preserve-->
+<div id="htmlwidget-6de1353fc8d81455f3ce" style="position: relative; width: 100%;padding-top: 56.25%;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6de1353fc8d81455f3ce">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
+<!--/html_preserve-->
+
+
+---
+#### Example 4: 4:3 aspect ratio
+
+"Old" standard for televisions and computer monitors.
+
+``` html
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="position: relative; width: 100%;padding-top: 75%;" class="leaflet html-widget"></div>
+```
+
+<!--html_preserve-->
+<div id="htmlwidget-7222a1441ac6bec31f76" style="position: relative; width: 100%;padding-top: 75%;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7222a1441ac6bec31f76">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
+<!--/html_preserve-->
+
+
+---
+#### Example 5: 4:1 aspect ratio (Polyvision)
+
+Rare aspect ratio (also known as [Polyvision](https://en.wikipedia.org/wiki/Polyvision)) used only on the 1927 silent french film *Napoléon*. It is unlikely that you use this one but illustrates an extreme aspect ratio.
+
+``` html
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="position: relative; width: 100%;padding-top: 25%;" class="leaflet html-widget"></div>
+```
+
+<!--html_preserve-->
+<div id="htmlwidget-6fa038b19035c1fdc62e" style="position: relative; width: 100%;padding-top: 25%;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6fa038b19035c1fdc62e">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
+<!--/html_preserve-->
+
+
+
+
+---
+#### <i class="fa fa-star"></i> Example 6: 10:7 aspect ratio
+
+Suitable for all devices. My personal choice.
+
+``` html
+<div id="htmlwidget-xxxxxxxxxxxxxxxx"  style="position: relative; width: 100%;padding-top: 70%;" class="leaflet html-widget"></div>
+```
+
+<!--html_preserve-->
+<div id="htmlwidget-f76acb08ab6f5db5e531"  style="position: relative; width: 100%;padding-top: 70%;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f76acb08ab6f5db5e531">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
+<!--/html_preserve-->
+
+
+
+
+
+---
+
+{: .box-note} 
+<i class="fa fa-star"></i> **Pro tip:** Try to use dynamic sizing unless you really need a fixed width. I did some tests and **10:7 (75%)** is a good ratio for overall purposes, specially if your leaflet map is
+intended to show a full world map. In that case, combine it with `minZoom`, `maxZoom` and `setMaxBounds` options [(see example)](#setleaf) for optimal results.

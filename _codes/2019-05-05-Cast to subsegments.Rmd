@@ -27,7 +27,7 @@ library(dplyr)
 
 ## The problem
 
-The `sf`package includes [`st_cast`]([https://r-spatial.github.io/sf/reference/st_cast.html), a very powerful function that transforms geometries into other different types of geometries (i.e. `LINESTRING`to `POLYGON`, etc.). 
+The `sf`package includes [`st_cast`](https://r-spatial.github.io/sf/reference/st_cast.html), a very powerful function that transforms geometries into other different types of geometries (i.e. `LINESTRING`to `POLYGON`, etc.). 
 
 ```{r 20190505_italycast, warning=FALSE, message=FALSE, tidy='styler', dev="png",fig.width=500/90, fig.height=500/90, dpi=90, fig.align='center'}
 italy = ne_countries(country = "italy", returnclass = "sf")
