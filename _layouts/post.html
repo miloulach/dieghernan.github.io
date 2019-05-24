@@ -46,7 +46,7 @@ layout: base
             {% endif %}
          </div>
         {% endif %}
-         <ul class="pager blog-pager">
+         <ul class="pager blog-pager" style="padding: 10px 0;">
             {% if page.previous.url %}
             <li class="previous">
                <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
