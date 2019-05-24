@@ -38,33 +38,35 @@ layout: base
                          border-bottom: 3px solid #008080;">
             {{ content }}
          </article>
-        {% if page.tags.size > 0 %}
-         <div class="blog-tags" style="margin-top: 0; margin-bottom: 10px;">
-            Tags:
-            {% if site.link-tags %}
-            {% for tag in page.tags %}
-            <a href="{{ site.baseurl }}/tags#{{- tag -}}">{{- tag -}}</a>
-            {% endfor %}
-            {% else %}
-            {{ page.tags | join: ", " }}
-            {% endif %}
-         </div>
-        {% endif %}
-         <ul class="pager blog-pager" style="margin-top: 0; margin-bottom: 20px;">
-            {% if page.previous.url %}
-            <li class="previous">
-               <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
-            </li>
-            {% endif %}
-            {% if page.next.url %}
-            <li class="next">
-               <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">Next Post &rarr;</a>
-            </li>
-            {% endif %}
-         </ul>
-         {% include social-share.html %}
-         <div class="disqus-comments">
-            {% include disqus.html %}
+         <div style="background-color: {{ site.background-light-col }};">
+           {% if page.tags.size > 0 %}
+            <div class="blog-tags" style="margin-top: 0; margin-bottom: 10px;">
+               Tags:
+               {% if site.link-tags %}
+               {% for tag in page.tags %}
+               <a href="{{ site.baseurl }}/tags#{{- tag -}}">{{- tag -}}</a>
+               {% endfor %}
+               {% else %}
+               {{ page.tags | join: ", " }}
+               {% endif %}
+            </div>
+           {% endif %}
+            <ul class="pager blog-pager" style="margin-top: 0; margin-bottom: 20px;">
+               {% if page.previous.url %}
+               <li class="previous">
+                  <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
+               </li>
+               {% endif %}
+               {% if page.next.url %}
+               <li class="next">
+                  <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">Next Post &rarr;</a>
+               </li>
+               {% endif %}
+            </ul>
+            {% include social-share.html %}
+            <div class="disqus-comments">
+               {% include disqus.html %}
+            </div>
          </div>
       </div>
    </div>
