@@ -11,9 +11,7 @@ subtitle: 'Some pieces of work'
          <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
          <div class="post-entry">
             {{ projects.content | strip_html  | truncatewords: 20 }}
-            <a href="{{ projects.url }}">               
-               <i class="fa fa-fw fa-plus-square-o"></i>                 
-            </a>
+            <a href="{{ projects.url }}">[more]</a>
          </div>
       </article>
    {% endfor %}
@@ -25,7 +23,7 @@ subtitle: 'Some pieces of work'
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <div class="post-entry">
          {{ projects.content | strip_html  | truncatewords: 20 }}
-         <a href="{{ projects.url }}">[+]</a>
+         <a href="{{ projects.url }}">[more]</a>
       </div>
    </article>
    {% endfor %}
