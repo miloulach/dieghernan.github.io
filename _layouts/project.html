@@ -12,7 +12,10 @@ layout: base
 				</button>
             </div>
             {% endif %}
-            <article role="main" class="blog-post"  style="text-align: justify;">
+            <article role="main" class="blog-post"  
+		     style="text-align: justify;
+			    border-top: 0.5px solid #008080;
+			    border-bottom: 1.5px solid #008080;">
               {{ content }}
             </article>
             {% include social-share.html %}
