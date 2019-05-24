@@ -31,7 +31,11 @@ layout: base
 <div class="container">
    <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-         <article role="main" class="blog-post" style="text-align: justify;">
+         <article role="main" class="blog-post"
+                  style="text-align: justify;
+                         margin: 5px 0 5px;
+                         border-top: 0.5px solid  #008080;
+                         border-bottom: 3px solid #008080;">
             {{ content }}
          </article>
         {% if page.tags.size > 0 %}
