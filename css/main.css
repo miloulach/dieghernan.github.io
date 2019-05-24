@@ -264,6 +264,10 @@ img {
     border-width: 0 1px 1px;
   }
 }
+/* --- Testing lines navbar --- */
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: {{ site.navbar-text-col }};
+}
 
 /* --- Footer --- */
 
