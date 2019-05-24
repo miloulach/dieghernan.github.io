@@ -23,8 +23,8 @@ subtitle: 'dieghernan’s site'
         {% endif %}
     </p>
     <div class="post-entry">
-      {{ post.content | strip_html|  truncatewords: 20 }}
-      <a href="{{ post.url | prepend: site.baseurl }}">[+]</a>
+      {{ post.content | strip_html|  truncatewords: 30 }}
+      <a href="{{ post.url | prepend: site.baseurl }}">[more]</a>
     </div>
      {% if post.tags.size > 0 %}
       <div class="blog-tags">
