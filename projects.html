@@ -11,10 +11,8 @@ subtitle: 'Some pieces of work'
          <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
          <div class="post-entry">
             {{ projects.content | strip_html  | truncatewords: 20 }}
-            <a href="{{ projects.url }}">
-               [
-               <i class="fa fa-fw fa-plus"></i>
-               ]
+            <a href="{{ projects.url }}">               
+               <i class="fa fa-fw fa-plus-square-o"></i>                 
             </a>
          </div>
       </article>
