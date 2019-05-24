@@ -17,9 +17,9 @@ This is a very personal post, where I just show the map of all the places I have
 <!--/html_preserve-->
 
 
+---
 
-223,153.2 kms. flown so far.
-----------------------------
+**223,153.2 kms. flown so far.**
 
 Top Cities
 ----------
