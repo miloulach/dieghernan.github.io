@@ -322,7 +322,7 @@ footer .theme-by {
 /* --- Post preview --- */
 
 .post-preview {
-  padding: 10px 0;
+  padding: 20px 0;
   border-bottom: 0.5px solid {{ site.navbar-col }};
 }
 
