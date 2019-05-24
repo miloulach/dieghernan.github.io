@@ -19,7 +19,7 @@ carto:
 rpubs:
   name: "RPubs"
   baseURL: "https://rpubs.com/"
-  icon: "fa-file-powerpoint-o"
+  icon: "fa-leanpub"
 
 github:
   name: "GitHub"
