@@ -18,8 +18,13 @@ layout: base
 			    padding-top: 0.5px;
 			    border-bottom: 3px solid #008080;">
               {{ content }}
-            </article>
-            {% include social-share.html %}
+           </article>	
+		<div style="background-color: {{ site.background-light-col }}
+			    margin-top: -15px;
+			    margin-bottom: -20px;
+			    padding: 0 5px">
+			{% include social-share.html %}
+		</div>			
         </div>
     </div>
 </div>
