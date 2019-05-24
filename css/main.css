@@ -92,13 +92,8 @@ img {
 }
 
 .disqus-comments {
-  margin-top: 30px;
-}
-
-@media only screen and (min-width: 768px) {
-  .disqus-comments {
-    margin-top: 40px;
-  }
+  margin-top: 10px;
+  margin-bottom: -20px;
 }
 
 .linked-section {
