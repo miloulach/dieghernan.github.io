@@ -58,7 +58,7 @@ bigimg:
 </div>
 <div style="padding-bottom: 25px;
 	border-top: solid #008080;
-	margin-top: 15px;">
+	margin-top: 35px;">
 	<h1 style="font-size: 50px"> Featured Projects </h1>
 	<div style="background-color:#F3F8F8;
 		padding: 0 10px	10px;
@@ -72,8 +72,8 @@ bigimg:
 					<a href="{{ projects.url }}">{{ projects.title }}</a>
 				</h3 >
 				<h4 class="post-subtitle">{{ projects.subtitle }}</h4>
-				<p class="post-entry">
-				{{ projects.content | strip_html |  truncatewords: 20 }}
+				<p class="post-entry" style="margin-bottom: 0px;">
+				{{ projects.content | strip_html |  truncatewords: 40 }}
 					<a href="{{ projects.url }}">[more]</a>
 				</p>
 			</article>
