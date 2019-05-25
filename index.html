@@ -18,10 +18,9 @@ bigimg:
     <div class="posts-list">
       {% for post in paginator.posts %} 
       <article class="post-preview">
-	      <a href="{{ post.url | prepend: site.baseurl }}" >
-		      <h3 class="post-title">{{ post.title }}
-		      </h3>		
-	      </a>	
+	      <h3 class="post-title">
+		      <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+	      </h3>	
 	      {% if post.subtitle %}
 	      <h4 class="post-subtitle">
 		      {{ post.subtitle }}
@@ -69,13 +68,13 @@ bigimg:
 			{% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
 			{% for projects in feat %}
 			<article class="post-preview">
-			<a href="{{ projects.url }}">
-			<h3 class="post-title">{{ projects.title }}</h3 >
-				</a>
-			<h4 class="post-subtitle">{{ projects.subtitle }}</h4>
+				<h3 class="post-title">
+					<a href="{{ projects.url }}">{{ projects.title }}</a>
+				</h3 >
+				<h4 class="post-subtitle">{{ projects.subtitle }}</h4>
 				<p class="post-entry">
 				{{ projects.content | strip_html |  truncatewords: 20 }}
-				<a href="{{ projects.url }}">[more]</a>
+					<a href="{{ projects.url }}">[more]</a>
 				</p>
 			</article>
 		{% endfor %}
