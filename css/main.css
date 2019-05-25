@@ -336,7 +336,12 @@ footer .theme-by {
 }
 
 /* --- Link en h3 y h4 --- */
-.post-title .post-subtitle a {
+.post-title a {
+  text-decoration: none;
+  color: #404040;
+}
+
+.post-subtitle a {
   text-decoration: none;
   color: #404040;
 }
