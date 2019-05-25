@@ -335,6 +335,12 @@ footer .theme-by {
   color: {{ site.link-col }};
 }
 
+/* --- Link en h3 y h4 --- */
+.post-title .post-subtitle a {
+  text-decoration: none;
+  color: #404040;
+}
+
 .post-preview a:focus,
 .post-preview a:hover {
   text-decoration: none;
@@ -393,11 +399,7 @@ footer .theme-by {
   }
 }
 
-/* --- Link en h3 y h4 --- */
-.post-title .post-subtitle a {
-  text-decoration: none;
-  color: #404040;
-}
+
 /* --- Tags --- */
 
 .blog-tags {
