@@ -7,7 +7,9 @@ subtitle: 'Some pieces of work'
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
    {% for projects in feat %}
       <article class="post-preview">
-         <h3 class="post-title"><i class="fa fa-fw fa-heart-o"></i> {{ projects.title }}</h3 >
+         <h3 class="post-title">
+            <a href="{{ projects.url }}"><i class="fa fa-fw fa-heart-o"></i> {{ projects.title }}</a>
+         </h3 >
          <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
          <div class="post-entry">
             {{ projects.content | strip_html  | truncatewords: 20 }}
@@ -19,7 +21,9 @@ subtitle: 'Some pieces of work'
    {% assign nofeat = site.projects | where_exp: "item", "item.featured == nil" %}
    {% for projects in nofeat %}
    <article class="post-preview">
-      <h3 class="post-title">{{ projects.title }}</h3 >
+      <h3 class="post-title">
+         <a href="{{ projects.url }}">{{ projects.title }}</a>
+      </h3 >
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <div class="post-entry">
          {{ projects.content | strip_html  | truncatewords: 20 }}
