@@ -152,7 +152,7 @@ Now you just need to paste this piece of code before that chunk:
 {: .box-warning}
 <i class="fa fa-exclamation-triangle"></i> **Warning:** Be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part. If not your map would not load.
 
-The `style="width:100%; height:216px;` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.
+The `style= "width: 100%; height: 216px;"` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.
 
 #### 6. Publish your post <a name="step6"></a>
 
