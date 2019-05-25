@@ -13,10 +13,8 @@ layout: base
                   <h2 class="post-subheading">
                      {{ page.subtitle }}
                   </h2>
-                  <div class="post-meta">
-                     {{ page.date | date_to_string }}
+                  <div class="post-heading">
                      {% if page.linktormd %}
-                     - 
                      <a href="{{ page.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd' }}">
                      <i class="fa fa-fw fa-github"></i> Source code
                      </a>
@@ -36,6 +34,7 @@ layout: base
                          margin: 0 0 15px;
                          border-top: 0.5px solid  #008080;
                          border-bottom: 3px solid #008080;">
+            <div class="post-meta">{{ page.date | date_to_string }}</div>
             {{ content }}
          </article>
          <div style="background-color: {{ site.background-light-col }};
