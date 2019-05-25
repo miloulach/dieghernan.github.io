@@ -27,12 +27,7 @@ bigimg:
 	      </h4>
 	      {% endif %}			   		
 	      <p class="post-meta">
-		      {{ post.date | date_to_string }}
-		      {% if post.linktormd %}
-				<a href="{{ post.path | prepend: site.github_repo | replace:'/_posts/','/blob/master/_codes/' | replace:'.md','.Rmd'  }}">
-				<i class="fa fa-fw fa-github"></i>
-				</a>
-			{% endif %}
+		      Posted on {{ post.date | date_to_string }}		    
 	      </p>
         {% if post.tags.size > 0 %}
         <div class="blog-tags">
