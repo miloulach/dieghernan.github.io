@@ -7,10 +7,9 @@ subtitle: 'dieghernan’s site'
  <div class="posts-list">
    {% for post in site.posts %} 
    <article class="post-preview">
-	   <a href="{{ post.url | prepend: site.baseurl }}"
-	      style="color: #404040;">
-		   <h3 class="post-title">{{ post.title }}</h3>
-	   </a>
+	   <h3 class="post-title">
+		   <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+	   </h3>
     {% if post.subtitle %}
     <h4 class="post-subtitle">
         {{ post.subtitle }}
