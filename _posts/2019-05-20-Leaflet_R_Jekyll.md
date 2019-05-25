@@ -235,7 +235,7 @@ Let's go narrow and long with `"width: 100px;height: 300px;"`:
 **Recommended option.** These maps would adapt to the width of your screen, no matter what device you are using. Additionally, you can adapt the aspect ratio to different flavours.
 
 ---
-#### Example 3: 16:9 aspect ratio
+#### Example 3: *16:9* aspect ratio
 
 Most common aspect ratio for televisions and computer monitors. Note that the value `56.25%` is just the result of dividing 9 by 16.
 
@@ -250,7 +250,7 @@ Most common aspect ratio for televisions and computer monitors. Note that the va
 
 
 ---
-#### Example 4: 4:3 aspect ratio
+#### Example 4: *4:3* aspect ratio
 
 "Old" standard for televisions and computer monitors.
 
@@ -265,7 +265,7 @@ Most common aspect ratio for televisions and computer monitors. Note that the va
 
 
 ---
-#### Example 5: 4:1 aspect ratio (Polyvision)
+#### Example 5: *4:1* aspect ratio (Polyvision)
 
 Rare aspect ratio (also known as [Polyvision](https://en.wikipedia.org/wiki/Polyvision)) used only on the 1927 silent french film *Napoléon*. It is unlikely that you use this one but illustrates an extreme aspect ratio.
 
@@ -282,7 +282,7 @@ Rare aspect ratio (also known as [Polyvision](https://en.wikipedia.org/wiki/Poly
 
 
 ---
-#### <i class="fa fa-star"></i> Example 6: 10:7 aspect ratio
+#### <i class="fa fa-star"></i> Example 6: *10:7* aspect ratio
 
 Suitable for all devices. My personal choice.
 
