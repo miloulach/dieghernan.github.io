@@ -203,7 +203,7 @@ With these examples you can see how to control the absolute size of the leaflet 
 ---
 #### Example 1: 672x480px
 
-Fixed size in pixels. By default in my machine is `"width:672px;height:480px;"`, so if i want to keep it the next `<div>` should be included:
+Fixed size in pixels. By default in my machine is `"width: 672px; height: 480px;"`, so if i want to keep it the next `<div>` should be included:
 
 ``` html
 <div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:672px; height:480px;" class="leaflet html-widget"></div>
@@ -216,16 +216,16 @@ Fixed size in pixels. By default in my machine is `"width:672px;height:480px;"`,
 
 
 ---
-#### Example 2: 200x300px
+#### Example 2: 100x300px
 
-Let's go narrow and long with `"width:200px;height:300px;"`:
+Let's go narrow and long with `"width: 100px;height: 300px;"`:
 
 ``` html
-<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:200px; height:300px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:100px; height:300px;" class="leaflet html-widget"></div>
 ```
 
 <!--html_preserve-->
-<div id="htmlwidget-4c16fbc18b7ff85979fe" style="width:200px; height:300px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-4c16fbc18b7ff85979fe" style="width:100px; height:300px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-4c16fbc18b7ff85979fe">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
 <!--/html_preserve-->
 
@@ -302,5 +302,5 @@ Suitable for all devices. My personal choice.
 ---
 
 {: .box-note} 
-<i class="fa fa-star"></i> **Pro tip:** Try to use dynamic sizing unless you really need a fixed width. I did some tests and **10:7 (75%)** is a good ratio for overall purposes, specially if your leaflet map is
+<i class="fa fa-star"></i> **Pro tip:** Try to use dynamic sizing unless you really need a fixed width. I did some tests and **10:7 (70%)** is a good ratio for overall purposes, specially if your leaflet map is
 intended to show a full world map. In that case, combine it with `minZoom`, `maxZoom` and `setMaxBounds` options [(see example)](#setleaf) for optimal results.
