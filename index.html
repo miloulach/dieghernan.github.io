@@ -18,8 +18,7 @@ bigimg:
     <div class="posts-list">
       {% for post in paginator.posts %} 
       <article class="post-preview">
-	      <a href="{{ post.url | prepend: site.baseurl }}"
-		 style="color: #404040;">
+	      <a href="{{ post.url | prepend: site.baseurl }}" >
 		      <h3 class="post-title">{{ post.title }}
 		      </h3>		
 	      </a>	
@@ -70,7 +69,7 @@ bigimg:
 			{% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
 			{% for projects in feat %}
 			<article class="post-preview">
-			<a href="{{ projects.url }}" style="color: #404040;">
+			<a href="{{ projects.url }}">
 			<h3 class="post-title">{{ projects.title }}</h3 >
 				</a>
 			<h4 class="post-subtitle">{{ projects.subtitle }}</h4>
