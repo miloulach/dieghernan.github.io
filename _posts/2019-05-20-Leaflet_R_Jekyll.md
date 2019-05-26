@@ -87,9 +87,8 @@ This a little bit more complicated, depending on the structure of your Jekyll te
 
 So now you just have to paste in the `<head>` the code that you got on [step 1](#step1).
 
-<a name="step3"></a>
 {: .box-note}
-<i class="fa fa-star"></i> **Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
+<i class="fa fa-star"></i> **Pro tip:** <a name="step3"></a>For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
 
 
 ### The RStudio part
@@ -172,9 +171,9 @@ Now you just have to publish your post as usual!! If everything has been properl
 <!--/html_preserve-->
 
 
- <a name="extra"></a>
+
 {: .box-warning}
-<i class="fa fa-exclamation-triangle"></i> **Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
+<i class="fa fa-exclamation-triangle"></i> **Warning:** <a name="extra"></a>Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
  
  
 ---
