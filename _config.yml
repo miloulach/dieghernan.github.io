@@ -28,7 +28,7 @@ navbar-links:
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
-avatar: "/img/avatar-icon.png"
+avatar: "/assets/img/avatar-icon.png"
 
 # --- Background colour/image options --- #
 
@@ -122,14 +122,14 @@ defaults:
       layout: "post"
       comments: true  # add comments to all blog posts
       social-share: true # add social media sharing buttons to all blog posts
-      share-img: https://dieghernan.github.io/img/headerblog.png
+      share-img: https://dieghernan.github.io/assets/img/headerblog.png
   -
     scope:
       path: "" # all files
     values:
       layout: "page"
       show-avatar: true
-      share-img: https://dieghernan.github.io/img/headerblog.png
+      share-img: https://dieghernan.github.io/assets/img/headerblog.png
 
 # Use tags index page and make tags on each post clickable
 link-tags: true
