@@ -86,6 +86,7 @@ You can have a look of my implementation on [`./_includes/leaflet.html`](https:/
 This a little bit more complicated, depending on the structure of your Jekyll template. The code chunk should be included in the `<head>` section of your page, so you would need to find where to put it. In the case of **Beautiful Jekyll** it is on [`./_includes/head.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/head.html).
 
 So now you just have to paste in the `<head>` the code that you got on [step 1](#step1).
+
 <a name="step3"></a>
 {: .box-note}
 <i class="fa fa-star"></i> **Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
