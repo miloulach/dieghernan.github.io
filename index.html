@@ -16,7 +16,7 @@ bigimg:
     border-radius: 10px;
     -moz-border-radius: 10px">
     <div class="posts-list">
-      {% for post in paginator.posts %} 
+      {% for post in site.posts %} 
       <article class="post-preview">
 	      <h3 class="post-title">
 		      <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
