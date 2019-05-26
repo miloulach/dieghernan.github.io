@@ -9,10 +9,12 @@ var main = {
     // Shorten the navbar after scrolling a little bit down
     $(window).scroll(function() {
         if ($(".navbar").offset().top > 50) {
-            $(".navbar").addClass("top-nav-short");
+           // $(".navbar").addClass("top-nav-short");
+	    $(".navbar").fadeOut(1000);
             $(".navbar-custom .avatar-container").fadeOut(500);
         } else {
-            $(".navbar").removeClass("top-nav-short");
+         //   $(".navbar").removeClass("top-nav-short");
+	    $(".navbar").fadeIn(1000);
             $(".navbar-custom .avatar-container").fadeIn(500);
         }
     });
