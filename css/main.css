@@ -817,7 +817,7 @@ a.btn.btn-primary.tag-btn:hover {
     position: relative;
     margin-bottom: 2em;
     margin-top: -40px;
-    padding: 7em 0;
+    padding: 7em 0 3em;
     clear: both;
     background-size: cover;
     background-repeat: no-repeat;
