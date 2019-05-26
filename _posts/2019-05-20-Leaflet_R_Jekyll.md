@@ -77,9 +77,9 @@ So now we have it! The only thing to remember is that we need **to load the libr
   <script src= "https://rstudio.github.io/leaflet/libs/leaflet-binding/leaflet.js"></script>
 ```
 
-You can have a look of my implementation on [`./_includes/leaflet.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/leaflet.html).
+You can have a look of my implementation on [`./_includes/leaflet.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/leaflet.html).<a name="step2"></a>
 
-<a name="step2"></a>
+
 #### 2.Where to include 
 
 This a little bit more complicated, depending on the structure of your Jekyll template. The code chunk should be included in the `<head>` section of your page, so you would need to find where to put it. In the case of **Beautiful Jekyll** it is on [`./_includes/head.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/head.html).
