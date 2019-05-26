@@ -815,7 +815,7 @@ a.btn.btn-primary.tag-btn:hover {
 
 .post-head--overlay {
     position: relative;
-    margin-bottom: 2em;
+    margin-bottom: 10px;
     margin-top: -40px;
     padding: 7em 0 3em;
     clear: both;
