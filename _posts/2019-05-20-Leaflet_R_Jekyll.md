@@ -104,9 +104,10 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.
+It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.<a name="step4"></a>
 
-#### 4. Set up the YAML front matter <a name="step4"></a>
+
+#### 4. Set up the YAML front matter 
 
 Before knitting your `.Rmd`, you have to set up the [YAML front matter](https://bookdown.org/yihui/rmarkdown/markdown-document.html). Here it is **essential** to set up the option `always_allow_html: yes`, as well as `output: github_document`. As an example, this post was created with the front matter:
 ``` 
