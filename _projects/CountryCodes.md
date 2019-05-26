@@ -2,7 +2,7 @@
 layout: project
 title: Country Codes & Organizations
 subtitle: A database with geocodes
-share-img: https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/figs/20190427_mapfin-1.png
+share-img: https://dieghernan.github.io/assets/figs/20190427_mapfin-1.png
 featured: 1
 githuburl: https://github.com/dieghernan/Country-Codes-and-International-Organizations
 ---

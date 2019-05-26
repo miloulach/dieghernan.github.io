@@ -8,9 +8,9 @@ diegpost <- function(file) {
   getwd()
   ezknit(
     paste("../_codes/",file,".Rmd",sep = ""),
-    wd="./figs",
+    wd="./assets/figs",
     out_dir = "../_posts",
-    fig_dir = "../figs",
+    fig_dir = "../assets/figs",
     keep_html = FALSE
   )
 }

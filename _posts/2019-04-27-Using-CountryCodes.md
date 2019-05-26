@@ -3,7 +3,7 @@ layout: post
 title: Using CountryCodes database and sf package
 subtitle: vignette of the CountryCodes project
 tags: [R,sf,maps,vignette]
-share-img: https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/figs/20190427_mapfin-1.png
+share-img: https://dieghernan.github.io/assets/figs/20190427_mapfin-1.png
 img-to-head: true
 linktormd: true
 output: github_document
@@ -141,7 +141,7 @@ tiny$C <- coalesce(tiny$C, tiny$C_sov)
 ## Plotting map: Wikipedia style
 Now we would try to plot a map resembling the one presented in the [Wikipedia page](https://en.wikipedia.org/wiki/Commonwealth_of_Nations) for the Commonwealth.
 
-![Wiki](../figs/20190427_wiki.png)
+![Wiki](../assets/figs/20190427_wiki.png)
 
 The map we will generate is presented under a Robinson projection and the color palette will be based in the [Wikipedia convention for Orthographic Maps](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions/Orthographic_maps), since it is the one used in the example.
 
@@ -226,4 +226,4 @@ plot(bbox,
 )
 ```
 
-![plot of chunk 20190427_mapfin](../figs/20190427_mapfin-1.png)
+![plot of chunk 20190427_mapfin](../assets/figs/20190427_mapfin-1.png)
