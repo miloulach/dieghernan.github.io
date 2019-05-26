@@ -178,4 +178,4 @@ plot(st_geometry(t2), col = c("red", "yellow", "blue"), add = T, lwd = 0.5)
  
 It can be seen a difference in terms of performance, noting that `test100` has 15 polygons decomposed in 914 sub-strings while `test50` has 80 polygons to 8,414 sub-strings. In that sense, the original `st_cast`is much faster, although this solution may work well in most cases.
 
-A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/functions)
+A collection of my user-defined functions can be checked [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/functions).
