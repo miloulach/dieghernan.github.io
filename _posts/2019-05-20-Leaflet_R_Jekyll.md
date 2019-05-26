@@ -34,8 +34,8 @@ So I decided to spend a good amount of time shaping this small tutorial. It can 
 Ready? Let's go!
 
 ### The GitHub/Jekyll part
-
-The first step is to install the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.<a name="step1"></a>
+<a name="step1"></a>
+The first step is to install the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.
 
 
 #### 1. What to include
@@ -77,8 +77,8 @@ So now we have it! The only thing to remember is that we need **to load the libr
   <link     href="https://rstudio.github.io/leaflet/libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
   <script src= "https://rstudio.github.io/leaflet/libs/leaflet-binding/leaflet.js"></script>
 ```
-
-You can have a look of my implementation on [`./_includes/leaflet.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/leaflet.html).<a name="step2"></a>
+<a name="step2"></a>
+You can have a look of my implementation on [`./_includes/leaflet.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/leaflet.html).
 
 
 #### 2.Where to include 
@@ -88,9 +88,10 @@ This a little bit more complicated, depending on the structure of your Jekyll te
 So now you just have to paste in the `<head>` the code that you got on [step 1](#step1).
 
 {: .box-note}
-<i class="fa fa-star"></i> **Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
+<i class="fa fa-star"></i> **Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.<a name="step3"></a>
 
-<a name="step3"></a>### The RStudio part
+
+### The RStudio part
 
 #### 3. Creating the leaflet map 
 
@@ -104,8 +105,8 @@ m <- leaflet() %>%
   addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
 m  # Print the map
 ```
-
-It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.<a name="step4"></a>
+<a name="step4"></a>
+It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.
 
 
 #### 4. Set up the YAML front matter 
@@ -121,10 +122,10 @@ leafletmap: true
 always_allow_html: yes
 output: github_document
 ``` 
-
+<a name="step5"></a>
 We are almost there! Now "Knit" your code and get the corresponding `.md`file.
 
-<a name="step5"></a>### The Markdown part
+### The Markdown part
 
 #### 5. Modifying the `.md` file 
 
@@ -156,8 +157,8 @@ Now you just need to paste this piece of code before that chunk:
 
 {: .box-warning}
 <i class="fa fa-exclamation-triangle"></i> **Warning:** Be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part. If not your map would not load.
-
-The `style= "width: 100%; height: 216px;"` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.<a name="step6"></a>
+<a name="step6"></a>
+The `style= "width: 100%; height: 216px;"` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.
 
 
 #### 6. Publish your post 
@@ -170,13 +171,13 @@ Now you just have to publish your post as usual!! If everything has been properl
 <!--/html_preserve-->
 
 
-
+ <a name="extra"></a>
 {: .box-warning}
 <i class="fa fa-exclamation-triangle"></i> **Warning:** Have you checked the YAML front matter of your `.md` file? Have another look, specially if you have followed my [Pro tip](#step2).
  
  
 ---
- <a name="extra"></a>
+
 ---
 ## Gallery: Size of a leaflet map 
 
