@@ -208,21 +208,23 @@ map <- leaflet(options = leafletOptions(minZoom = 1.25, maxZoom = 8)) %>%
 With these examples you can see how to control the absolute size of the leaflet map. The disadvantage of this method is that the size would be fixed for all the devices, so maps sized for smartphones or tables wouldn't look as nice in laptops, etc. and vice versa. To test it, just zoom in and out this post from your smartphone and have a look on how **Example 1** looks like compared with the rest of maps.
 
 ---
-#### Example 1: 672x480px
+#### Example 1: 640x480px
 
-Fixed size in pixels. By default in my machine is `"width: 672px; height: 480px;"`, so if i want to keep it the next `<div>` should be included:
+Fixed size in pixels. By default in my machine is `"width: 640px; height: 480px;"`, so if i want to keep it the next `<div>` should be included:
 
 ``` html
-<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:672px; height:480px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-xxxxxxxxxxxxxxxx" style="width:640px; height:480px;" class="leaflet html-widget"></div>
 ```
 
 <!--html_preserve-->
-<div id="htmlwidget-96518065375607980e8e" style="width:672px; height:480px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-96518065375607980e8e" style="width:640px; height:480px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-96518065375607980e8e">{"x":{"options":{"minZoom":1.25,"maxZoom":8,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"setMaxBounds","args":[-90,-200,90,200]},{"method":"addEasyButton","args":[{"icon":"fa-globe","title":"World view","onClick":"function(btn, map){ map.setZoom(1.25); }","position":"topleft"}]},{"method":"addEasyButton","args":[{"icon":"fa-crosshairs","title":"Locate Me","onClick":"function(btn, map){ map.locate({setView: true}); }","position":"topleft"}]}],"setView":[[40.49181,-3.56948],3,[]]},"evals":["calls.2.args.0.onClick","calls.3.args.0.onClick"],"jsHooks":[]}</script>
 <!--/html_preserve-->
 
 
 ---
+Note that this leaflet map could be wider than some screens (specially smartphones) and it would mess a little bit the overall apearance of this post.
+
 #### Example 2: 100x300px
 
 Let's go narrow and long with `"width: 100px;height: 300px;"`:
