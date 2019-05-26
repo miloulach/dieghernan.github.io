@@ -35,9 +35,10 @@ Ready? Let's go!
 
 ### The GitHub/Jekyll part
 
-The first step is to install the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.
+The first step is to install the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.<a name="step1"></a>
 
-#### 1. What to include <a name="step1"></a>
+
+#### 1. What to include
 
 This part is not really hard. When having a look to the source code of [Leaflet for R](https://rstudio.github.io/leaflet/) site it can be seen this chunk:
 
@@ -89,9 +90,9 @@ So now you just have to paste in the `<head>` the code that you got on [step 1](
 {: .box-note}
 <i class="fa fa-star"></i> **Pro tip:** For a better performance of the site, include these libraries only when you need it. In my case, I added a custom variable in my YAML front matter for those posts with a leaflet map, `leafletmap: true`. Go to [step 4](#step4) for a working example.
 
-### The RStudio part
+<a name="step3"></a>### The RStudio part
 
-#### 3. Creating the leaflet map <a name="step3"></a>
+#### 3. Creating the leaflet map 
 
 Now it's time to create a leaflet map with **RStudio**. I just keep it simple for this post, so I took the first example provided in [Leaflet for R - Introduction](https://rstudio.github.io/leaflet/)
 
@@ -123,9 +124,9 @@ output: github_document
 
 We are almost there! Now "Knit" your code and get the corresponding `.md`file.
 
-### The Markdown part
+<a name="step5"></a>### The Markdown part
 
-#### 5. Modifying the `.md` file <a name="step5"></a>
+#### 5. Modifying the `.md` file 
 
 *Update: Depending on how you render your file this step may not be neccesary.*
 
@@ -156,9 +157,10 @@ Now you just need to paste this piece of code before that chunk:
 {: .box-warning}
 <i class="fa fa-exclamation-triangle"></i> **Warning:** Be sure that the widget id (`7ab57412f7b1df4d5773` in the example) is the same in the `<div>` and in the `<script>` part. If not your map would not load.
 
-The `style= "width: 100%; height: 216px;"` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.
+The `style= "width: 100%; height: 216px;"` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.<a name="step6"></a>
 
-#### 6. Publish your post <a name="step6"></a>
+
+#### 6. Publish your post 
 
 Now you just have to publish your post as usual!! If everything has been properly set, when Jekyll builds your post it would include the libraries in the header and make the magic happens, just like this:
 
@@ -174,9 +176,9 @@ Now you just have to publish your post as usual!! If everything has been properl
  
  
 ---
- 
+ <a name="extra"></a>
 ---
-## Gallery: Size of a leaflet map <a name="extra"></a>
+## Gallery: Size of a leaflet map 
 
 {: .box-note}
 For a complete understanding of this section it is recommended to access it on multiple devices, so you can see the different behavior on different screens.
