@@ -4,6 +4,7 @@ title: Cast a line to subsegments in R
 subtitle: User-defined function using sf package
 tags: [R,sf,function]
 share-img: https://dieghernan.github.io/figs/20190505_benchmarkfunction-1.png
+img-to-head: true
 linktormd: true
 output: github_document
 ---
