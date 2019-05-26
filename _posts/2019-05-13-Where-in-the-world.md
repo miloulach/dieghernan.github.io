@@ -4,6 +4,8 @@ title: Where in the world?
 subtitle: A leaflet map with the places I have flown
 tags: [R,maps,leaflet]
 linktormd: true
+share-img: https://dieghernan.github.io/figs/20190513_img.png
+img-to-head: true
 leafletmap: true
 always_allow_html: yes
 output: github_document
