@@ -2,6 +2,7 @@
 layout: page
 title: 'My projects'
 subtitle: 'Some pieces of work'
+permalink: /projects/
 ---
 <div class="posts-list">
    {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
