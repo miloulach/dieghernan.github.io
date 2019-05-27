@@ -11,16 +11,21 @@ subtitle: 'dieghernan’s site'
 		   <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 	   </h3>
     {% if post.subtitle %}
-	   {% if post.img-to-head %}
-	   <h4 class="post-subtitle" style="padding-right: 60px;">
-		   {{ post.subtitle }}
-		   <span class="post-head--overlay" style="float:right;
-							   margin: -5px -60px 0 0px;
-							   padding: 30px;
-							   border-radius: 10px;
-							   background-image: url('{{ post.share-img }}');">
-		   </span>
-	   </h4>
+			{% if post.img-to-head %}
+			<h4 class="post-subtitle" style="width: 100%;display: table;">
+				<div class="post-head--overlay" style="display: table-cell;
+					padding: 30px;
+					border-radius: 10px;
+					width:  30px;
+					background-image: url('{{ post.share-img }}');">
+				</div>
+				<div style="
+					display: table-cell;
+					padding: 5px 0px 5px 15px;
+					vertical-align: middle;">
+				{{ post.subtitle }}
+				</div>
+			</h4>
 	   {% else %}
 	   <h4 class="post-subtitle">
 		   {{ post.subtitle }}
