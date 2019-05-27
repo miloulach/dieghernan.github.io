@@ -13,7 +13,10 @@ subtitle: 'dieghernan’s site'
     {% if post.subtitle %}
 			{% if post.img-to-head %}
 			<h4 class="post-subtitle" style="width: 100%;display: table;">
-				<div class="post-head--overlay" style="display: table-cell;
+				<div class="post-head--overlay" 
+				onclick="location.href='{{ post.url | prepend: site.baseurl }}';"
+				style="display: table-cell;
+				cursor: pointer;
 					padding: 30px;
 					border-radius: 10px;
 					width:  30px;
