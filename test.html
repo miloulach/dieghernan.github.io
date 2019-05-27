@@ -31,12 +31,13 @@ subtitle: 'All the posts of my blog'
 
 {% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
 {% for year in postsByYear %}
-  <section id="{{ year.name }}" class="taxonomy__section">
-    <h2 class="archive__subtitle">{{ year.name }}</h2>
-    <div class="entries-{{ page.entries_layout | default: 'list' }}">
+  <section id="{{ year.name }}" style="margin-top: 60px;
+                                       font-size: 25px;>
+                                       <h2 class="archive__subtitle">{{ year.name }}</h2>
+    <div class="posts-list">
                {% for post in year.items %}
                <div class="{{ include.type | default: "list" }}__item">
-                          <article class="post-preview">
+                          <article class="post-preview"  style="padding: 0;">
                                      <h4 class="post-title">
                                                 <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
                                      </h4>	
