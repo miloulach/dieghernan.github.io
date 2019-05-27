@@ -47,13 +47,12 @@ bigimg:
 			{% if post.img-to-head %}
 			</div> 
 			<a class="post-head--overlay" 
-			     onclick="location.href='{{ post.url | prepend: site.baseurl }}';"
-			     style="cursor: pointer;
-				    display: table-cell;
-				    padding: 30px 60px;
-				    border-radius: 100px 0 0 100px;
-				    width:  65px;
-				    background-image: url('{{ post.share-img }}');">
+			   href="{{ post.url | prepend: site.baseurl }}"
+			   style="display: table-cell;
+				  padding: 30px 60px;
+				  border-radius: 100px 0 0 100px;
+				  width:  65px;
+				  background-image: url('{{ post.share-img }}');">
 			</a>
 		</div>
 	{% endif %}
