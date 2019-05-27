@@ -8,7 +8,7 @@ subtitle: 'test'
 	{% for post in site.posts %} 
 	<article class="post-preview" >
 		{% if post.img-to-head %}
-		<div style="width: 100%;display: table; margin-bottom: 20px;">
+		<div style="width: 100%;display: table; margin-bottom: 15px;">
 			<div style="display: table-cell;
 				    vertical-align: middle;
 				    padding-right: 10px;">	      
@@ -22,7 +22,7 @@ subtitle: 'test'
 		<p class="post-meta" 
 		   style="margin-bottom:
 			  {% if post.img-to-head %}
-			  0
+			  -5px
 			  {% else %}
 			  20px
 			  {% endif %}
