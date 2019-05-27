@@ -6,7 +6,7 @@ bigimg:
 - "https://dieghernan.github.io/assets/img/headerblog.png" 
 ---
 <div style="padding-bottom: 25px;
-	    border-top: solid #008080;">
+	    border-top: solid {{ site.navbar-col }};">
 	<h1 style="font-size: 50px" > Recent posts </h1>
 	<div style="background-color: {{ site.background-light-col }};
 		    padding: 0 10px 10px;
@@ -53,7 +53,8 @@ bigimg:
 				  border-radius: 100px;
 				  width:  65px;
 				  background-image: url('{{ post.share-img }}');
-				  background-size: auto">
+				  background-size: auto;
+				  border: 0.5px solid {{ site.navbar-col }};">
 			</a>
 		</div>
 	{% endif %}
