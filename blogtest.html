@@ -18,28 +18,28 @@ bigimg:
       {% for post in site.posts %} 
       <article class="post-preview">
 	  		{% if post.img-to-head %}
-			<a href="{{ post.url | prepend: site.baseurl }}" >
-			<h3 class="post-title" style="width: 100%;display: table;">
-				<div class="post-head--overlay" style="display: table-cell;
-					padding: 30px;
-					border-radius: 10px;
-					width:  30px;
-					background-image: url('{{ post.share-img }}');">
-				</div>
-				<div style="
-					display: table-cell;
-					padding: 5px 0px 5px 15px;
-					color: #404040;
-					vertical-align: middle;">
-				{{ post.title }}
-				</div>
-			</h3>			
-			
-			</a>
-			{% else %}
-			<h3 class="post-title">
-				<a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
-			</h3>	
+          <h3 class="post-title" style="width: 100%;display: table;">
+            <a href="{{ post.url | prepend: site.baseurl }}" >
+              <div class="post-head--overlay" style="display: table-cell;
+              padding: 30px;
+              border-radius: 10px;
+              width:  30px;
+              background-image: url('{{ post.share-img }}');">
+              </div>
+            </a>
+            <div style="
+                display: table-cell;
+                padding: 5px 0px 5px 15px;
+                vertical-align: middle;">
+                <a href="{{ post.url | prepend: site.baseurl }}" >
+                  {{ post.title }}
+                </a>
+                </div>
+          </h3>	
+    		{% else %}
+    			<h3 class="post-title">
+    				<a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+    			</h3>	
 			{% endif %}
 	      {% if post.subtitle %}
 	      <h4 class="post-subtitle">
