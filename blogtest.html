@@ -19,14 +19,16 @@ bigimg:
       <article class="post-preview">
 	  		{% if post.img-to-head %}
           <h3 class="post-title" style="width: 100%;display: table;">
-            <a href="{{ post.url | prepend: site.baseurl }}" >
-              <div class="post-head--overlay" style="display: table-cell;
+              <div class="post-head--overlay" 
+              onclick="location.href='{{ post.url | prepend: site.baseurl }}';"
+              style="
+              cursor: pointer;
+              display: table-cell;
               padding: 30px;
               border-radius: 10px;
               width:  30px;
               background-image: url('{{ post.share-img }}');">
               </div>
-            </a>
             <div style="
                 display: table-cell;
                 padding: 5px 0px 5px 15px;
