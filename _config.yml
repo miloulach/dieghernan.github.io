@@ -17,17 +17,15 @@ collections:
 
 # List of links in the navigation bar
 navbar-links:
-Blog: 
-- Main: "blog"
-- Archive: "archive"
-- Tags: "tags"
-
- Projects:
- - All: "projects"
- - Country Codes & Organizations: "projects/countrycodes"
- - Textwatch Clima: "projects/textwatchclima"
- 
- View on Github: "https://github.com/dieghernan/dieghernan.github.io"
+  Blog:
+    - Main: "blog"
+    - Archive: "archive"
+    - Tags: "tags"
+  Projects:
+    - All: "projects"
+    - Country Codes & Organizations: "projects/countrycodes"
+    - Textwatch Clima: "projects/textwatchclima"
+  View on Github: "https://github.com/dieghernan/dieghernan.github.io"
 
 # If you want to have an image logo in the top-left corner instead of the title text,
 # then specify the following parameter
