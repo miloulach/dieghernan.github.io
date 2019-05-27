@@ -44,6 +44,7 @@ bigimg:
 			</div>
 			{% endif %}
 			{% if post.img-to-head %}
+			</div> 
 			<div class="post-head--overlay" 
 			     onclick="location.href='{{ post.url | prepend: site.baseurl }}';"
 			     style="cursor: pointer;
@@ -53,8 +54,7 @@ bigimg:
 				    width:  30px;
 				    background-image: url('{{ post.share-img }}');">
 			</div>
-		</div> 
-	</div>
+		</div>
 	{% endif %}
 	</article>
 {% endfor %}
