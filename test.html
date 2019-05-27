@@ -38,13 +38,13 @@ subtitle: 'All the posts of my blog'
                         {% for post in year.items %}
                         <div>
                                    <article class="post-preview"  style="padding: 0 0 25px;">
-                                              <h4 class="post-title" style="font-size: 25px;">
+                                              <h3 class="post-title" style="font-size: 30px;">
                                                          <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
-                                              </h4>	
+                                              </h3>	
                                               {% if post.subtitle %}
-                                              <h5 class="post-subtitle" style="font-size: 20px;">
+                                              <h4 class="post-subtitle" style="font-size: 20px;">
                                                          {{ post.subtitle }}
-                                              </h5>
+                                              </h4>
                                               {% endif %}
                                               <p class="post-meta" style="font-size: 15px;">
                                                          Posted on {{ post.date | date_to_string }}		    
@@ -53,6 +53,13 @@ subtitle: 'All the posts of my blog'
                         </div>
                         {% endfor %}
              </div>
-             <a href="#page-title" class="back-to-top">Back to Top &uarr;</a>
+             <a href="#page-title" style="display: block;
+                                          font-size: 0.6em;
+                                          text-transform: uppercase;
+                                          text-align: right;
+                                          text-decoration: none;
+                                          border-bottom: 0.1px solid {{ site.background-light-col }};">
+                        Back to Top &uarr;
+             </a>
 </section>
 {% endfor %}
