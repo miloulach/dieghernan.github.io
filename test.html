@@ -8,7 +8,7 @@ subtitle: 'test'
 	{% for post in site.posts %} 
 	<article class="post-preview" >
 		{% if post.img-to-head %}
-		<div style="width: 100%;display: table; margin-bottom: 15px;">
+		<div style="width: 100%;display: table; margin-bottom: 20px;">
 			<div style="display: table-cell;
 				    vertical-align: middle;
 				    padding-right: 10px;">	      
@@ -24,7 +24,7 @@ subtitle: 'test'
 			  {% if post.img-to-head %}
 			  -5px
 			  {% else %}
-			  20px
+			  15px
 			  {% endif %}
 			  ;">
 			{{ post.date | date_to_string }}
