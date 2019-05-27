@@ -6,12 +6,25 @@ subtitle: 'test'
 
 
 <h1 id="page-title" class="page__title" tabindex="-1" style="outline: none;">Posts by Year</h1>
-<ul class="taxonomy__index">
+<ul style="display: grid;
+           grid-column-gap: 2em;
+           grid-template-columns: repeat(2, 1fr);
+           margin: 1.414em 0;
+           padding: 0;
+           font-size: 0.75em;
+           list-style: none;
+           ">
   {% assign postsInYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
   {% for year in postsInYear %}
     <li>
-      <a href="#{{ year.name }}">
-        <strong>{{ year.name }}</strong> <span class="taxonomy__count">{{ year.items | size }}</span>
+      <a href="#{{ year.name }}" style="display: flex;
+                                        padding: 0.25em 0;
+                                        -webkit-box-pack: justify;
+                                        justify-content: space-between;
+                                        color: inherit;
+                                        text-decoration: none;
+                                        border-bottom: 1px solid  {{ site.navbar-col }};">>
+        <strong>{{ year.name }}</strong> <span sytle="color: #808080;">{{ year.items | size }}</span>
       </a>
     </li>
   {% endfor %}
