@@ -6,7 +6,8 @@ subtitle: 'dieghernan’s site'
 
  <div class="posts-list">
    {% for post in paginator.posts %} 
-   <article class="post-preview">
+   <article class="post-preview"
+	    style="border-top: 0.5px solid #008080;">
 	   <h3 class="post-title">
 		   <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 	   </h3>
