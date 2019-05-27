@@ -11,7 +11,8 @@ subtitle: 'test'
 		<div style="width: 100%;display: table;">
 			<div style="display: table-cell;
 				    vertical-align: middle;
-				    padding-right: 5px;">	      
+				    padding-right: 5px;
+				    margin.bottom: 20px;">	      
 		{% endif %}
 		<h3 class="post-title">
 			<a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
@@ -19,7 +20,11 @@ subtitle: 'test'
 		{% if post.subtitle %}
 		<h4 class="post-subtitle">{{ post.subtitle }}</h4>
 		{% endif %}
-		<p class="post-meta">
+		<p class="post-meta"
+		   {% if post.img-to-head %}
+		   style="margin-bottom: 0;"
+		   {% endif %}
+		   >
 			{{ post.date | date_to_string }}
 			{% if post.linktormd %}
 			<a href="{{ post.path | prepend: site.github_repo | 
@@ -32,12 +37,11 @@ subtitle: 'test'
 			<a class="post-head--overlay" 
 			   href="{{ post.url | prepend: site.baseurl }}"
 			   style="display: table-cell;
-				  padding: 30px;
+				  padding: 30px 60px;
 				  border-radius: 10px;
 				  width:  65px;
 				  background-image: url('{{ post.share-img }}');
-				  background-size: auto;
-				  border: 0.5px solid {{ site.navbar-col }};">
+				  				  border: 0.5px solid {{ site.navbar-col }};">
 			</a>
 		</div>
 		{% endif %}
