@@ -33,20 +33,20 @@ subtitle: 'All the posts of my blog'
 {% for year in postsByYear %}
   <section id="{{ year.name }}" style="margin-top: 60px;
                                        font-size: 25px;">
-             <h2 >{{ year.name }}</h2>
+             <h2 style="border-bottom: 2px solid {{ site.navbar-col }};">{{ year.name }}</h2>
              <div class="posts-list">
                         {% for post in year.items %}
-                        <div class="{{ include.type | default: "list" }}__item">
-                                   <article class="post-preview"  style="padding: 0;">
-                                              <h4 class="post-title">
+                        <div>
+                                   <article class="post-preview"  style="padding: 0 0 25px;">
+                                              <h4 class="post-title" style="font-size: 25px;">
                                                          <a href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
                                               </h4>	
                                               {% if post.subtitle %}
-                                              <h5 class="post-subtitle">
+                                              <h5 class="post-subtitle" style="font-size: 20px;">
                                                          {{ post.subtitle }}
                                               </h5>
                                               {% endif %}
-                                              <p class="post-meta">
+                                              <p class="post-meta" style="font-size: 15px;">
                                                          Posted on {{ post.date | date_to_string }}		    
                                               </p>  
                                    </article>
