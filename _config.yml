@@ -6,6 +6,7 @@ github_repo: "https://github.com/dieghernan/dieghernan.github.io/"
 
 # Name of website
 title: One world
+description: Projects, maps & coding
 
 # --- Collections --- #
 collections:
