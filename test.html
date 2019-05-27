@@ -11,7 +11,7 @@ subtitle: 'test'
 		<div style="width: 100%;display: table; margin-bottom: 20px;">
 			<div style="display: table-cell;
 				    vertical-align: middle;
-				    padding-right: 5px;">	      
+				    padding-right: 10px;">	      
 		{% endif %}
 		<h3 class="post-title">
 			<a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
@@ -39,11 +39,12 @@ subtitle: 'test'
 			<a class="post-head--overlay" 
 			   href="{{ post.url | prepend: site.baseurl }}"
 			   style="display: table-cell;
-				  padding: 30px 60px;
-				  border-radius: 10px;
+				  padding: 0 52px;
+				  border-radius: 20px;
 				  width:  65px;
 				  background-image: url('{{ post.share-img }}');
-				  				  border: 0.5px solid {{ site.navbar-col }};">
+				  background-size: auto;
+				  border: 0.5px solid {{ site.navbar-col }};">
 			</a>
 		</div>
 		{% endif %}
