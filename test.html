@@ -8,11 +8,10 @@ subtitle: 'test'
 	{% for post in site.posts %} 
 	<article class="post-preview" >
 		{% if post.img-to-head %}
-		<div style="width: 100%;display: table;">
+		<div style="width: 100%;display: table; margin-bottom: 20px;">
 			<div style="display: table-cell;
 				    vertical-align: middle;
-				    padding-right: 5px;
-				    margin.bottom: 20px;">	      
+				    padding-right: 5px;">	      
 		{% endif %}
 		<h3 class="post-title">
 			<a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
@@ -20,11 +19,14 @@ subtitle: 'test'
 		{% if post.subtitle %}
 		<h4 class="post-subtitle">{{ post.subtitle }}</h4>
 		{% endif %}
-		<p class="post-meta"
-		   {% if post.img-to-head %}
-		   style="margin-bottom: 0;"
-		   {% endif %}
-		   >
+		<p class="post-meta" 
+		   style="margin-bottom:
+			  {% if post.img-to-head %}
+			  0
+			  {% else %}
+			  20px
+			  {% endif %}
+			  ;">
 			{{ post.date | date_to_string }}
 			{% if post.linktormd %}
 			<a href="{{ post.path | prepend: site.github_repo | 
