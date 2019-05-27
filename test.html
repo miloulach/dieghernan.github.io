@@ -27,6 +27,20 @@ subtitle: 'test'
 				<i class="fa fa-fw fa-github"></i></a>
 			{% endif %}
 		</p>
+		{% if post.img-to-head %}
+			</div>
+			<a class="post-head--overlay" 
+			   href="{{ post.url | prepend: site.baseurl }}"
+			   style="display: table-cell;
+				  padding: 30px;
+				  border-radius: 10px;
+				  width:  65px;
+				  background-image: url('{{ post.share-img }}');
+				  background-size: auto;
+				  border: 0.5px solid {{ site.navbar-col }};">
+			</a>
+		</div>
+		{% endif %}
 		<div class="post-entry">
 			{{ post.content | strip_html|  truncatewords: 30 }}
 			<a href="{{ post.url | prepend: site.baseurl }}">[more]</a>
@@ -41,20 +55,6 @@ subtitle: 'test'
 			{% else %}
 			{{ post.tags | join: ", " }}
 			{% endif %}
-		</div>
-		{% endif %}
-		{% if post.img-to-head %}
-			</div>
-			<a class="post-head--overlay" 
-			   href="{{ post.url | prepend: site.baseurl }}"
-			   style="display: table-cell;
-				  padding: 30px;
-				  border-radius: 100px;
-				  width:  65px;
-				  background-image: url('{{ post.share-img }}');
-				  background-size: auto;
-				  border: 0.5px solid {{ site.navbar-col }};">
-			</a>
 		</div>
 		{% endif %}
 	</article>
