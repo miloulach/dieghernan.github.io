@@ -91,7 +91,7 @@ share-links-active:
 google_analytics: "UA-139034853-1"
 
 # Google Tag Manager ID
-gtm: "GTM-KHXTGDN"
+#gtm: "GTM-KHXTGDN"
 
 # --- Comments --- #
 disqus: dieghernan
