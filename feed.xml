@@ -27,7 +27,9 @@ layout: null
         </description>
         <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
         <link>{{ site.url }}{{ post.url }}</link>
-        <category>blog</category>
+        {% if post.tags.size > 0 %}
+        <category>{{ post.tags | join: ", " }}</category>
+        {% endif %}
         <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
         <media:content url="{{ post.share-img }}" medium="image" width="485" height="321"/>
         <media:thumbnail url="{{ post.share-img }}"  width="150" height="99"/>
