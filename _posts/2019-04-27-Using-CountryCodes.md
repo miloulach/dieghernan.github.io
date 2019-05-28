@@ -3,7 +3,7 @@ layout: post
 title: Using CountryCodes database and sf package
 subtitle: vignette of the CountryCodes project
 tags: [R,sf,maps,vignette]
-share-img: https://dieghernan.github.io/assets/figs/20190427_mapfin-1.png
+share-img: https://dieghernan.github.io/assets/figs/20190427_imgpost.png
 img-to-head: true
 linktormd: true
 output: github_document

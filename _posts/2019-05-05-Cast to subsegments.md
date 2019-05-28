@@ -3,7 +3,7 @@ layout: post
 title: Cast a line to subsegments in R
 subtitle: User-defined function using sf package
 tags: [R,sf,function]
-share-img: https://dieghernan.github.io/assets/figs/20190505_benchmarkfunction-1.png
+share-img: https://dieghernan.github.io/assets/figs/20190505_imgpost.png
 img-to-head: true
 linktormd: true
 output: github_document
