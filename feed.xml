@@ -8,6 +8,7 @@ layout: null
     <description>{{ site.description | xml_escape }}</description>
     <link>{{ site.url }}</link>
     <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
+    <category>(c)blog</category>
     <copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>
     <generator>https://rubygems.org/gems/jekyll-sitemap</generator>
     {% for post in site.posts limit:20 %}
