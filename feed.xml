@@ -9,9 +9,6 @@ layout: null
     <link>{{ site.url }}</link>
     <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
     <copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>
-    <author>
-      <name>{{ site.author.name }}</name>
-    </author>
     <generator>https://rubygems.org/gems/jekyll-sitemap</generator>
     {% for post in site.posts limit:20 %}
       <item>
