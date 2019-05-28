@@ -11,7 +11,7 @@ always_allow_html: yes
 output: github_document
 ---
 
-Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**: [I succeeded <i class="fa fa-thumbs-up"></i>](https://dieghernan.github.io/2019-133-Where-in-the-world)). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [@daattali](https://github.com/daattali).
+Recently I have been struggling when trying to embed a [leaflet](https://rstudio.github.io/leaflet) map created with **RStudio** on my blog, hosted in GitHub via [Jekyll](https://jekyllrb.com) (**Spoiler**: [I succeeded <i class="fa fa-thumbs-up"></i>](https://dieghernan.github.io/201905_Where-in-the-world)). In my case, I use the [**Beautiful Jekyll**](https://deanattali.com/beautiful-jekyll/getstarted/) implementation created by [@daattali](https://github.com/daattali).
 
 So I decided to spend a good amount of time shaping this small tutorial. It can be longer than expected but after doing this process 3 or 4 times it becomes almost trivial.
 
