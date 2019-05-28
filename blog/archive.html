@@ -24,7 +24,7 @@ permalink: /archive/
                                         color: inherit;
                                         text-decoration: none;
                                         border-bottom: 1px solid  {{ site.navbar-col }};">
-        <strong>{{ year.name }}</strong> <span>{{ year.items | size }}</span>
+        <strong>{{ year.name }}</strong> <span style="color: {{ site.navbar-col }};">{{ year.items | size }}</span>
       </a>
     </li>
   {% endfor %}
