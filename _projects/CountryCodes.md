@@ -16,7 +16,7 @@ Complete database of countries and territories, their different country codes un
 
 <sup>*Note that blanks are presented as* `""` *instead of* `NA` *since ISO-3166-ALPHA 2 for Namibia is* **NA**.</sup>
 
-#### [vignette: Using Country Codes](https://dieghernan.github.io/2019-117-Using-CountryCodes/)
+#### [vignette: Using Country Codes](https://dieghernan.github.io/201905_Using-CountryCodes/)
 
 ### A. Country Codes `.csv`  <a name="ccodes"></a>
 Main `.csv` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/Countrycodes.csv) containing 
