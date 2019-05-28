@@ -19,7 +19,7 @@ collections:
 # List of links in the navigation bar
 navbar-links:
   Blog:
-    - Main: "blog"
+    - Posts: "blog"
     - Archive: "archive"
     - Tags: "tags"
   Projects:
