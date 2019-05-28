@@ -11,6 +11,12 @@ layout: null
     <category>(c)blog</category>
     <copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>
     <generator>https://rubygems.org/gems/jekyll-sitemap</generator>
+    <image>
+      <link>{{ site.url }}</link>
+      <title>{{ site.title | xml_escape }}</title>
+      <url>{{ site.url }}{{ site.avatar }}</url>
+      <description>{{ site.description | xml_escape }}</description>
+    </image>
     {% for post in site.posts limit:20 %}
       <item>
         <title>{{ post.title | xml_escape }}</title>
