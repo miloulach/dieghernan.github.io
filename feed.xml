@@ -8,7 +8,7 @@ layout: null
     <description>{{ site.description | xml_escape }}</description>
     <link>{{ site.url }}</link>
     <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
-    <category>(c)blog</category>
+    <category>blog</category>
     <copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>
     <generator>https://rubygems.org/gems/jekyll-sitemap</generator>
     <lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
@@ -27,6 +27,7 @@ layout: null
         </description>
         <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
         <link>{{ site.url }}{{ post.url }}</link>
+        <category>blog</category>
         <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
         <media:content url="{{ post.share-img }}" medium="image" width="485" height="321"/>
         <media:thumbnail url="{{ post.share-img }}"  width="150" height="99"/>
