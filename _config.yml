@@ -20,8 +20,8 @@ collections:
 navbar-links:
   Blog:
     - Posts: "blog"
-    - Archive: "archive"
     - Tags: "tags"
+    - Archive: "archive"
   Projects:
     - All: "projects"
     - Country Codes & Organizations: "projects/countrycodes"
@@ -126,6 +126,7 @@ defaults:
       comments: true  # add comments to all blog posts
       social-share: true # add social media sharing buttons to all blog posts
       share-img: https://dieghernan.github.io/assets/img/headerblog.png
+      postedby: dieghernan
   -
     scope:
       path: "" # all files
