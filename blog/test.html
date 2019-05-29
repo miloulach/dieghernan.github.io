@@ -7,8 +7,8 @@ permalink: /test/
 
 <div class="posts-list">
   <h1> Testmod with front matter </h1>
-  {% assign image_files = site.static_files  %}
-  {% for myimage in image_files %}
-    {{ myimage.path }}
+  {% assign a = site.pages  %}
+  {% for pages in image_files %}
+  <p>{{ pages.path }}</p>
   {% endfor %}
 </div>
