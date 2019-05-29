@@ -8,13 +8,23 @@ permalink: /test/
 <div class="posts-list">
   <h1> Testmod with front matter </h1>
    {% assign postpage = site.posts | append: site.projects %}
-   {% for pages in postpage %}
+   {% for projects in postpage %}
    <article class="post-preview">
       <h3 class="post-title">
-         <a href="{{ pages.url }}">{{ pages.title }}</a> 
+         <a href="{{ projects.url }}">{{ projects.title }}</a> 
       </h3 >
       <p class="post-meta">
-			Posted on {{ pages.date | date_to_string }}		    
+			Posted on {{ projects.date | date_to_string }}		    
+		</p>
+       </article>
+   {% endfor %}
+      {% for post in postpage %}
+   <article class="post-preview">
+      <h3 class="post-title">
+         <a href="{{ post.url }}">{{ post.title }}</a> 
+      </h3 >
+      <p class="post-meta">
+			Posted on {{ post.date | date_to_string }}		    
 		</p>
        </article>
    {% endfor %}
