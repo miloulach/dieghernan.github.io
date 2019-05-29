@@ -7,7 +7,8 @@ permalink: /test/
 
 <div class="posts-list">
   <h1> Testmod with front matter </h1>
- {% for document in site.documents limit:20 | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true %}
+ {% for document in site.documents limit:20 | sort: 'document.date' | reverse | where_exp: "document", "document.includeonfeed == true %}
+ <article class="post-preview">
 <p>      start-item-end
 <p>        start-title-end{{ document.title | xml_escape }}start-/title-end
 <p>        start-description-end
@@ -16,7 +17,7 @@ permalink: /test/
 <p>        start-/description-end
 <p>        start-pubDate-end{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}start-/pubDate-end
 <p>        start-link-end{{ site.url }}{{ document.url }}start-/link-end
-        {% if document.tags.size -end 0 %}
+        {% if document.tags.size > 0 %}
 <p>        start-category-end{{ document.tags | join: "/" }}start-/category-end
 		{% else %}
 <p>		start-category-endprojectstart-/category-end
@@ -25,5 +26,6 @@ permalink: /test/
 <p>        start-media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/-end
 <p>        start-media:thumbnail url="{{ document.share-img }}"  width="150" height="99"/-end
 <p>      start-/item-end
+ </article>
     {% endfor %}
 </div>
