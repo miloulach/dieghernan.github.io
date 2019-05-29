@@ -7,10 +7,9 @@ permalink: /test/
 
 <div class="posts-list">
   <h1> Testmod with front matter </h1>
- {% for document in site.documents limit:20 | sort: 'document.date' | where_exp: "document", "document.includeonfeed == true %}
+   {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
+ {% for document in alldocs limit:20 %}
  <article class="post-preview">
-   <h1>{{ document.includeonfeed }}</h1>
-   
 <p>      start-item-end
 <p>        start-title-end{{ document.title | xml_escape }}start-/title-end
 <p>        start-description-end
