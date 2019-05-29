@@ -6,7 +6,7 @@ permalink: /test/
 ---
 
 <div class="posts-list">
-  
+  <h1> Testmod </h1>
   {% last_modified_at %Y:%B:%A:%d:%S:%R %}
    {% assign nofeat = site.projects | where_exp: "item", "item.featured == nil" %}
    {% for projects in nofeat %}
