@@ -20,18 +20,9 @@ permalink: /projects/
       <h4 class="post-subtitle">{{ project.subtitle }}</h4>
       <h5 style="padding-bottom: 10px;"> {{ project.date | date_to_string }}</h5>
       <div class="post-entry">
-         {{ project.content | strip_html | xml_escape | truncatewords: 30 }}
+         {{ project.content | strip_html | xml_escape | newline_to_br | truncatewords: 60 }}
          <a href="{{ project.url | prepend: site.baseurl }}">[more]</a>
       </div>
    </article>
    {% endfor %}
 </div>
-
-
-<h2>Fixing</h2>
-
-	{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
-	{% for document in alldocs limit:20 %}
-		<h3>{{ document.title | xml_escape }}</h3>
-        <p>{% if document.subtitle %}{{ document.subtitle | xml_escape }} - {% endif %}{{ document.content | strip_html | xml_escape | truncatewords: 50 }}</p>
-    {% endfor %}
