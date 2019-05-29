@@ -201,6 +201,7 @@ prose:
           label: "Publish"
           help: "Check to publish post, uncheck to 
 
+
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
