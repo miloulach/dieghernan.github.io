@@ -6,6 +6,7 @@ share-img: https://raw.githubusercontent.com/dieghernan/Bzel/master/store/Banner
 featured: 99
 date: 2017-05-25
 githuburl: https://github.com/dieghernan/Bzel
+output: github_document
 ---
 
 **Bzel** intregates the bezel into your watchface. Display minutes as digits, as a moving dot or as a fill in the bezel.

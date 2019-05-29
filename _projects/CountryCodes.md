@@ -6,6 +6,7 @@ share-img: https://dieghernan.github.io/assets/figs/20190427_mapfin-1.png
 featured: 1
 date: 2019-04-11
 githuburl: https://github.com/dieghernan/Country-Codes-and-International-Organizations
+output: github_document
 ---
 
 Complete database of countries and territories, their different country codes under common standards (ISO-3166, GEC *(Formerly FIPS*), M49 (*UN*), STANAG (*NATO*), NUTS (*EU*), etc.) and their membership in different international organizations.

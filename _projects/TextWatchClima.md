@@ -6,6 +6,7 @@ featured: 2
 date: 2017-02-16
 share-img: https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/BannerRound.png
 githuburl: https://github.com/dieghernan/TextWatchClima
+output: github_document
 ---
 
 **TextWatch Clima** upgrades the classic TextWatch watchface adding a bunch of new capabilities. 

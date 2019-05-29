@@ -6,6 +6,7 @@ share-img: https://raw.githubusercontent.com/dieghernan/7egment/master/store/Ban
 featured: 99
 date: 2017-05-17
 githuburl: https://github.com/dieghernan/7egment
+output: github_document
 ---
 
 **7egment** is a customizable watchface based on the classic 7-segment display that adds your location and the current weather information in the language used on your watch and smartphone.

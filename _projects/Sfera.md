@@ -6,6 +6,7 @@ share-img: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/Sfer
 featured: 99
 date: 2017-03-14
 githuburl: https://github.com/dieghernan/Sfera
+output: github_document
 ---                                                                  
 
 **Sfera** for Pebble Time Round is a highly customizable watchface that gets the most of the smartwatch capabilities. Set your preferences and enjoy this beautifully designed watchface.
