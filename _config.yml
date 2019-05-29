@@ -127,6 +127,7 @@ defaults:
       social-share: true # add social media sharing buttons to all blog posts
       share-img: https://dieghernan.github.io/assets/img/headerblog.png
       postedby: dieghernan
+      includeonfeed: true
   -
     scope:
       path: "" # all files
@@ -135,6 +136,8 @@ defaults:
       show-avatar: true
       share-img: https://dieghernan.github.io/assets/img/headerblog.png
       dateproj: 2010-04-01
+      date: 2000-01-01
+      includeonfeed: true
 
 # Use tags index page and make tags on each post clickable
 link-tags: true
