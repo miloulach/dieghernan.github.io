@@ -88,7 +88,7 @@ telephone:
 
 rss:
   name: "RSS"
-  baseURL: "{{ '/feed.xml' | prepend: site.baseurl }}"
+  baseURL: "{{ '/rss.xml' | prepend: site.baseurl }}"
   icon: "fa-rss"
 
 steam:
