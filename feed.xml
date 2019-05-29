@@ -10,7 +10,6 @@ layout: null
     <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
     <category>blog</category>
     <copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>
-    <generator>https://rubygems.org/gems/jekyll-sitemap</generator>
     <lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
     <image>
       <link>{{ site.url }}</link>
@@ -18,22 +17,21 @@ layout: null
       <url>{{ site.url }}{{ site.avatar }}</url>
       <description>{{ site.description | xml_escape }}</description>
     </image>
-    {% for post in site.posts limit:20 %}
-      <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>
-          {% if post.subtitle %}{{ post.subtitle | xml_escape }} - {% endif %}
-          {{ post.content | strip_html | xml_escape | truncatewords: 50 }}
-        </description>
-        <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-        <link>{{ site.url }}{{ post.url }}</link>
-        {% if post.tags.size > 0 %}
-        <category>{{ post.tags | join: "/" }}</category>
-        {% endif %}
-        <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
-        <media:content url="{{ post.share-img }}" medium="image" width="485" height="321"/>
-        <media:thumbnail url="{{ post.share-img }}"  width="150" height="99"/>
-      </item>
+	{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
+	{% for document in alldocs limit:20 %}
+	<item>
+		<title>{{ document.title | xml_escape }}</title>
+        <description>{% if document.subtitle %}{{ document.subtitle | xml_escape }} - {% endif %}{{ document.content | strip_html | xml_escape | truncatewords: 50 }}</description>
+        <pubDate>{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+        <link>{{ site.url }}{{ document.url }}</link>
+		<category>{{ document.layout }}</category>
+        {% if document.tags.size > 0 %}
+			<category>{{ document.tags | join: "/" }}</category>
+		{% endif %}		
+        <guid isPermaLink="true">{{ site.url }}{{ document.url }}</guid>
+        <media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/>
+        <media:thumbnail url="{{ document.share-img }}"  width="150" height="99"/>
+	</item>
     {% endfor %}
   </channel>
 </rss>
