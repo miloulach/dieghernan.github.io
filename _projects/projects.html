@@ -21,7 +21,7 @@ permalink: /projects/
       <h5 style="padding-bottom: 10px;"> {{ project.date | date_to_string }}</h5>
       <div class="post-entry">
          {{ project.content | strip_html | xml_escape | truncatewords: 30 }}
-         <a href="{{ projects.url }}">[more]</a>
+         <a href="{{ project.url | prepend: site.baseurl }}">[more]</a>
       </div>
    </article>
    {% endfor %}
