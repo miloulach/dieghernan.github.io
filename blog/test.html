@@ -12,7 +12,8 @@ permalink: /test/
  <article class="post-preview">
 <p>      start-item-end
 <p>        start-title-end{{ document.title | xml_escape }}start-/title-end
-<p>        start-description-end
+<h1>document.layout</h1>
+  <p>        start-description-end
          {% if document.subtitle %}{{ document.subtitle | xml_escape }} - {% endif %}
 <p>          {{ document.content | strip_html | xml_escape | truncatewords: 50 }}
 <p>        start-/description-end
