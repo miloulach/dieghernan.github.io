@@ -201,10 +201,8 @@ prose:
           label: "Publish"
           help: "Check to publish post, uncheck to 
 
-gems:
-  - jekyll-last-modified-at
-
 plugins:
+  - jekyll-last-modified-at
   - jekyll-paginate
   - jekyll-sitemap
 
