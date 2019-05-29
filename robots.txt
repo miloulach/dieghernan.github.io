@@ -132,12 +132,7 @@ User-agent: yoozBot
 # youdao.com chinese search engine
 User-agent: YoudaoBot
 # crawling rule(s) for above bots
-Disallow: /_drafts
-Disallow: /_data
-Disallow: /_includes
-Disallow: /_layouts
-Disallow: /css
-Disallow: /js
+Disallow: 
 # disallow all other bots
 User-agent: *
 Disallow: /
