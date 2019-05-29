@@ -4,48 +4,7 @@
 # Robots Exclusion Standard (robots.txt). Each bot is shortly described in a   #
 # comment above the (list of) user-agent(s). Uncomment or delete bots you do   #
 # not wish to allow on your website / which do not need to visit your website. #
-# Important: Blank lines are not allowed in the final robots.txt file!         #
-# Updates can be retrieved from: https://github.com/jonasjacek/robots.txt      #
-#                                                                              #
-# This document is licensed with a CC BY-NC-SA 4.0 license.                    #
-#                                                                              #
-# Last update: 2019-03-07                                                      #
-#                                                                              #
-################################################################################
-# so.com chinese search engine
-User-agent: 360Spider
-User-agent: 360Spider-Image
-User-agent: 360Spider-Video
-# google.com landing page quality check
-User-agent: AdsBot-Google
-# google.com app resource fetcher
-User-agent: AdsBot-Google-Mobile-Apps
-# bing ads bot
-User-agent: adidxbot
-# apple.com search engine
-User-agent: Applebot
-user-agent: AppleNewsBot
-# baidu.com chinese search engine
-User-agent: Baiduspider
-User-agent: Baiduspider-image
-# bing.com international search engine
-User-agent: bingbot
-User-agent: BingPreview
-# bublup.com suggestion/search engine
-User-agent: BublupBot
-# commoncrawl.org open repository of web crawl data
-User-agent: CCBot
-# cliqz.com german in-product search engine
-User-agent: Cliqzbot
-# coccoc.com vietnamese search engine
-User-agent: coccoc
-User-agent: coccocbot-image
-User-agent: coccocbot-web
-# daum.net korean search engine
-User-agent: Daumoa
-# dazoo.fr french search engine
-User-agent: Dazoobot
-# deusu.de german search engine
+# Important: Blank lines are not allowed in the 
 User-agent: DeuSu
 # duckduckgo.com international privacy search engine
 User-agent: DuckDuckBot
@@ -135,6 +94,6 @@ User-agent: YoudaoBot
 Disallow: 
 # disallow all other bots
 User-agent: *
-Disallow: /
+Disallow: 
 
 Sitemap: https://dieghernan.github.io/sitemap.xml
