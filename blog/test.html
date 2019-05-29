@@ -6,12 +6,14 @@ permalink: /test/
 ---
 
 <div class="posts-list">
+  {% last_modified_at %}
   
+  {% last_modified_at %Y:%B:%A:%d:%S:%R %}
    {% assign nofeat = site.projects | where_exp: "item", "item.featured == nil" %}
    {% for projects in nofeat %}
    <article class="post-preview">
       <h3 class="post-title">
-         <a href="{{ projects.url }}">{{ projects.title }}</a>
+         <a href="{{ projects.url }}">{{ projects.title }}</a>  {% last_modified_at %Y:%B:%A:%d:%S:%R %}
       </h3 >
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
      <h5> Page mod at {{ projects.last_modified_at }} </h5>
