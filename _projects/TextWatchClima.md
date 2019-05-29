@@ -3,7 +3,7 @@ layout: project
 title: TextWatch Clima 
 subtitle: A Pebble (RIP) project
 featured: 2
-dateproj: 2017-02-16
+date: 2017-02-16
 share-img: https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/BannerRound.png
 githuburl: https://github.com/dieghernan/TextWatchClima
 ---

@@ -4,7 +4,7 @@ title: Sfera
 subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaBanner.png
 featured: 99
-dateproj: 2017-03-14
+date: 2017-03-14
 githuburl: https://github.com/dieghernan/Sfera
 ---                                                                  
 

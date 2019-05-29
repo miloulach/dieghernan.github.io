@@ -4,7 +4,7 @@ title: Bzel
 subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/Bzel/master/store/BannerBzel.png
 featured: 99
-dateproj: 2017-05-25
+date: 2017-05-25
 githuburl: https://github.com/dieghernan/Bzel
 ---
 

@@ -4,7 +4,7 @@ title: 7egment
 subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/7egment/master/store/Banner.png
 featured: 99
-dateproj: 2017-05-17
+date: 2017-05-17
 githuburl: https://github.com/dieghernan/7egment
 ---
 
