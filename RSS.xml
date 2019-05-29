@@ -1,0 +1,37 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+	<channel>
+		<title>{{ site.title | xml_escape }}</title>
+		<description>{{ site.description | xml_escape }}</description>
+		<link>{{ site.url }}</link>
+		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
+		<category>blog</category>
+		<copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>
+		<lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
+		<image>
+			<link>{{ site.url }}</link>
+			<title>{{ site.title | xml_escape }}</title>
+			<url>{{ site.url }}{{ site.avatar }}</url>
+			<description>{{ site.description | xml_escape }}</description>
+		</image>
+		{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
+		{% for document in alldocs limit:20 %}
+		<item>
+			<title>{{ document.title | xml_escape }}</title>
+			<description>{% if document.subtitle %}{{ document.subtitle | xml_escape }} - {% endif %}{{ document.content | strip_html | xml_escape | truncatewords: 40 }}</description>
+			<pubDate>{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+			<link>{{ site.url }}{{ document.url }}</link>
+			<category>{{ document.layout }}</category>
+			{% if document.tags.size > 0 %}
+			<category>{{ document.tags | join: "/" }}</category>
+			{% endif %}		
+			<guid isPermaLink="true">{{ site.url }}{{ document.url }}</guid>
+			<media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/>
+			<media:thumbnail url="{{ document.share-img }}"  width="150" height="99"/>
+		</item>
+		{% endfor %}
+	</channel>
+</rss>
