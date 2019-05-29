@@ -6,7 +6,7 @@ permalink: /test/
 ---
 
 <div class="posts-list">
-  <h1> Testmod </h1>
+  <h1> Testmod with front matter </h1>
    {% assign nofeat = site.projects | where_exp: "item", "item.featured == nil" %}
    {% for projects in nofeat %}
    <article class="post-preview">
@@ -14,7 +14,7 @@ permalink: /test/
          <a href="{{ projects.url }}">{{ projects.title }}</a> 
       </h3 >
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
-     <h5> Page mod at {{ projects.last_modified_at }} </h5>
+     <h5> Page mod at {{ projects.dateproj | date_to_string }} </h5>
       <div class="post-entry">
          {{ projects.content | strip_html  | truncatewords: 20 }}
          <a href="{{ projects.url }}">[more]</a>
