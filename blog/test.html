@@ -11,3 +11,17 @@ permalink: /test/
   <p>{{ page.path }}</p>
   {% endfor %}
 </div>
+
+<div class="posts-list">
+  <h1> Testmod with front matter </h1>
+  {% for document in site.documents %}
+  <p>{{ document.path }}</p>
+  {% endfor %}
+</div>
+
+<div>
+  {% for collection in site.collections %}
+  <p>{{ collection.docs }}</p>
+{% endfor %}
+  
+</div>
