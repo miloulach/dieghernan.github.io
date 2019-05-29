@@ -5,44 +5,33 @@ subtitle: 'Some pieces of work'
 includeonfeed: false
 permalink: /projects/
 ---
-<div class="posts-list">
-   {% assign allprojs = site.projects | sort: 'featured' | where_exp: "item", "item.includeonfeed == true" %}
-   {% for projects in allprojs %}
+<h1>Restoring</h1>
+<div>
+   {% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
+   {% for projects in feat %}
    <article class="post-preview">
-      <h3 class="post-title">
-         <a href="{{ projects.url }}">
-            {% if projects.featured < 99 %}
-            <i class="fa fa-fw fa-heart-o"></i> 
-            {% endif %}
-            {{ projects.title }}
-         </a>
-      </h3 >
+      <a href="{{ projects.url | prepend: site.baseurl }}">
+         <h3 class="post-title"><i class="fa fa-fw fa-heart-o"></i> {{ projects.title }}</h3 >
+      </a>
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
-      <h5 style="padding-bottom: 10px;"> {{ projects.date | date_to_string }}</h5>
+      <div class="post-entry">
+         {{ projects.content  | strip_html | xml_escape | truncatewords: 20 }}
+         <a href="{{ projects.url }}"> [Read more]</a>
+      </div>
+   </article>
+   {% endfor %}
+   {% assign nofeat = site.projects | where_exp: "item", "item.featured == nil" %}
+   {% for projects in nofeat %}
+   <article class="post-preview">
+      <a href="{{ projects.url | prepend: site.baseurl }}">
+         <h3 class="post-title">
+         {{ projects.title }}
+      </a>
+      <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <div class="post-entry">
          {{ projects.content  | strip_html | xml_escape | truncatewords: 40 }}
-         <a href="{{ projects.url }}">[more]</a>
+         <a href="{{ projects.url }}"> [Read more]</a>
       </div>
    </article>
    {% endfor %}
 </div>
-<h3>Testing</h3>
-<div class="posts-list">
-	{% assign projshow = site.projects | sort: 'featured' | where_exp:"item","item.featured != nil" %}
-	{% for projects in projshow %}
-	<article class="post-preview">
-  <h3 class="post-title">
-    <a href="{{ projects.url }}">
-       {% if projects.featured < 99 %}<i class="fa fa-fw fa-heart-o"></i> {% endif %}
-       {{ projects.title }}
-    </a>
-  </h3 >
-  <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
-    <p class="post-entry" style="margin-bottom: 0px;">
-        {{ projects.content | strip_html |  truncatewords: 30 }}
-         <a href="{{ projects.url }}">[more]</a>
-    </p>
-	  </article>
-{% endfor %}
-</div> 
-
