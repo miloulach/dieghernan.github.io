@@ -80,18 +80,20 @@ bigimg:
 		border-radius: 10px;
 		-moz-border-radius: 10px">
 		<div class="posts-list">
-			{% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured >0" %}
+			{% assign feat = site.projects | sort: 'featured' | where_exp:"item","item.featured != nil" %}
 			{% for projects in feat %}
+			{% if projects.featured < 99 %}
 			<article class="post-preview">
-				<h3 class="post-title">
-					<a href="{{ projects.url }}">{{ projects.title }}</a>
-				</h3 >
-				<h4 class="post-subtitle">{{ projects.subtitle }}</h4>
-				<p class="post-entry" style="margin-bottom: 0px;">
-				{{ projects.content | strip_html |  truncatewords: 30 }}
-					<a href="{{ projects.url }}">[more]</a>
-				</p>
-			</article>
+        <h3 class="post-title">
+          <a href="{{ projects.url }}">{{ projects.title }}</a>
+        </h3 >
+        <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
+          <p class="post-entry" style="margin-bottom: 0px;">
+              {{ projects.content | strip_html |  truncatewords: 30 }}
+               <a href="{{ projects.url }}">[more]</a>
+          </p>
+			  </article>
+		  {% endif %}
 		{% endfor %}
 		</div> 
 		<ul class="pager main-pager">
