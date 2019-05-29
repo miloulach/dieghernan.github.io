@@ -7,21 +7,9 @@ permalink: /test/
 
 <div class="posts-list">
   <h1> Testmod with front matter </h1>
-  {% for page in site.pages %}
-  <p>{{ page.path }}</p>
-  {% endfor %}
-</div>
-
-<div class="posts-list">
-  <h1> Testmod with front matter </h1>
   {% for document in site.documents %}
+  <h1>{{ document.title }}</h1>
+  <h2>{{ document.subtitle }}</h2>
   <p>{{ document.path }}</p>
   {% endfor %}
-</div>
-
-<div>
-  {% for collection in site.collections %}
-  <p>{{ collection.docs }}</p>
-{% endfor %}
-  
 </div>
