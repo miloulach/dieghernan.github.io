@@ -26,3 +26,12 @@ permalink: /projects/
    </article>
    {% endfor %}
 </div>
+
+
+<h2>Fixing</h2>
+
+	{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
+	{% for document in alldocs limit:20 %}
+		<h3>{{ document.title | xml_escape }}</h3>
+        <p>{% if document.subtitle %}{{ document.subtitle | xml_escape }} - {% endif %}{{ document.content | strip_html | xml_escape | truncatewords: 50 }}</p>
+    {% endfor %}
