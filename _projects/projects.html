@@ -20,7 +20,7 @@ permalink: /projects/
       <h4 class="post-subtitle">{{ projects.subtitle }}</h4>
       <h5 style="padding-bottom: 10px;"> {{ projects.date | date_to_string }}</h5>
       <p class="post-entry">
-         {{ projects.content | strip_html |  truncatewords: 30 }}
+         {{ projects.content | strip_html | xml_escape | truncatewords: 30 }}
          <a href="{{ projects.url }}">[more]</a>
       </p>
    </article>
