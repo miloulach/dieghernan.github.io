@@ -4,6 +4,7 @@ title: Leaflet, R, Markdown, Jekyll and GitHub
 subtitle: Make it work in 6 steps - a short tutorial
 tags: [R,leaflet,Jekyll, html, maps]
 share-img: https://dieghernan.github.io/assets/figs/20190520_imgpost.png
+date: 2019-05-20
 img-to-head: true
 linktormd: true
 leafletmap: true
