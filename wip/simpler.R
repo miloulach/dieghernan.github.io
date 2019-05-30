@@ -1,6 +1,36 @@
 #1. Set up----
 rm(list = ls(all = TRUE))
 
+library(sf)
+library(rnaturalearth)
+library(dplyr)
+
+
+europe  <- ne_download(50,type="map_subunits", returnclass = "sf", destdir = tempdir()) %>%
+  subset(CONTINENT=="Europe")
+
+# Gridding
+europe=st_transform(europe,3857)
+
+## Important, the grid widht is established in the same unit that the projection, in this case is meters (m)
+
+
+
+grid = st_make_grid(europe,
+                    500.
+                    crs = st_crs(europe),
+                    what = "polygons",
+                    square = TRUE
+                    )
+
+plot(grid)
+
+
+
+
+
+
+
 library(pacman)
 p_load(
   sf,

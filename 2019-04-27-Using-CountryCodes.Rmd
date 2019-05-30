@@ -1,17 +1,23 @@
 ---
 layout: post
-title: Using CountryCodes database and sf package.
-subtitle: vignette of the CountryCodes project.
+title: Using CountryCodes database and sf package
+subtitle: vignette of the CountryCodes project
 tags: [R,sf,maps,vignette]
 linktormd: true
 output: github_document
 ---
 
 
+This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/projects/countrycodes/)
+  by using the `sf` package in R.
+
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(global.par = TRUE)
 rm(list = ls())
+
 library("knitr")
 library("rmarkdown")
 
@@ -19,8 +25,6 @@ library("rmarkdown")
 
 
 
-This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/projects/countrycodes/)
-  by using the `sf` package in R.
 
 ## Required R packages
 
@@ -44,7 +48,8 @@ orgsdb = read.csv("https://raw.githubusercontent.com/dieghernan/Country-Codes-an
 
 kable(orgsdb[grep("Common", orgsdb$org_name), ],format = 'markdown')
 ```
- In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
+ 
+In our case, the value to search is **C**. It is provided also a function that extract the membership from the `json` database:
 ```{r funjson, warning=FALSE, message=FALSE, tidy='styler'}
 ISO_memcol = function(df,
                       orgtosearch 
