@@ -48,14 +48,14 @@ library(RColorBrewer)
 
 Let's use the `square` option of `st_make_grid` and play a bit with it.
 
-```{r 20190530_preparing, warning=FALSE, message=FALSE, tidy='styler', dpi=90, fig.align='center'}
+```{r 20190530_preparing, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 europe  <- ne_download(50,
                        type="map_subunits", 
                        returnclass = "sf",
                        destdir = tempdir()) %>%
   subset(CONTINENT=="Europe") %>%
   subset(!NAME_EN %in% c("Jan Mayen","Svalbard","Russia"))
-#Excluding for plotting purposes only
+# Excluding for plotting purposes only
 
 # Projecting and cleaning
 europe=st_transform(europe,3857) %>% select(NAME_EN,ADM0_A3)
