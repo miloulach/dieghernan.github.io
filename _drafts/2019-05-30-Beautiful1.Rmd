@@ -46,7 +46,7 @@ library(RColorBrewer)
 
 ### Working with square grids
 
-Let's use the `square` options of `st_make_grid` and play a bit with it.
+Let's use the `square` option of `st_make_grid` and play a bit with it.
 
 ```{r 20190530_preparing, warning=FALSE, message=FALSE, tidy='styler', dpi=90, fig.align='center'}
 europe  <- ne_download(50,
