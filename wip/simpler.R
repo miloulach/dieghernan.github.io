@@ -17,7 +17,7 @@ europe=st_transform(europe,3857)
 
 
 grid = st_make_grid(europe,
-                    500.
+                    500,
                     crs = st_crs(europe),
                     what = "polygons",
                     square = TRUE
