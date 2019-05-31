@@ -78,7 +78,7 @@ bigimg:
 				border-radius: 10px;
 				-moz-border-radius: 10px">
 		<div class="posts-list">
-			{% assign feat = site.projects | sort: 'date' | reverse" %}
+			{% assign feat = site.projects | sort: 'date' | reverse  %}
 			{% for projects in feat %}
 				{% if projects.featured  %}
 				<article class="post-preview">
