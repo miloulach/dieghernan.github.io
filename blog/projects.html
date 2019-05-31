@@ -10,7 +10,7 @@ permalink: /projects/
    <article class="post-preview">
       <h3 class="post-title">
          <a href="{{ project.url | prepend: site.baseurl }}">
-            {% if project.featured < 99 %} 
+            {% if project.featured %} 
             <i class="fa fa-fw fa-heart-o"></i> 
             {% endif %}
             {{ project.title }}
