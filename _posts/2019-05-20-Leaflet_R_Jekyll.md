@@ -183,7 +183,7 @@ Now you just have to publish your post as usual!! If everything has been properl
 ## Gallery: Size of a leaflet map 
 
 {: .box-note}
-For a complete understanding of this section it is recommended to access it on multiple devices, so you can see the different behavior on different screens.
+For a complete understanding of this section it is recommended to access it on multiple devices (you can easily simulated it with Googel Chrome Inspector, using the ["Device Mode"](https://developers.google.com/web/tools/chrome-devtools/device-mode/)), so you can see the different behavior on different screens.
 
 Let's start creating a new leaflet map: <a name="setleaf"></a>
 
