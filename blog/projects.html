@@ -6,7 +6,7 @@ includeonfeed: false
 permalink: /projects/
 ---
 <div class="posts-list">
-   {% assign allprojs = site.projects | sort: 'date' %}
+   {% assign allprojs = site.projects | sort: 'date' | reverse %}
    {% for project in allprojs %}
    <article class="post-preview">
       <h3 class="post-title">
