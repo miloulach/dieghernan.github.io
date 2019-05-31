@@ -3,7 +3,7 @@ layout: base
 ---
 {% if page.bigimg %}
 	<div id="header-big-imgs"
-	     data-img-src="{{ page.bigimg | prepend: site.baseurl | replace: '//', '/' }}">
+	     data-img-src=="{{ page.bigimg  | prepend: site.baseurl | replace: '//', '/' }}">
 	</div>
 {% endif %}
 <header class="header-section {% if page.bigimg %}has-img{% endif %}">
