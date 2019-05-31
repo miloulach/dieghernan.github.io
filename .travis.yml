@@ -1,7 +1,9 @@
 language: ruby
-cache: bundler
-branches:
-  only:
-  - release
+rvm:
+  - 2.1
 script:
-  - JEKYLL_ENV=production bundle exec jekyll build --destination site
+  - bundle exec jekyll build
+  - bundle exec htmlproofer ./_site --only-4xx --check-favicon --check-html
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true # speeds up installation of html-proofer
