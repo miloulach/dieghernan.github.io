@@ -1,4 +1,7 @@
 language: ruby
-rvm:
- - 2.2
- - jruby
+cache: bundler
+branches:
+  only:
+  - release
+script:
+  - JEKYLL_ENV=production bundle exec jekyll build --destination site
