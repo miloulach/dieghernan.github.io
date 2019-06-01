@@ -50,23 +50,23 @@ library(RColorBrewer)
 Let's use the `square` option of `st_make_grid` and play a bit with it.
 
 ```{r 20190530_preparing, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
-europe  <- ne_download(50,
+GB  <- ne_download(50,
                        type="map_subunits", 
                        returnclass = "sf",
                        destdir = tempdir()) %>%
   subset(CONTINENT=="Europe") %>%
-  subset(!NAME_EN %in% c("Jan Mayen","Svalbard","Russia"))
-# Excluding for plotting purposes only
+  subset(ADM0_A3=="GBR")
+
 
 # Projecting and cleaning
-europe=st_transform(europe,3857) %>% select(NAME_EN,ADM0_A3)
-initial = europe
+GB=st_transform(GB,3857) %>% select(NAME_EN,ADM0_A3)
+initial = GB
 initial$index_target = 1:nrow(initial)
 target = st_geometry(initial)
 
 #Create my own color palette
 
-mypal=colorRampPalette(c("#F3F8F8","#008080","#15403F"))
+mypal=colorRampPalette(c("#F3F8F8","#008080"))
 
 ```
 
@@ -78,7 +78,7 @@ mypal=colorRampPalette(c("#F3F8F8","#008080","#15403F"))
 
 grid = st_make_grid(
   target,
-  100*1000, # Kms
+  25*1000, # Kms
   crs = st_crs(initial),
   what = "polygons",
   square = TRUE
@@ -123,8 +123,8 @@ Puzzle=left_join(Puzzlegeom %>%
 
 
 par(mfrow=c(1,2),mar=c(1,1,1,1))
-plot(st_geometry(Fishnet),col=mypal(nrow(Fishnet)/2), main="Fishnet")
-plot(st_geometry(Puzzle),col=mypal(nrow(Fishnet)/2), main="Puzzle")
+plot(st_geometry(Fishnet),col=mypal(4), main="Fishnet")
+plot(st_geometry(Puzzle),col=mypal(4), main="Puzzle")
 
 ```
 
@@ -137,7 +137,7 @@ Extremely easy. We just need to change the `square` parameter of `st_make_grid` 
 
 grid = st_make_grid(
   target,
-  100*1000, # Kms
+  25*1000, # Kms
   crs = st_crs(initial),
   what = "polygons",
   square = FALSE
@@ -180,7 +180,7 @@ Hexbin=left_join(Hexbingeom %>%
 
 
 par(mfrow=c(1,2),mar=c(1,1,1,1))
-plot(st_geometry(Honeycomb),col=mypal(nrow(Honeycomb)/2), main="Honeycomb")
-plot(st_geometry(Hexbin),col=mypal(nrow(Honeycomb)/2), main="Hexbin")
+plot(st_geometry(Honeycomb),col=mypal(4), main="Honeycomb")
+plot(st_geometry(Hexbin),col=mypal(4), main="Hexbin")
 
 ```
