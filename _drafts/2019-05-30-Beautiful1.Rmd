@@ -1,15 +1,16 @@
 ---
+layout: post
 title: "Beautiful Maps with R (I): Fishnets. Honeycombs and Pixels"
 subtitle: "Awesome simplified maps with R"
 tags: [R,beautiful_maps, maps, sf]
 date: 2019-05-30
-output: github_document
----
-
-layout: post
 share-img: https://dieghernan.github.io/assets/figs/20190513_imgpost.png
 img-to-head: true
 linktormd: true
+output: github_document
+---
+
+
 
 
 ```{r setup, include=FALSE}
@@ -62,6 +63,10 @@ europe=st_transform(europe,3857) %>% select(NAME_EN,ADM0_A3)
 initial = europe
 initial$index_target = 1:nrow(initial)
 target = st_geometry(initial)
+
+#Create my own color palette
+
+mypal=colorRampPalette(c("#F3F8F8","#008080","#15403F"))
 
 ```
 
@@ -116,9 +121,10 @@ Puzzle=left_join(Puzzlegeom %>%
   select(-index_target)
 
 
+
 par(mfrow=c(1,2),mar=c(1,1,1,1))
-plot(st_geometry(Fishnet),col=brewer.pal(12,"Blues"), main="Fishnet")
-plot(st_geometry(Puzzle),col=brewer.pal(12,"Blues"), main="Puzzle")
+plot(st_geometry(Fishnet),col=mypal(nrow(Fishnet)), main="Fishnet")
+plot(st_geometry(Puzzle),col=mypal(nrow(Fishnet)), main="Puzzle")
 
 ```
 
@@ -174,7 +180,7 @@ Hexbin=left_join(Hexbingeom %>%
 
 
 par(mfrow=c(1,2),mar=c(1,1,1,1))
-plot(st_geometry(Honeycomb),col=brewer.pal(7,"Blues"), main="Honeycomb")
-plot(st_geometry(Hexbin),col=brewer.pal(7,"Blues"), main="Hexbin")
+plot(st_geometry(Honeycomb),col=mypal(nrow(Honeycomb)), main="Honeycomb")
+plot(st_geometry(Hexbin),col=mypal(nrow(Honeycomb)), main="Hexbin")
 
 ```
