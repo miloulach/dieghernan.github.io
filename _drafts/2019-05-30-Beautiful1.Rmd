@@ -28,7 +28,7 @@ The only thing I was not completely comfortable with was that the post used the 
 The approach is similar (using grids over a map and work with that) but using [`st_make_grid`](https://www.rdocumentation.org/packages/sf/versions/0.7-4/topics/st_make_grid). I also expanded it by grouping the grids and also producing dots over the geometries. So basically I produced 5 variations of the map:
 
 | Type          | Replacement | Grouped  |
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:| :-----:|
 | **Fishnet** | Square | No
 | **Puzzle** | Square | Yes
 | **Honeycomb** | Hexagon | No
@@ -36,7 +36,7 @@ The approach is similar (using grids over a map and work with that) but using [`
 | **Pixel** | Dot | No
 
 
-## Required R packages
+### Required R packages
 
 ```{r libs, warning=FALSE, message=FALSE, tidy='styler'}
 library(sf)
