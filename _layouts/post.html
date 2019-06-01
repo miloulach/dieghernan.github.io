@@ -3,17 +3,16 @@ layout: base
 ---
 <header class="header-section">
    <div class="intro-header" style="margin-bottom: 0">
+      {% if page.img-to-head %}
+      <div class="post-head--overlay"
+           style=" background-image: url('{{ page.share-img }}');">
+      </div>
+      {% endif %}
       <div class="container">
          <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                <div class="post-heading">
-                  {% if page.img-to-head %}
-                  <div class="post-head--overlay"
-                       style=" background-image: url('{{ page.share-img }}');">
-                  </div>
-                  {% endif %}
-                  <h1>
-                     {{ page.title }}<br/>
+                 <h1>{{ page.title }}<br/>
                   </h1>
                   <h2 class="post-subheading">
                      {{ page.subtitle }}
