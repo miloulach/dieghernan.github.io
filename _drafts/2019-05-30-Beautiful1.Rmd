@@ -86,12 +86,6 @@ cent_grid = st_centroid(grid)
 cent_merge = st_join(cent_grid, initial["index_target"], left = F)
 grid_new = inner_join(grid, st_drop_geometry(cent_merge))
 
-fishnet_geom = aggregate(
-  grid_new,
-  by = list(grid_new$index_target),
-  FUN = min,
-  do_union = FALSE
-)
 
 #Fishnet
 Fishgeom = aggregate(
@@ -125,5 +119,62 @@ Puzzle=left_join(Puzzlegeom %>%
 par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(st_geometry(Fishnet),col=brewer.pal(12,"Blues"), main="Fishnet")
 plot(st_geometry(Puzzle),col=brewer.pal(12,"Blues"), main="Puzzle")
+
+```
+
+### Going hex
+
+Extremely easy. We just need to change the `square` parameter of `st_make_grid` from `TRUE` to `FALSE`
+
+```{r 20190530_hex, warning=FALSE, message=FALSE, tidy='styler',fig.width=700/90, fig.height=350/90, dpi=90, fig.align='center'}
+
+
+grid = st_make_grid(
+  target,
+  100*1000, # Kms
+  crs = st_crs(initial),
+  what = "polygons",
+  square = FALSE
+  )
+# Make sf
+grid = st_sf(index = 1:length(lengths(grid)), grid) # Add index
+
+#We identify the grids that belongs to a entity by assessing the centroid 
+cent_grid = st_centroid(grid)
+cent_merge = st_join(cent_grid, initial["index_target"], left = F)
+grid_new = inner_join(grid, st_drop_geometry(cent_merge))
+
+#Honeycomb
+Honeygeom = aggregate(
+  grid_new,
+  by = list(grid_new$index_target),
+  FUN = min,
+  do_union = FALSE
+)
+
+#Lets add the df
+Honeycomb=left_join(Honeygeom %>%
+                    select(index_target),
+                  st_drop_geometry(initial)) %>% 
+  select(-index_target)
+
+# Now lets create the Hexbin
+
+Hexbingeom=aggregate(
+  grid_new,
+  by = list(grid_new$index_target),
+  FUN = min,
+  do_union = TRUE # This is the only piece that changes!!!
+  )
+
+Hexbin=left_join(Hexbingeom %>%
+                   select(index_target),
+                 st_drop_geometry(initial)) %>% 
+  select(-index_target)
+
+
+par(mfrow=c(1,2),mar=c(1,1,1,1))
+plot(st_geometry(Honeycomb),col=brewer.pal(7,"Blues"), main="Honeycomb")
+plot(st_geometry(Hexbin),col=brewer.pal(7,"Blues"), main="Hexbin")
 
 ```

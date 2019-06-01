@@ -4,6 +4,9 @@ rm(list = ls(all = TRUE))
 library(sf)
 library(rnaturalearth)
 library(dplyr)
+library(RColorBrewer)
+
+RColorBrewer::brewer.pal.info
 
 
 europe  <- ne_download(50,type="map_subunits", returnclass = "sf", destdir = tempdir()) %>%
@@ -26,10 +29,10 @@ grid = st_make_grid(europe,
 plot(grid)
 
 
+plot(st_geometry(Hexbin),col=brewer.pal(7,"Blues"), main="Honeycomb")
 
 
-
-
+RColorBrewer::display.brewer.all()
 
 library(pacman)
 p_load(
