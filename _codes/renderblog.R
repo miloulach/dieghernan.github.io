@@ -7,8 +7,8 @@ p_load(styler)
 diegpost <- function(file) {
   getwd()
   ezknit(
-    paste("../_codes/",file,".Rmd",sep = ""),
-    wd="./assets/figs",
+    paste("~/R/dieghernan.github.io/_codes/",file,".Rmd",sep = ""),
+    wd="./assets",
     out_dir = "../_posts",
     fig_dir = "../assets/figs",
     keep_html = FALSE
@@ -19,6 +19,7 @@ diegpost <- function(file) {
 #diegpost("2019-04-27-Using-CountryCodes")
 #diegpost("2019-05-05-Cast to subsegments")
 #diegpost("2019-05-13-Where-in-the-world")
-diegpost("2019-05-20-Leaflet_R_Jekyll")
+#diegpost("2019-05-20-Leaflet_R_Jekyll")
+diegpost("2019-06-02-Beautiful1")
 
 
