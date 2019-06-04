@@ -15,7 +15,11 @@ permalink: /test/
 
 <h1>{{ all_tags | size }} </h1>
 
+{{ all_tags |  group_by: "item" }}
+
+
 {% assign uniqtag = all_tags | uniq | sort %}
+
 
 {% for tag in uniqtag %}
 <ul>{{ tag }} - {{ all_tags |  where_exp: "item", "item == 'sf' " | size }}</ul>
