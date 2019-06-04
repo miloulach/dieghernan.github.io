@@ -3,8 +3,10 @@ layout: project
 title: Sfera 
 subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaBanner.png
+bigimg: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaBanner.png
 date: 2017-03-14
 permalink: /Sfera/
+donate: true
 tags: [project,pebble,watchface,javascript,C]
 githuburl: https://github.com/dieghernan/Sfera
 output: github_document
@@ -16,9 +18,7 @@ output: github_document
 
 #### [Download from Pebble Appstore](https://apps.getpebble.com/applications/58c2f7110dfc32a52a00081f)
 
-[![paypal](https://www.paypalobjects.com/en_US/ES/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AAYBMD7APLZFN)
-
-# Features
+## Features
 * Clock mode:
    * Analog: Classic analog watchface
    * Digital: Centered hour and minute display based on analog movement
@@ -50,22 +50,22 @@ Autotranslating of weekday supported for:
 * Portuguese
 * Italian
 
-# Future developments
+## Future developments
 - [x] 12/24h mode
 - [x] Night theme
 - [x] Several weather providers available
 - [x] [pmkey.xyz](https://www.pmkey.xyz) implemented for easy managing your API keys
 
-# Screenshots
+## Screenshots
 ![GIF](https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaGif.gif)
 
-# Attributions
-## Fonts: 
+## Attributions
+### Fonts: 
  * [Weather Icons](https://erikflowers.github.io/weather-icons) by Eric Flowers, modified and fitted to regular alphabet, instead of Unicode values.
  * Custom font for icons created via [Fontastic](http://fontastic.me/).
  * [Gotham Fonts](http://fontsgeek.com/search?q=gotham) downloaded from [fontsgeek.com](http://fontsgeek.com)
   
-## Weather providers  
+### Weather providers  
 
 <a href="https://www.yahoo.com/?ilc=401"><img src="https://poweredby.yahoo.com/purple.png"></a>
 
@@ -73,11 +73,11 @@ Autotranslating of weekday supported for:
 
 [OpenWeatherMap.org](https://openweathermap.org/)
 
-## Others
+### Others
 
 [Master Key](https://www.pmkey.xyz) is a service for Pebble users. Get a unique PIN and add API Keys for your favorite online services. Please check [www.pmkey.xyz](https://www.pmkey.xyz) for more info.
 
-# License
+## License
 Developed under license [MIT](https://raw.githubusercontent.com/dieghernan/Sfera/master/LICENSE).
 
 
