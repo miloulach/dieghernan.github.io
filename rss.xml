@@ -19,12 +19,15 @@ layout: null
 		</image>
 		{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
 		{% for document in alldocs limit:15 %}
+		{%- assign words = document.content | strip_html | number_of_words -%}   
+		{%- assign minutes = words | divided_by: site.wordspermin | ceil -%}
 		<item>
 			<title>{{ document.title | xml_escape }}</title>
 			<description>
 				<![CDATA[	
- 				{% if document.subtitle %}<p><b>{{ document.subtitle | xml_escape }}</b></p>
-    				<p>{% endif %}{{ document.content | strip_html | xml_escape | truncatewords: 60 }}</p>
+ 				{% if document.subtitle %}<p><b>{{ document.subtitle | xml_escape }}</b></p>{% endif %}
+    				<p><i>{{ minutes }} min read</i></p>
+				<p>{{ document.content | strip_html | xml_escape | truncatewords: 60 }}</p>
 				]]>
 			</description>
 			<pubDate>{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
