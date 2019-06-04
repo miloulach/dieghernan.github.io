@@ -4,12 +4,11 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-<p>{{ site.tags | inspect }}
-<p>{{ site.tags["R"] | inspect }}
-
-<p>{{ site.documents |  group_by_exp: 'documents', 'documents.tags' }}
+<p>{{ site.documents |  group_by_exp: 'documents', 'documents.tags | split: ", " ' }}
 
 	
+{% assign try =  site.documents |  group_by_exp: 'documents', 'documents.tags | split: ", " ' }}
+<h1>{{ try[1] }}</h1>
 	
 {% assign all_tags = '' | split: ',' %}
 	{% for document in site.documents %}
@@ -22,5 +21,4 @@ permalink: /test/
 
 {% assign tags =  all_tags | join: ','  | split: ',' | sort %}
 
-<p> {{ all_tags | inspect}}
-<p> {{ tags | inspect}}
+
