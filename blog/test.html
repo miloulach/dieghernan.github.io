@@ -6,7 +6,7 @@ permalink: /test/
 ---
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
 {% assign testtags =  alldocs | map: 'tags' | join: ','  | split: ',' | sort %}
-{{ testtags | group_by: "tag" }}
+{{ testtags | group_by: tag }}
 
 {% assign all_tags = '' | split: ',' %}
 {% for document in alldocs %}
