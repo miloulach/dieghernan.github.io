@@ -6,6 +6,8 @@ permalink: /test/
 ---
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
 {% assign grouptag =  alldocs | map: 'tags' | join: ','  | split: ',' | sort | group_by: tag %}
+{{ grouptag | sort: 'size' | reverse  }}
+
 {%- for tag in grouptag -%}
 	<a href="#{{- tag.name -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true">
 		</i>&nbsp;{{- tag.name -}}&nbsp;({{tag.size}})
