@@ -31,6 +31,6 @@ permalink: /test/
 
 
 	{%- for tag in grouptag -%}
-    <a href="#{{- tag -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{tag.size}})</a>
+    <a href="#{{- tag.name -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag.name -}}&nbsp;({{tag.size}})</a>
 {%- endfor -%}
 	
