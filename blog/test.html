@@ -5,20 +5,10 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
-{% assign testtags =  alldocs | map: 'tags' | join: ','  | split: ',' | sort %}
-{{ testtags | group_by: tag }}
-
-{% assign all_tags = '' | split: ',' %}
-{% for document in alldocs %}
-	{% for tags in document.tags %}
-		{% for tag in tags %}
-			{% assign all_tags = all_tags | push: tag %}
-		{% endfor %}
-	{% endfor %}
-{% endfor %}
-{% assign grouptag = all_tags | sort | group_by: tag %}
-
+{% assign grouptag =  alldocs | map: 'tags' | join: ','  | split: ',' | sort | group_by: tag %}
 {%- for tag in grouptag -%}
-	<a href="#{{- tag.name -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag.name -}}&nbsp;({{tag.size}})</a>
+	<a href="#{{- tag.name -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true">
+		</i>&nbsp;{{- tag.name -}}&nbsp;({{tag.size}})
+	</a>
 {%- endfor -%}
-	
+<h1>Sucess!</h1>
