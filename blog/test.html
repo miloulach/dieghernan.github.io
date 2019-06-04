@@ -33,7 +33,7 @@ permalink: /test/
 <p> {{ all_tags }}
  
  
- {% assign tagCount = all_tags| group_by: 'tag' %}
+ {% assign tagCount = all_tags.tag | group_by: 'tag' %}
  
  <p> {{ tagCount }}
  <p> {{ tagCount | inspect  }}
