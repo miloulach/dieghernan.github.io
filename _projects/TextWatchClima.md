@@ -4,6 +4,7 @@ title: TextWatch Clima
 subtitle: A Pebble (RIP) project
 featured: true
 date: 2017-02-16
+donate: true
 share-img: https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/BannerRound.png
 githuburl: https://github.com/dieghernan/TextWatchClima
 permalink: /TextWatchClima/
@@ -18,9 +19,7 @@ output: github_document
 
 #### [Download from Pebble Appstore](https://apps.getpebble.com/en_US/application/58a94da90dfc32d35b0002f8)
 
-[![paypal](https://www.paypalobjects.com/en_US/ES/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AAYBMD7APLZFN)
-
-# Features
+## Features
 * Exact hour in natural language
 * Autofit to screen
 
@@ -64,13 +63,13 @@ output: github_document
 * [x] Option for non pmkey users
 * [x] More languages (Swedish, Esperanto...) 
 
-# Attributions
-## Fonts: 
+## Attributions
+### Fonts: 
  * [Weather Icons](https://erikflowers.github.io/weather-icons) by Eric Flowers, modified and fitted to regular alphabet, instead of Unicode values.
  * Custom font for icons created via [Fontastic](http://fontastic.me/).
  * [Gotham Fonts](http://fontsgeek.com/search?q=gotham) downloaded from [fontsgeek.com](http://fontsgeek.com)
   
-## Weather providers  
+### Weather providers  
 
 <a href="https://www.yahoo.com/?ilc=401"><img src="https://poweredby.yahoo.com/purple.png"></a>
 
@@ -78,16 +77,16 @@ output: github_document
 
 [OpenWeatherMap.org](https://openweathermap.org/)
 
-## Others
+### Others
 
 * [Master Key](https://www.pmkey.xyz) is a service for Pebble users. Get a unique PIN and add API Keys for your favorite online services. Please check [www.pmkey.xyz](https://www.pmkey.xyz) for more info.
 * [wackyneighbor](https://github.com/wackyneighbor) project [DC TextWatch Deluxe](https://github.com/wackyneighbor/DC_Text_Watch_Deluxe)
 
-# Screenshots
+## Screenshots
 ![](https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/ScrShClass.gif) ![](https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/ScrShTime.gif) ![](https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/ScrShRound.gif) 
 
 
-# License
+## License
 Developed under license [MIT](https://github.com/dieghernan/TextWatchES_Weather/blob/master/MIT%20License).
 
 

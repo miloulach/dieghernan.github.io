@@ -3,7 +3,6 @@ layout: project
 title: Sfera 
 subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaBanner.png
-bigimg: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaBanner.png
 date: 2017-03-14
 permalink: /Sfera/
 donate: true
