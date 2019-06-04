@@ -5,7 +5,7 @@ subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/Sfera/master/assets/SferaBanner.png
 date: 2017-03-14
 permalink: /Sfera/
-categories: [project,pebble,watchface,javascript,C]
+tags: [project,pebble,watchface,javascript,C]
 githuburl: https://github.com/dieghernan/Sfera
 output: github_document
 ---                                                                  
