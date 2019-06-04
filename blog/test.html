@@ -5,29 +5,4 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-<div class="posts-list">
-  <h1> Testmod with front matter </h1>
-   {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
- {% for document in alldocs limit:20 %}
- <article class="post-preview">
-<p>      start-item-end
-<p>        start-title-end{{ document.title | xml_escape }}start-/title-end
-<h1>{{ document.layout }}</h1>
-  <p>        start-description-end
-         {% if document.subtitle %}{{ document.subtitle | xml_escape }} - {% endif %}
-<p>          {{ document.content | strip_html | xml_escape | truncatewords: 50 }}
-<p>        start-/description-end
-<p>        start-pubDate-end{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}start-/pubDate-end
-<p>        start-link-end{{ site.url }}{{ document.url }}start-/link-end
-        {% if document.tags.size > 0 %}
-<p>        start-category-end{{ document.tags | join: "/" }}start-/category-end
-		{% else %}
-<p>		start-category-endprojectstart-/category-end
-        {% endif %}		
-<p>        start-guid isPermaLink="true"-end{{ site.url }}{{ document.url }}start-/guid-end
-<p>        start-media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/-end
-<p>        start-media:thumbnail url="{{ document.share-img }}"  width="150" height="99"/-end
-<p>      start-/item-end
- </article>
-    {% endfor %}
-</div>
+{{ site.tags.TAG }}
