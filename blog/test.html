@@ -4,6 +4,10 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
+
+{{ site.tags[tag] | inspect }}
+
+
 {% assign all_tags = '' | split: ',' %}
 	{% for document in site.documents %}
 		{% for tags in document.tags %}
@@ -14,48 +18,5 @@ permalink: /test/
 {% endfor %}
 
 {% assign tags =  all_tags | join: ','  | split: ',' | sort %}
-{% assign previousTag = "" %}
-{% assign counter = 0 %}
-{% for currentTag in tags %}
-	{% if previousTag == "" %}
-		{% assign previousTag = currentTag %}
-	{% endif %}
-	{% if currentTag == previousTag %}
-		{% assign counter = counter | plus: 1 %}
-	{% else %}
-		<a href="#{{- previousTag -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- previousTag -}}&nbsp;({{ counter }})</a>
-		{% assign counter = 1 %}
-	{% endif %}	
-	{% if forloop.last %}
-		<a href="#{{- currentTag -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- currentTag -}}&nbsp;({{ counter }})</a>
-	{% endif %}
 
-	{% assign previousTag = currentTag %}
-{% endfor %}
-
-
-<div id="full-tags-list">
-{% assign tags2 =  all_tags | join: ','  | split: ',' | sort %}
-{% assign previousTag2 = "" %}
-{% assign counter2 = 0 %}
-{% for currentTag2 in tags2 %}
-	{% if previousTag2 == "" %}
-		{% assign previousTag2 = currentTag2 %}
-	{% endif %}
-	{% if currentTag2 == previousTag2 %}
-		{% assign counter2 = counter2 | plus: 1 %}
-	{% else %}
-	<h2 id="{{- previousTag2 -}}" class="linked-section">
-		<i class="fa fa-tag" aria-hidden="true"></i>
-		&nbsp;{{- previousTag2 -}}&nbsp;({{ counter2 }})
-	</h2>
-	{% endif %}	
-	{% if forloop.last %}
-	<h2 id="{{- currentTag2 -}}" class="linked-section">
-		<i class="fa fa-tag" aria-hidden="true"></i>
-		&nbsp;{{- currentTag2 -}}&nbsp;({{ counter2 }})
-	</h2>
-	{% endif %}
-	{% assign previousTag2 = currentTag2 %}
-{% endfor %}
-</div>
+{{ tags | inspect}}
