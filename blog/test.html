@@ -14,17 +14,20 @@ permalink: /test/
 {% endfor %}
 
 <h1>{{ all_tags | size }} </h1>
-
-{{ all_tags |  group_by: "items" }}
+{{ all_tags }}
+{{ all_tags |  group_by: "tag" }}
 
 
 {% assign uniqtag = all_tags | uniq | sort %}
+{% assign alldocs = site.documents  | where_exp: "item", "item.includeonfeed == true" %}
 
 
 {% for tag in uniqtag %}
-{% assign thistag = site.documents  | where_exp: "item", "item.includeonfeed == true" | where_exp: "item", "item.tags contains  {{ tag }} " %}
-<ul>{{ tag }} </ul>
-<p>{{ thistag | size }}
+	<ul>{{ tag }} </ul>
+	{% for document in alldocs %}
+	{% if document.tags contains "{{ tag }}" %}
+	<p>1
+	{% endif %}	
 {% endfor %}
 	
 {% assign thistag = site.documents  | where_exp: "item", "item.includeonfeed == true" | where_exp: "item", "item.tags contains  'project'" %}
