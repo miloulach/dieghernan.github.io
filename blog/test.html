@@ -15,7 +15,7 @@ permalink: /test/
 
 <h1>{{ all_tags | size }} </h1>
 {{ all_tags }}
-{{ all_tags |  group_by: "tag" }}
+{{ all_tags |  group_by: tag }}
 
 
 {% assign uniqtag = all_tags | uniq | sort %}
@@ -24,7 +24,7 @@ permalink: /test/
 
 {% for tag in uniqtag %}
 <ul>{{ tag }} </ul>
-<p>{{ all docs | where_exp: "document", "document.tags contains tag" | size }}
+<p>{{ site.documents | where_exp: "item", "item.tags contains tag " | size }}
 	{% for document in alldocs %}
 		{% if document.tags contains tag %}
 		<p>1
