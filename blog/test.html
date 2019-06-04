@@ -4,7 +4,7 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-<p>{{ site.documents |  group_by_exp: 'documents', 'documents.tags | split: ", " ' }}
+<p>{{ site.documents |  group_by_exp: 'documents', 'documents.tags | split: "," ' }}
 
 	
 {% assign try =  site.documents |  group_by_exp: 'documents', 'documents.tags | split: ", " ' }}
