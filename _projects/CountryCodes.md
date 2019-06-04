@@ -21,7 +21,7 @@ Complete database of countries and territories, their different country codes un
 
 #### [vignette: Using Country Codes](https://dieghernan.github.io/201904_Using-CountryCodes/)
 
-### A. Country Codes `.csv`  <a class="linked-section" name="ccodes"></a>
+### A. Country Codes `.csv`  <a class="linked-section" name="ccodes">&nbsp;</a>
 Main `.csv` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/Countrycodes.csv) containing 
 * Country and regional codes
 * Currency, dependency status ans sovereignty info
@@ -53,7 +53,7 @@ ISO_3166_3.sov|Sovereign code |Wikipedia, Statoids | If non-independent
 * Population, area (km<sup>2</sup>) and developed region
 
 
-### B. International Organizations `.csv`  <a class="linked-section" id="ocodes"></a>
+### B. International Organizations `.csv`  <a class="linked-section" id="ocodes">&nbsp;</a>
 A single `.csv` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/CountrycodesOrgs.csv) describing the membership status of each country across 186 international organizations.
 
 Field | Description
@@ -66,7 +66,7 @@ org_name| Name of the organization
 org_id | Abbreviation or internal ID
 org_member | Membership status
 
-### C. Full json file `.json`  <a name="jcodes"></a>
+### C. Full json file `.json`  <a name="jcodes">&nbsp;</a>
 This `.json` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/Countrycodesfull.json) combines the previous files:
 
 **Example**
@@ -127,7 +127,7 @@ ISO_memcol = function(df, #Input dataframe
 ```
 
 
-### D. Data sources  <a name="data"></a>
+### D. Data sources  <a name="data">&nbsp;</a>
 * Wikipedia, the free encyclopedia
   * [ISO-3166](https://en.wikipedia.org/wiki/ISO_3166-1)
   * [NUTS](https://es.wikipedia.org/wiki/Nomenclatura_de_las_Unidades_Territoriales_Estad%C3%ADsticas)
