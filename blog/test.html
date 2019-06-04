@@ -15,21 +15,19 @@ permalink: /test/
 
 <h1>{{ all_tags | size }} </h1>
 
-{{ all_tags | sort | group_by: tag }}
+{{% grouptag = all_tags | sort | group_by: tag %}}
 
 
 {% assign uniqtag = all_tags | uniq | sort %}
 {% assign alldocs = site.documents  | where_exp: "item", "item.includeonfeed == true" %}
 
-
-{% for tag in uniqtag %}
+{% for tag in grouptag %}
 <ul>{{ tag }} </ul>
 <p>{{ site.documents | where_exp: "item", "item.tags contains tag " | size }}
-	{% for document in alldocs %}
+	document in alldocs %}
 		{% if document.tags contains tag %}
 		<p>1
 		{% endif %}	
-	{% endfor %}
 {% endfor %}
 
 
