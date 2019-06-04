@@ -24,8 +24,8 @@ navbar-links:
     - Archive: "archive"
   Projects:
     - All: "projects"
-    - Country Codes & Organizations: "/Country-Codes-and-International-Organizations/"
-    - Textwatch Clima: "/TextWatchClima/"
+    - Country Codes & Organizations: "https://dieghernan.github.io/Country-Codes-and-International-Organizations/"
+    - Textwatch Clima: "https://dieghernan.github.io/TextWatchClima/"
   View on Github: "https://github.com/dieghernan/dieghernan.github.io"
 
 # If you want to have an image logo in the top-left corner instead of the title text,
