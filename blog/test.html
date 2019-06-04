@@ -5,18 +5,22 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-{% assign tags = site.documents.tags | join: ','  | split: ',' | sort %}
-<p>{{ tags }}
-	
+
 {% assign all_tags = '' | split: ',' %}
+{% assign all_docs = '' | split: ',' %}
 	{% for document in site.documents %}
 		{% for tags in document.tags %}
 			{% for tag in tags %}
 				{% assign all_tags = all_tags | push: tag %}
+				{% assign all_docs = all_docs | push: document %}
+
 			{% endfor %}
 		{% endfor %}
 {% endfor %}
 
-{% assign tags =  all_tags | join: ','  | split: ',' | sort %}
+<p>{{ all.tags }}
+<p>{{ all_docs }}
+
+	
 
 
