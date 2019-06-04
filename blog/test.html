@@ -18,8 +18,14 @@ permalink: /test/
 		{% endfor %}
 {% endfor %}
 
-<p>{{ all.tags }}
-<p>{{ all_docs }}
+{% for tag in all_tags %}
+<ul>{{ tag }}</ul>
+{% endfor %}
+	
+<h1>break </h1>
+{% for url in all_docs %}
+<ul>{{ url }}</ul>
+{% endfor %}
 
 	
 
