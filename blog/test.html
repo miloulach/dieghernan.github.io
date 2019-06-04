@@ -17,5 +17,15 @@ permalink: /test/
         <i class="fa fa-tag" aria-hidden="true"></i>
         &nbsp;{{- tag.name -}}&nbsp;({{tag.size}})
     </h2>
+    <div class="post-list">
+        {%- for document in alldocs -%}
+            <div class="tag-entry">
+                <a href="{{- site.url -}}{{- document.url -}}">{{- document.title -}}</a>
+                <div class="entry-date">
+                    <time datetime="{{- document.date | date_to_xmlschema -}}">{{- document.date | date: "%B %d, %Y" -}}</time>
+                </div>
+            </div>
+        {%- endfor -%}
+    </div>
 {%- endfor -%}
 </div>
