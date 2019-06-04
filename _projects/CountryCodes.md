@@ -4,6 +4,7 @@ title: Country Codes & Organizations
 subtitle: A database with geocodes
 share-img: https://dieghernan.github.io/assets/figs/20190427_mapfin-1.png
 featured: true
+permalink: /Country-Codes-and-International-Organizations/
 date: 2019-04-11
 githuburl: https://github.com/dieghernan/Country-Codes-and-International-Organizations
 output: github_document
@@ -20,7 +21,7 @@ Complete database of countries and territories, their different country codes un
 
 #### [vignette: Using Country Codes](https://dieghernan.github.io/201904_Using-CountryCodes/)
 
-### A. Country Codes `.csv`  <a name="ccodes"></a>
+### A. Country Codes `.csv`  <a class="linked-section" name="ccodes"></a>
 Main `.csv` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/Countrycodes.csv) containing 
 * Country and regional codes
 * Currency, dependency status ans sovereignty info
@@ -52,7 +53,7 @@ ISO_3166_3.sov|Sovereign code |Wikipedia, Statoids | If non-independent
 * Population, area (km<sup>2</sup>) and developed region
 
 
-### B. International Organizations `.csv`  <a name="ocodes"></a>
+### B. International Organizations `.csv`  <a class="linked-section" id="ocodes"></a>
 A single `.csv` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/CountrycodesOrgs.csv) describing the membership status of each country across 186 international organizations.
 
 Field | Description
