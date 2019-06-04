@@ -6,6 +6,7 @@ featured: true
 date: 2017-02-16
 share-img: https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/BannerRound.png
 githuburl: https://github.com/dieghernan/TextWatchClima
+permalink: /TextWatchClima/
 output: github_document
 ---
 
