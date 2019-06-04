@@ -7,7 +7,7 @@ permalink: /test/
 
 
 {% assign all_tags = '' | split: ',' %}
-{% assign all_docs = '' | split: ',' %}
+
 	{% for document in site.documents %}
 		{% for tags in document.tags %}
 			{% for tag in tags %}
@@ -19,9 +19,10 @@ permalink: /test/
 {% endfor %}
 
 <h1>{{ all_tags | size }} </h1>
-	
 
-{% for tag in all_tags %}
+{% assign uniqtag = all_tags | uniq | sort %}
+
+{% for tag in uniqtag %}
 <ul>{{ tag }}</ul>
 {% endfor %}
 	
