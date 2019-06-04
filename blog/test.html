@@ -32,13 +32,37 @@ permalink: /test/
 <p>{{ all_tags | inspect }}
 <p> {{ all_tags }}
  
- 
- {% assign tagCount = all_tags.tag | group_by: 'tag' %}
- 
- <p> {{ tagCount }}
- <p> {{ tagCount | inspect  }}
-  
-   {% assign tagCount2 = all_tags| group_by_exp: 'item', 'tag'  %}
+{% assign tagCount2 = all_tags| group_by_exp: 'item', 'item.tag'  %}
  
  <p> {{ tagCount2 }}
   <p> {{ tagCount2 | inspect  }}
+   
+   
+
+{% comment %}map, flatten and sort{% endcomment %}
+{% assign tags =  site.note | map: 'tags' | join: ','  | split: ',' | sort %}
+{% assign previousTag = "" %}
+{% assign counter = 0 %}
+
+{% for currentTag in tags %}
+
+  {% comment %}first loop : initializing previousTag{% endcomment %}
+  {% if previousTag == "" %}
+    {% assign previousTag = currentTag %}
+  {% endif %}
+
+  {% if currentTag == previousTag %}
+    {% assign counter = counter | plus: 1 %}
+  {% else %}
+    {{ previousTag }} ({{ counter }})
+    {% assign counter = 1 %}
+  {% endif %}
+
+  {% comment %}last loop : flushing what's left to print{% endcomment %}
+  {% if forloop.last %}
+    {{ currentTag }} ({{ counter }})
+  {% endif %}
+
+  {% assign previousTag = currentTag %}
+
+{% endfor %}
