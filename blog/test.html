@@ -5,13 +5,21 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-<h1>Tag Cloud</h1>
-{% assign tags = site.tags | sort %}
-{% for tag in tags %}
- <span class="site-tag">
-    <a href="/tag/{{ tag | first | slugify }}/"
-        style="font-size: {{ tag | last | size  |  times: 4 | plus: 80  }}%">
-            {{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }})
-    </a>
-</span>
+{% assign all_tags = '' | split: ',' %}
+
+ {% for document in site.documents %}
+    {% for tags in document.tags %}
+        {% for tag in tags %}
+            {% assign all_tags = all_tags | push: tag %}
+        {% endfor %}
+    {% endfor %}
 {% endfor %}
+
+{% assign all_tags = all_tags | sort %}
+{% assign all_tags = all_tags | uniq %}
+
+<ul class="tag-list">
+    {% for tag in all_tags %}
+        <li>{{ tag }}</li>
+    {% endfor %}
+</ul>
