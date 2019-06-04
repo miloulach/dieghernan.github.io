@@ -4,8 +4,8 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-
-{{ site.tags[tag] | inspect }}
+<p>{{ site.tags | inspect }}
+<p>{{ site.tags["R"] | inspect }}
 
 
 {% assign all_tags = '' | split: ',' %}
@@ -19,4 +19,5 @@ permalink: /test/
 
 {% assign tags =  all_tags | join: ','  | split: ',' | sort %}
 
-{{ tags | inspect}}
+<p> {{ all_tags | inspect}}
+<p> {{ tags | inspect}}
