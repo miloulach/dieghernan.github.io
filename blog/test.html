@@ -5,7 +5,15 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-<p>{{ site.tags }}
+{%- capture site_tags -%}
+    {%- for tag in site.tags -%}
+        {{- tag | first -}}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+{%- endcapture -%}
+{%- assign tags_list = site_tags | split:',' | sort -%}
+
+<p> {{ tags_list }}
+
 
 {% assign postsInYear = site.documents | where_exp: "item", "item.includeonfeed == true" | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
 
@@ -32,37 +40,6 @@ permalink: /test/
 <p>{{ all_tags | inspect }}
 <p> {{ all_tags }}
  
-{% assign tagCount2 = all_tags| group_by_exp: 'item', 'item.tag'  %}
- 
- <p> {{ tagCount2 }}
-  <p> {{ tagCount2 | inspect  }}
-   
-   
+{% assign tagcount = all_tags | group_by_exp: 'item', 'tag.name' %}
+ <p>{{ assign tagcount }}
 
-{% comment %}map, flatten and sort{% endcomment %}
-{% assign tags =  site.note | map: 'tags' | join: ','  | split: ',' | sort %}
-{% assign previousTag = "" %}
-{% assign counter = 0 %}
-
-{% for currentTag in tags %}
-
-  {% comment %}first loop : initializing previousTag{% endcomment %}
-  {% if previousTag == "" %}
-    {% assign previousTag = currentTag %}
-  {% endif %}
-
-  {% if currentTag == previousTag %}
-    {% assign counter = counter | plus: 1 %}
-  {% else %}
-    {{ previousTag }} ({{ counter }})
-    {% assign counter = 1 %}
-  {% endif %}
-
-  {% comment %}last loop : flushing what's left to print{% endcomment %}
-  {% if forloop.last %}
-    {{ currentTag }} ({{ counter }})
-  {% endif %}
-
-  {% assign previousTag = currentTag %}
-
-{% endfor %}
