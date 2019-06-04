@@ -12,7 +12,7 @@ permalink: /test/
 		{% for tags in document.tags %}
 			{% for tag in tags %}
 				{% assign all_tags = all_tags | push: tag %}
-				{% assign all_docs = all_docs | push: document %}
+				{% assign all_docs = all_docs | push: document.url %}
 
 			{% endfor %}
 		{% endfor %}
