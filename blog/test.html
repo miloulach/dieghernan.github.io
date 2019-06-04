@@ -14,8 +14,7 @@ permalink: /test/
            list-style: none;">
            {% assign postsInYear = site.documents | where_exp: "item", "item.includeonfeed == true" | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
            {% for year in postsInYear %}
-           <li>
-                      <a href="#{{ year.name }}" style="display: flex;
+           <li>                      <a href="#{{ year.name }}" style="display: flex;
                                                         padding: 0.25em 0;
                                                         -webkit-box-pack: justify;
                                                         justify-content: space-between;
@@ -27,7 +26,7 @@ permalink: /test/
            </li>
            {% endfor %}
 </ul>
-{% assign postsByYear = site.documents | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
+{% assign postsByYear = site.documents | group_by_exp: 'documents', 'documents.date | sort: 'date' | reverse | date: "%Y"' %}
 {% for year in postsByYear %}
 <section id="{{ year.name }}"  style="font-size: 25px;">
            <h2 class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};">{{ year.name }}</h2>
