@@ -23,9 +23,19 @@ layout: base
 			</div>			
 			{% endif %}			
 			<article role="main" class="blog-post"  
-				 style="margin:0 0 10px;
+				 style="margin:1em 0 10px;
 					padding-top: 0.5px;
+					border-top: 0.5px solid  {{ site.navbar-col }};
 					border-bottom: 3px solid {{ site.navbar-col }};">
+				{% if page.date %}
+				<div class="post-heading" style="font-size: 90%;
+								 color: #808080;
+								 font-style: italic;
+								 margin-top: 5px;
+								 text-align: right;">
+					Released on {{ page.date | date_to_string }}
+				</div>
+				{% endif %}
 				{{ content }}
 			</article>
 			<div style="background-color: {{ site.background-light-col }};
