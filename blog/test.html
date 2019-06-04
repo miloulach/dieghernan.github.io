@@ -4,8 +4,10 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
+{% assign testtags =  alldocs | map: 'tags' | join: ','  | split: ',' | sort %}
+{{ testtags }}
+
 {% assign all_tags = '' | split: ',' %}
 {% for document in alldocs %}
 	{% for tags in document.tags %}
@@ -16,9 +18,7 @@ permalink: /test/
 {% endfor %}
 {% assign grouptag = all_tags | sort | group_by: tag %}
 
-
-
-	{%- for tag in grouptag -%}
-    <a href="#{{- tag.name -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag.name -}}&nbsp;({{tag.size}})</a>
+{%- for tag in grouptag -%}
+	<a href="#{{- tag.name -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag.name -}}&nbsp;({{tag.size}})</a>
 {%- endfor -%}
 	
