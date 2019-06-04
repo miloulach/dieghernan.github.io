@@ -2,19 +2,24 @@
 layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
 	<channel>
 		<title>{{ site.title | xml_escape }}</title>
-		<description>{{ site.description | xml_escape }}</description>
 		<link>{{ site.url }}</link>
-		<atom:link href="{{ site.url }}/rss.xml" rel="self" type="application/rss+xml" />
-		<category>blog</category>
-		<lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
+		<description>{{ site.description | xml_escape }}</description>
+		<language>en</language>
 		<copyright>(c)  {{ site.time | date: '%Y' }}, {{ site.author.name }}</copyright>	
+		<pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+		<lastBuildDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
+		<category>blog</category>
+		<ttl>60</ttl>
+		<atom:link href="{{ site.url }}/rss.xml" rel="self" type="application/rss+xml" />
 		<image>
-			<link>{{ site.url }}</link>
 			<title>{{ site.title | xml_escape }}</title>
 			<url>{{ site.url }}{{ site.avatar }}</url>
+			<link>{{ site.url }}</link>
+			<width>144</width>
+			<height>24</height>
 			<description>{{ site.description | xml_escape }}</description>
 		</image>
 		{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
@@ -30,15 +35,16 @@ layout: null
 				<p>{{ document.content | strip_html | xml_escape | truncatewords: 60 }}</p>
 				]]>
 			</description>
-			<pubDate>{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
 			<link>{{ site.url }}{{ document.url }}</link>
 			<category>{{ document.layout }}</category>
 			{% if document.tags.size > 0 %}
 			<category>{{ document.tags | join: "/" }}</category>
-			{% endif %}		
-			<guid isPermaLink="true">{{ site.url }}{{ document.url }}</guid>
+			{% endif %}
+			<media:title type="html"><![CDATA[{{ document.title }} ]]></media:title>
 			<media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/>
 			<media:thumbnail url="{{ document.share-img }}"  width="150" height="99"/>
+			<guid isPermaLink="true">{{ site.url }}{{ document.url }}</guid>
+			<pubDate>{{ document.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
 		</item>
 		{% endfor %}
 	</channel>
