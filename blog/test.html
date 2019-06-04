@@ -7,25 +7,7 @@ permalink: /test/
 
 {{ site.tags }}
 
-{% assign all_tags = '' | split: ',' %}
+{% assign postsInYear = site.documents | where_exp: "item", "item.includeonfeed == true" | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
 
- {% for document in site.documents %}
-    {% for tags in document.tags %}
-        {% for tag in tags %}
-            {% assign all_tags = all_tags | push: tag %}
-        {% endfor %}
-    {% endfor %}
-{% endfor %}
-{%- assign tags_list = all_tags | split:',' | sort -%}
+{{ postsInYear }}
 
-<p> {{ tags_list }}
-
-{%- assign tags_group = tags_list |  group_by: 'tag' %}
-
-<p>{{  tags_group }}
- 
- 
- {%- assign tags_group2 = tags_list |  group_by: 'item' %}
- 
-
-<p>{{  tags_group2 }}
