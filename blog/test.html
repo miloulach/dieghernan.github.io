@@ -21,6 +21,8 @@ permalink: /test/
 {%- endcapture -%}
  {%- assign tags_list = site_tags | split:',' | sort -%}
       
- {{ tags_list }}
+{%- for tag in tags_list -%}
+    <a href="#{{- tag -}}" <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{site.tags[tag].size}})</a>
+{%- endfor -%}
 
   
