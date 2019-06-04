@@ -7,7 +7,10 @@ permalink: /test/
 <p>{{ site.tags | inspect }}
 <p>{{ site.tags["R"] | inspect }}
 
+{% site.documents |  group_by_exp: 'documents', 'documents.tags' %}
 
+	
+	
 {% assign all_tags = '' | split: ',' %}
 	{% for document in site.documents %}
 		{% for tags in document.tags %}
