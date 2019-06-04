@@ -22,7 +22,8 @@ permalink: /test/
 
 
 {% for tag in uniqtag %}
-<ul>{{ tag }} - {{ all_tags |  where_exp: "item", "item == '{{ tag }}' " | size }}</ul>
+{% assign sizetag = all_tags | where_exp: "item", "item contains '{{ tag }}' " | size %}
+<ul>{{ tag }} - {{ sizetag }}</ul>
 {% endfor %}
 	
 {% assign thistag = site.documents  | where_exp: "item", "item.includeonfeed == true" | where_exp: "item", "item.tags contains  'project'" %}
