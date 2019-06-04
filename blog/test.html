@@ -4,10 +4,10 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-<p>{{ site.documents |  group_by_exp: 'documents', 'documents.tags | split: "," ' }}
+<p>{{ site.documents.tags |  split: ","  }}
 
 	
-{% assign try =  site.documents |  group_by_exp: 'documents', 'documents.tags | split: ", " ' }}
+{% assign try =  site.documents.tags |  split: ",” }}
 <h1>{{ try[1] }}</h1>
 	
 {% assign all_tags = '' | split: ',' %}
