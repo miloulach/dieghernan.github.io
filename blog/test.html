@@ -7,7 +7,7 @@ permalink: /test/
 <p>{{ site.tags | inspect }}
 <p>{{ site.tags["R"] | inspect }}
 
-{% site.documents |  group_by_exp: 'documents', 'documents.tags' %}
+<p>{{ site.documents |  group_by_exp: 'documents', 'documents.tags' }}
 
 	
 	
