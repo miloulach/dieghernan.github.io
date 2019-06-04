@@ -25,16 +25,12 @@ permalink: /test/
 {% for tag in uniqtag %}
 	<ul>{{ tag }} </ul>
 	{% for document in alldocs %}
-	{% if document.tags contains "{{ tag }}" %}
-	<p>1
-	{% endif %}	
+		{% if document.tags contains "{{ tag }}" %}
+		<p>1
+		{% endif %}	
+	{% endfor %}
 {% endfor %}
-	
-{% assign thistag = site.documents  | where_exp: "item", "item.includeonfeed == true" | where_exp: "item", "item.tags contains  'project'" %}
-{% for document in thistag %}
-<h2> {{ document.title | xml_escape }} </h2>
 
-{% endfor %}
 
 
 	
