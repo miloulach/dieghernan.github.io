@@ -14,10 +14,11 @@ permalink: /test/
         {% endfor %}
     {% endfor %}
 {% endfor %}
-
 {%- assign tags_list = all_tags | split:',' | sort -%}
 
-{%- for tag in tags_list -%}
-    <a href="#{{- tag -}}"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{all_tags.tags[tag].size}})</a>
-{%- endfor -%}
+{% assign tagInPost = tags_list | group_by: 'tag' %}
 
+
+{%- for tag in tagInPost -%}
+    <a href="#{{- tag -}}"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{ tag.items | size }})</a>
+{%- endfor -%}
