@@ -15,11 +15,17 @@ permalink: /test/
 
 <h1>{{ all_tags | size }} </h1>
 
-{{% grouptag = all_tags | sort | group_by: tag %}}
+{{% assing grouptag = all_tags | sort | group_by: tag %}}
 
 
 {% assign uniqtag = all_tags | uniq | sort %}
 {% assign alldocs = site.documents  | where_exp: "item", "item.includeonfeed == true" %}
+
+{% for tags in grouptag %}
+<p>{{ tag.name }} 
+	{{% endfor %}}
+	
+
 
 {{ grouptag }}
 
