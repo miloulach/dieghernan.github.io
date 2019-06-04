@@ -45,3 +45,5 @@ permalink: /test/
     {% endfor %}
 
 </ul>
+
+{{ all_tags | group_by: "tags" }}
