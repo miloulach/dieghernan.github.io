@@ -46,4 +46,4 @@ permalink: /test/
 
 </ul>
 
-{{ all_tags | group_by: "tags" }}
+{{ all_tags | group_by_exp: "item" , "item.tag | replace: 'a', 'xx' " }}
