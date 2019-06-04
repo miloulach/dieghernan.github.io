@@ -34,7 +34,7 @@ permalink: /archive/
            <div class="posts-list">
            {% for document in year.items %}
            {%- assign words = document.content | strip_html | number_of_words -%}   
-           {%- assign minutes = words | divided_by: 180.0 | ceil -%}
+           {%- assign minutes = words | divided_by: site.wordspermin | ceil -%}
            <div>
                       <article class="post-preview"  style="padding: 0 0 25px;">
                                  <h3 class="post-title" style="font-size: 30px;">
