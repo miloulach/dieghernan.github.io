@@ -5,9 +5,21 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-{{ site.tags }}
+<p>{{ site.tags }}
 
 {% assign postsInYear = site.documents | where_exp: "item", "item.includeonfeed == true" | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
 
-{{ postsInYear }}
+<p>{{ postsInYear }}
 
+{% assign all_tags = '' | split: ',' %}
+
+ {% for document in site.documents %}
+    {% for tags in document.tags %}
+        {% for tag in tags %}
+            {% assign all_tags = all_tags | push: tag %}
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+
+
+<p>{{ all_tags }}
