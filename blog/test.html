@@ -22,9 +22,9 @@ permalink: /test/
 {% assign alldocs = site.documents  | where_exp: "item", "item.includeonfeed == true" %}
 
 {% for tag in grouptag %}
-<ul>{{ tag }} - {{ tag.size }}</ul>
+<ul>{{ tag.name }} </ul>
 {% endfor %}
-
+{{ grouptag }}
 
 
 	
