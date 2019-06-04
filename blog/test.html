@@ -21,9 +21,6 @@ permalink: /test/
 {% assign uniqtag = all_tags | uniq | sort %}
 {% assign alldocs = site.documents  | where_exp: "item", "item.includeonfeed == true" %}
 
-{% for tag in grouptag %}
-<ul>{{ tag.name }} </ul>
-{% endfor %}
 {{ grouptag }}
 
 
