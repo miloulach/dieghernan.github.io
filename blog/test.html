@@ -12,7 +12,17 @@ permalink: /test/
 {%- endcapture -%}
 {%- assign tags_list = site_tags | split:',' | sort -%}
 
-<p> {{ tags_list }}
+
+
+{% assign all_categories = site.documents | map: "tags" %}
+
+{% for item in all_categories %}
+<p>{{ item }}
+{% endfor %}
+
+
+<p>{{ all_categories }}
+
 
 
 {% assign postsInYear = site.documents | where_exp: "item", "item.includeonfeed == true" | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
@@ -35,11 +45,3 @@ permalink: /test/
     {% endfor %}
 
 </ul>
-
-
-<p>{{ all_tags | inspect }}
-<p> {{ all_tags }}
- 
-{% assign tagcount = all_tags | group_by_exp: 'item', 'tag.name' %}
- <p>{{ assign tagcount }}
-
