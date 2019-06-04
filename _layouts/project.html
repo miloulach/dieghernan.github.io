@@ -12,6 +12,16 @@ layout: base
 				</button>
 			</div>
 			{% endif %}
+			{% if page.donate %}
+			<div style="text-align: center;margin: 2em 0 2em;">
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+					<input type="hidden" name="cmd" value="_s-xclick" />
+					<input type="hidden" name="hosted_button_id" value="CE7GRZSQQSM62" />
+					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="Donate $0.99 with PayPal" alt="Donate with PayPal button" />
+					<img alt="" border="0" src="https://www.paypal.com/en_ES/i/scr/pixel.gif" width="1" height="1" />
+				</form>				
+			</div>			
+			{% endif %}			
 			<article role="main" class="blog-post"  
 				 style="margin:0 0 10px;
 					padding-top: 0.5px;
