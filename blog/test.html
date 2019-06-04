@@ -23,3 +23,9 @@ permalink: /test/
 
 
 <p>{{ all_tags | inspect }}
+<p> {{ all_tags }}
+ 
+ 
+ {% assign tagCount = all_tags| group_by: 'item' %}
+ 
+ <p> {{ tagCount }}
