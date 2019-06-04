@@ -8,10 +8,6 @@ permalink: /test/
 {% for document in alldocs %}
 <p>{{ document.tags }}
 {% endfor %}
-
- {%- for tag in site.tags -%}
-    <p>{{- tag -}}
-{%- endfor -%}
   
   
 {%- capture site_tags -%}
