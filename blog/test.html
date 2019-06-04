@@ -4,6 +4,9 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
+
+Test 1021
+
 <h1 id="page-title" class="linked-section" tabindex="-1" style="outline: none;text-align: center;">Posts by year</h1>
 <ul style="display: grid;
            grid-column-gap: 2em;
@@ -26,7 +29,7 @@ permalink: /test/
            </li>
            {% endfor %}
 </ul>
-{% assign postsByYear = site.documents | group_by_exp: 'documents', 'documents.date | sort: 'date' | reverse | date: "%Y"' %}
+{% assign postsByYear = site.documents | sort: 'date' | reverse | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
 {% for year in postsByYear %}
 <section id="{{ year.name }}"  style="font-size: 25px;">
            <h2 class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};">{{ year.name }}</h2>
