@@ -33,6 +33,10 @@ permalink: /test/
 	{% assign previousTag = currentTag %}
 {% endfor %}
 
+<div id="full-tags-list">
+{% assign tags =  all_tags | join: ','  | split: ',' | sort %}
+{% assign previousTag = "" %}
+{% assign counter = 0 %}
 {% for currentTag in tags %}
 	{% if previousTag == "" %}
 		{% assign previousTag = currentTag %}
@@ -53,13 +57,4 @@ permalink: /test/
 	{% endif %}
 	{% assign previousTag = currentTag %}
 {% endfor %}
-
-
-<div id="full-tags-list">
-{%- for tag in tags_list -%}
-    <h2 id="{{- tag -}}" class="linked-section">
-        <i class="fa fa-tag" aria-hidden="true"></i>
-        &nbsp;{{- tag -}}&nbsp;({{site.tags[tag].size}})
-    </h2>
-{%- endfor -%}
 </div>
