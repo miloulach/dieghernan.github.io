@@ -20,18 +20,25 @@ permalink: /test/
         {% endfor %}
     {% endfor %}
 {% endfor %}
+ 
+ <ul class="tag-list">
+    {% for tag in all_tags %}
+        <li>{{ tag }}</li>
+    {% endfor %}
+
+</ul>
 
 
 <p>{{ all_tags | inspect }}
 <p> {{ all_tags }}
  
  
- {% assign tagCount = all_tags| group_by: 'item' %}
+ {% assign tagCount = all_tags| group_by: 'tag' %}
  
  <p> {{ tagCount }}
  <p> {{ tagCount | inspect  }}
   
-   {% assign tagCount2 = all_tags| group_by_exp: 'item', 'item.tag'  %}
+   {% assign tagCount2 = all_tags| group_by_exp: 'item', 'tag'  %}
  
  <p> {{ tagCount2 }}
   <p> {{ tagCount2 | inspect  }}
