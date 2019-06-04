@@ -14,8 +14,8 @@ permalink: /test/
 {% endfor %}
 
 <h1>{{ all_tags | size }} </h1>
-{{ all_tags }}
-{{ all_tags |  group_by: tag }}
+
+{{ all_tags |  group_by: tag | sort }}
 
 
 {% assign uniqtag = all_tags | uniq | sort %}
