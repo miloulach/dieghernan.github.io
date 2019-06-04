@@ -23,10 +23,9 @@ permalink: /test/
 
 
 {% for tag in uniqtag %}
-	{% capture foobar %}{{ tag }}{% endcapture %}
 <ul>{{ tag }} </ul>
 	{% for document in alldocs %}
-		{% if document.tags contains "{{ foobar }}" %}
+		{% if document.tags contains tag %}
 		<p>1
 		{% endif %}	
 	{% endfor %}
