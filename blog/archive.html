@@ -14,7 +14,8 @@ permalink: /archive/
            list-style: none;">
            {% assign postsInYear = site.documents | where_exp: "item", "item.includeonfeed == true" | group_by_exp: 'documents', 'documents.date | date: "%Y"' %}
            {% for year in postsInYear %}
-           <li>                      <a href="#{{ year.name }}" style="display: flex;
+           <li> 
+                      <a href="#{{ year.name }}" style="display: flex;
                                                         padding: 0.25em 0;
                                                         -webkit-box-pack: justify;
                                                         justify-content: space-between;
@@ -32,6 +33,8 @@ permalink: /archive/
            <h2 class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};">{{ year.name }}</h2>
            <div class="posts-list">
            {% for document in year.items %}
+           {%- assign words = document.content | strip_html | number_of_words -%}   
+           {%- assign minutes = words | divided_by: 180.0 | ceil -%}
            <div>
                       <article class="post-preview"  style="padding: 0 0 25px;">
                                  <h3 class="post-title" style="font-size: 30px;">
@@ -43,7 +46,10 @@ permalink: /archive/
                                  </h4>
                                  {% endif %}
                                  <p class="post-meta" style="font-size: 15px;">
-                                            Posted on {{ document.date | date_to_string }}		    
+                                            Posted on {{ document.date | date_to_string }}	
+                                            <span style="float: right;">
+                                                       <i class="fa fa-clock-o"></i> {{ minutes }} min read
+                                            </span>
                                  </p>  
                                  <div class="post-entry" style="padding: 5px 0 10px;
                                                                 font-size: 17px;
