@@ -12,7 +12,7 @@ permalink: /test/
 		{% for tags in document.tags %}
 			{% for tag in tags %}
 				{% assign all_tags = all_tags | push: tag %}
-				{% assign all_docs = all_docs | push: document %}
+				
 
 			{% endfor %}
 		{% endfor %}
@@ -25,16 +25,12 @@ permalink: /test/
 <ul>{{ tag }}</ul>
 {% endfor %}
 	
-{% assign thistag = all_docs  | where_exp: "item", "item.includeonfeed == true" | where_exp: "item", "item.tags contains  'project'" %}
+{% assign thistag = site.documents  | where_exp: "item", "item.includeonfeed == true" | where_exp: "item", "item.tags contains  'project'" %}
 {% for document in thistag %}
 <h2> {{ document.title | xml_escape }} </h2>
 
 {% endfor %}
 
-<h1>break </h1>
-{% for document.url in all_docs %}
-<ul>{{ url }}</ul>
-{% endfor %}
 
 	
 
