@@ -18,7 +18,6 @@ permalink: /test/
 
 {% assign tagInPost = tags_list | group_by: 'tag' %}
 
-
 {%- for tag in tagInPost -%}
-    <a href="#{{- tag -}}"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- tag -}}&nbsp;({{ tag.items | size }})</a>
+<p> {{- tag -}} --- tagInPost[tag].size</p>
 {%- endfor -%}
