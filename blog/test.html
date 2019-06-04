@@ -15,7 +15,7 @@ permalink: /test/
 
 <h1>{{ all_tags | size }} </h1>
 
-{{% assing grouptag = all_tags | sort | group_by: tag %}}
+{{% assign rouptag = all_tags | sort | group_by: tag %}}
 
 
 {% assign uniqtag = all_tags | uniq | sort %}
