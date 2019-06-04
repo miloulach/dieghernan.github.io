@@ -16,7 +16,7 @@ permalink: /test/
  {% for document in site.documents %}
     {% for tags in document.tags %}
         {% for tag in tags %}
-            {% assign all_tags = all_tags | push: tag %}
+            {% assign all_tags = all_tags | join: ', ' %}
         {% endfor %}
     {% endfor %}
 {% endfor %}
