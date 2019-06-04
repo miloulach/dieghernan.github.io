@@ -19,12 +19,14 @@ permalink: /test/
     </h2>
     <div class="post-list">
         {%- for document in alldocs -%}
+{% if document.tags contains tag.name %}
             <div class="tag-entry">
                 <a href="{{- site.url -}}{{- document.url -}}">{{- document.title -}}</a>
                 <div class="entry-date">
                     <time datetime="{{- document.date | date_to_xmlschema -}}">{{- document.date | date: "%B %d, %Y" -}}</time>
                 </div>
             </div>
+{% endif %}
         {%- endfor -%}
     </div>
 {%- endfor -%}
