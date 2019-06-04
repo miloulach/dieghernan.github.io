@@ -66,7 +66,7 @@ org_name| Name of the organization
 org_id | Abbreviation or internal ID
 org_member | Membership status
 
-### C. Full json file `.json`  <a name="jcodes">&nbsp;</a>
+### C. Full json file `.json`  <a class="linked-section" name="jcodes">&nbsp;</a>
 This `.json` file [(Link)](https://github.com/dieghernan/Country-Codes-and-International-Organizations/tree/master/outputs/Countrycodesfull.json) combines the previous files:
 
 **Example**
@@ -127,7 +127,7 @@ ISO_memcol = function(df, #Input dataframe
 ```
 
 
-### D. Data sources  <a name="data">&nbsp;</a>
+### D. Data sources  <a class="linked-section" name="data">&nbsp;</a>
 * Wikipedia, the free encyclopedia
   * [ISO-3166](https://en.wikipedia.org/wiki/ISO_3166-1)
   * [NUTS](https://es.wikipedia.org/wiki/Nomenclatura_de_las_Unidades_Territoriales_Estad%C3%ADsticas)

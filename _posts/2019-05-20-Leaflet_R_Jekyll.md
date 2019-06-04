@@ -39,7 +39,7 @@ Ready? Let's go!
 The first step is to install the requested libraries in your GitHub page. As Jekyll basically transforms `markdown` into `html`, this step is a matter of **what to include** and **where** in your own repository.
 
 
-#### 1. What to include <a name="step1">&nbsp;</a>
+#### 1. What to include <a class="linked-section" name="step1">&nbsp;</a>
 
 This part is not really hard. When having a look to the source code of [Leaflet for R](https://rstudio.github.io/leaflet/) site it can be seen this chunk:
 
@@ -82,7 +82,7 @@ So now we have it! The only thing to remember is that we need **to load the libr
 You can have a look of my implementation on [`./_includes/leaflet.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/leaflet.html).
 
 
-#### 2.Where to include <a name="step2">&nbsp;</a>
+#### 2.Where to include <a class="linked-section" name="step2">&nbsp;</a>
 
 This a little bit more complicated, depending on the structure of your Jekyll template. The code chunk should be included in the `<head>` section of your page, so you would need to find where to put it. In the case of **Beautiful Jekyll** it is on [`./_includes/head.html`](https://github.com/dieghernan/dieghernan.github.io/blob/master/_includes/head.html).
 
@@ -94,7 +94,7 @@ So now you just have to paste in the `<head>` the code that you got on [step 1](
 
 ### The RStudio part
 
-#### 3. Creating the leaflet map <a name="step3">&nbsp;</a>
+#### 3. Creating the leaflet map <a class="linked-section" name="step3">&nbsp;</a>
  
 Now it's time to create a leaflet map with **RStudio**. I just keep it simple for this post, so I took the first example provided in [Leaflet for R - Introduction](https://rstudio.github.io/leaflet/)
 
@@ -110,7 +110,7 @@ m  # Print the map
 It is assumed that you are [creating a post with **RStudio**](https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output), so the code presented above should be embedded in an `.Rmd` file.
 
 
-#### 4. Set up the YAML front matter <a name="step4">&nbsp;</a>
+#### 4. Set up the YAML front matter <a class="linked-section" name="step4">&nbsp;</a>
 
 Before knitting your `.Rmd`, you have to set up the [YAML front matter](https://bookdown.org/yihui/rmarkdown/markdown-document.html). Here it is **essential** to set up the option `always_allow_html: yes`, as well as `output: github_document`. As an example, this post was created with the front matter:
 ``` 
@@ -128,7 +128,7 @@ We are almost there! Now "Knit" your code and get the corresponding `.md`file.
 
 ### The Markdown part
 
-#### 5. Modifying the `.md` file <a name="step5">&nbsp;</a>
+#### 5. Modifying the `.md` file <a class="linked-section" name="step5">&nbsp;</a>
 
 *Update: Depending on how you render your file this step may not be neccesary.*
 
@@ -162,7 +162,7 @@ Now you just need to paste this piece of code before that chunk:
 The `style= "width: 100%; height: 216px;"` part controls the actual size of the leaflet widget. In this case, the map would adapt to the width of the page with a fixed height of 216px. I put [some examples](#extra) at the end of the post of different size options so you can have a look and see which one is more suitable for your needs.
 
 
-#### 6. Publish your post <a name="step6">&nbsp;</a>
+#### 6. Publish your post <a class="linked-section" name="step6">&nbsp;</a>
 
 Now you just have to publish your post as usual!! If everything has been properly set, when Jekyll builds your post it would include the libraries in the header and make the magic happens, just like this:
 
@@ -180,12 +180,12 @@ Now you just have to publish your post as usual!! If everything has been properl
 ---
 
 ---
-## Gallery: Size of a leaflet map <a name="extra">&nbsp;</a>
+## Gallery: Size of a leaflet map <a class="linked-section" name="extra">&nbsp;</a>
 
 {: .box-note}
 For a complete understanding of this section it is recommended to access it on multiple devices (you can easily simulate a bunch of them with Google Chrome, right-click “Inspector”, and using the ["Device Mode"](https://developers.google.com/web/tools/chrome-devtools/device-mode/)), so you can see the different behavior on different screens.
 
-Let's start creating a new leaflet map: <a name="setleaf">&nbsp;</a>
+Let's start creating a new leaflet map: <a class="linked-section" name="setleaf">&nbsp;</a>
 
 ``` r
 map <- leaflet(options = leafletOptions(minZoom = 1.25, maxZoom = 8)) %>%
