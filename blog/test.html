@@ -26,6 +26,6 @@ permalink: /test/
 <p> {{ all_tags }}
  
  
- {% assign tagCount = all_tags| group_by: 'item' %}
+ {% assign tagCount = all_tags| group_by: 'tag' %}
  
  <p> {{ tagCount }}
