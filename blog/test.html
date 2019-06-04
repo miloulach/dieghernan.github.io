@@ -5,6 +5,8 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
+{{ site.tags }}
+
 {% assign all_tags = '' | split: ',' %}
 
  {% for document in site.documents %}
