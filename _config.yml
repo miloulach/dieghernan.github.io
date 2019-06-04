@@ -1,10 +1,8 @@
 # --- General options --- #
-
 url: "https://dieghernan.github.io"
 baseurl: ""
 github_repo: "https://github.com/dieghernan/dieghernan.github.io/"
 
-# Name of website
 title: One world
 description: Projects, maps & coding
 
@@ -15,8 +13,6 @@ collections:
     permalink: /projects/:name/
 
 # --- Navigation bar options --- #
-
-# List of links in the navigation bar
 navbar-links:
   Blog:
     - Posts: "blog"
@@ -28,13 +24,9 @@ navbar-links:
     - Textwatch Clima: "https://dieghernan.github.io/TextWatchClima/"
   View on Github: "https://github.com/dieghernan/dieghernan.github.io"
 
-# If you want to have an image logo in the top-left corner instead of the title text,
-# then specify the following parameter
 avatar: "/assets/img/avatar-icon.png"
 
 # --- Background colour/image options --- #
-
-# Personalize the colors in your website. Colour values can be any valid CSS colour
 navbar-col: "#008080"
 navbar-text-col: "#FFFFFF"
 navbar-children-col: "#00A0A0"
@@ -46,12 +38,10 @@ footer-text-col: "#FFFFFF"
 footer-link-col: "#15403F"
 background-light-col: "#F3F8F8"
 
-
-
 # --- Footer options --- #
 author:
   name: dieghernan
-# Select your active Social Network Links.
+
 social-network-links:
   rss: true
   stackoverflow: 7877917/dieghernan
@@ -59,47 +49,22 @@ social-network-links:
   carto: dieghernan
   reddit: dieghernan
   rpubs: dieghernan
-#  reddit: yourname
-#  google-plus: +DeanAttali
-#  linkedin: daattali
-#  xing: yourname
-#  stackoverflow: "3943160/daattali"
-#  snapchat: deanat78
-#  instagram: deanat78
-#  youtube: user/deanat78
-#  spotify: yourname
-#  telephone: +14159998888
-#  steam: deanat78
-#  twitch: yourname
-#  yelp: yourname
 
- 
-
-
-# Select which share links to show in posts
 share-links-active:
   twitter: true
   facebook: true
   linkedin: true
 
 # --- Web Statistics Section --- #
-
-# Fill in your Google Analytics gtag.js ID to track your website using gtag
-#gtag: ""
-
-# Fill in your Google Analytics ID to track your website using GA
 google_analytics: "UA-139034853-1"
 
-# Google Tag Manager ID
-#gtm: "GTM-KHXTGDN"
 
 # --- Comments --- #
 disqus: dieghernan
 
 excerpt_length: 10
 
-# Character used to separate site title and description in HTML document title
-# and RSS feed title
+# Character used to separate site title and description in HTML document title and RSS
 title-separator: "-"
 
 # --- Don't need to touch anything below here (but you can if you want) --- #
@@ -143,29 +108,22 @@ link-tags: true
 
 # Exclude these files from production site
 exclude:
-  - CHANGELOG.md
-  - CNAME
-  - Dockerfile
-  - Gemfile
-  - Gemfile.lock
   - LICENSE
   - README.md
-  - Vagrantfile
+
 
 # prose.io config
 prose:
   rooturl: '_posts'
   media: 'img'
   ignore:
-    - 404.html
     - LICENSE
-    - feed.xml
     - _config.yml
     - /_layouts
     - /_includes
     - /css
-    - /img
     - /js
+    
   metadata:
     _posts:
       - name: "layout"
