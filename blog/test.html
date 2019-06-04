@@ -16,8 +16,8 @@ permalink: /test/
 {% endfor %}
 {%- assign tags_list = all_tags | split:',' | sort -%}
 
-{% assign tagInPost = tags_list | group_by: 'tag' %}
+{% assign tagInPost = tags_list | group_by: 'item' %}
 
-{%- for tag in tagInPost -%}
-<p> {{- tag -}} --- tagInPost[tag].size</p>
+{%- for item in tagInPost -%}
+<p> {{- item -}} --- {{item.size}}</p>
 {%- endfor -%}
