@@ -4,54 +4,31 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-
-
 {% assign all_tags = '' | split: ',' %}
-
- {% for document in site.documents %}
-    {% for tags in document.tags %}
-        {% for tag in tags %}
-            {% assign all_tags = all_tags | push: tag %}
-        {% endfor %}
-    {% endfor %}
+	{% for document in site.documents %}
+		{% for tags in document.tags %}
+			{% for tag in tags %}
+				{% assign all_tags = all_tags | push: tag %}
+			{% endfor %}
+		{% endfor %}
 {% endfor %}
- 
- <ul class="tag-list">
-    {% for tag in all_tags %}
-        <li>{{ tag }}</li>
-    {% endfor %}
-</ul>
-
-{{ all_tags[1] | inspect }}
-
 
 {% assign tags =  all_tags | join: ','  | split: ',' | sort %}
-
-<p>{{ tags }}
-
-
 {% assign previousTag = "" %}
 {% assign counter = 0 %}
-
 {% for currentTag in tags %}
+	{% if previousTag == "" %}
+		{% assign previousTag = currentTag %}
+	{% endif %}
+	{% if currentTag == previousTag %}
+		{% assign counter = counter | plus: 1 %}
+	{% else %}
+		<a href="#{{- previousTag -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- previousTag -}}&nbsp;({{ counter }})</a>
+		{% assign counter = 1 %}
+	{% endif %}	
+	{% if forloop.last %}
+		<a href="#{{- currentTag -}}" class="btn btn-primary tag-btn"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp;{{- currentTag -}}&nbsp;({{ counter }})</a>
+	{% endif %}
 
-  {% comment %}first loop : initializing previousTag{% endcomment %}
-  {% if previousTag == "" %}
-    {% assign previousTag = currentTag %}
-  {% endif %}
-
-  {% if currentTag == previousTag %}
-    {% assign counter = counter | plus: 1 %}
-  {% else %}
-    {{ previousTag }} ({{ counter }})
-    {% assign counter = 1 %}
-  {% endif %}
-
-  {% comment %}last loop : flushing what's left to print{% endcomment %}
-  {% if forloop.last %}
-    {{ currentTag }} ({{ counter }})
-  {% endif %}
-
-  {% assign previousTag = currentTag %}
-
+	{% assign previousTag = currentTag %}
 {% endfor %}
