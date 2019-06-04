@@ -24,7 +24,7 @@ permalink: /test/
 
 {% for tag in uniqtag %}
 <ul>{{ tag }} </ul>
-<p>{{ all docs | where_exp: "item", "item.tags contains tag" | size }}
+<p>{{ all docs | where_exp: "document", "document.tags contains tag" | size }}
 	{% for document in alldocs %}
 		{% if document.tags contains tag %}
 		<p>1
