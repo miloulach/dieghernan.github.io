@@ -4,7 +4,7 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-{% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
+{% assign alldocs = site.projects | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
 {% assign grouptag =  alldocs | map: 'tags' | join: ','  | split: ','  | group_by: tag | sort: 'size' | reverse %}
 
 {%- for tag in grouptag -%}
