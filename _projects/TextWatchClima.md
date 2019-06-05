@@ -4,6 +4,7 @@ title: TextWatch Clima
 subtitle: A Pebble (RIP) project
 featured: true
 date: 2017-02-16
+tags: [project,pebble,watchface,javascript,C]
 donate: true
 share-img: https://raw.githubusercontent.com/dieghernan/TextWatchClima/master/store/BannerRound.png
 githuburl: https://github.com/dieghernan/TextWatchClima
