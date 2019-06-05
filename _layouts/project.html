@@ -24,7 +24,7 @@ layout: base
 			{% endif %}			
 			<article role="main" class="blog-post"  
 				 style="margin:1em 0 0; padding-bottom: 10px;
-padding-top: 0.5px;
+					padding-top: 0.5px;
 					border-top: 0.5px solid  {{ site.navbar-col }};
 					border-bottom: 3px solid {{ site.navbar-col }};">
 				{% if page.date %}
@@ -37,24 +37,23 @@ padding-top: 0.5px;
 				{% endif %}
 				{{ content }}
 			</article>
-         <div style="background-color: {{ site.background-light-col }};
-                     margin-top: 0;
-                     margin-bottom: -20px;
-                     padding: 10px 5px">
-           {% if page.tags.size > 0 %}
-            <div class="blog-tags" style="margin-top: 0; margin-bottom: 10px;">
-               Tags:
-               {% if site.link-tags %}
-               {% for tag in page.tags %}
-               <a href="{{ site.baseurl }}/tags#{{- tag -}}">{{- tag -}}</a>
-               {% endfor %}
-               {% else %}
-               {{ page.tags | join: ", " }}
-               {% endif %}
-            </div>
-           {% endif %}
-			    
-		    {% include social-share.html %}
+			<div style="background-color: {{ site.background-light-col }};
+				    margin-top: 0;
+				    margin-bottom: -20px;
+				    padding: 10px 5px">
+				{% if page.tags.size > 0 %}
+				<div class="blog-tags" style="margin-top: 0; margin-bottom: 10px;">
+				Tags:
+				{% if site.link-tags %}
+					{% for tag in page.tags %}
+					<a href="{{ site.baseurl }}/tags#{{- tag -}}">{{- tag -}}</a>
+					{% endfor %}
+				{% else %}
+					{{ page.tags | join: ", " }}
+				{% endif %}
+				</div>
+				{% endif %}
+				{% include social-share.html %}
 			</div>	
 		</div>
 	</div>
