@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 'Tag Index'
+title: 'Tag Cloud'
 permalink: /tags/
 ---
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}		
@@ -31,10 +31,9 @@ permalink: /tags/
 		{% endif %}
 		{%- endfor -%}
 	</div>
-	<a href="#page-title" style="display: block;
-				     font-size: 0.6em;
+	<a href="#page-title"  class="tag-entry" style="display: block;
+				     font-size: 0.8em;
 				     text-transform: uppercase;
-				     text-align: right;
 				     text-decoration: none;">
 		Back to Top &uarr;
 	</a>
