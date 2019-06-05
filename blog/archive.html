@@ -31,29 +31,28 @@ permalink: /archive/
 {% for year in postsByYear %}
 <section id="{{ year.name }}"  style="font-size: 25px;">
            <h2 class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};">{{ year.name }}</h2>
-           <div class="posts-list">
+           <div>
            {% for document in year.items %}
            {%- assign words = document.content | strip_html | number_of_words -%}   
            {%- assign minutes = words | divided_by: site.wordspermin | ceil -%}
            <div>
-                      <article class="post-preview"  style="padding: 0 0 25px;">
-                                 <h3 class="post-title" style="font-size: 30px;">
-                                            <a href="{{ document.url | prepend: site.baseurl }}" >{{ document.title }}</a>
-                                 </h3>	
+                      <article class="tag-entry"  style="padding: 0 0 25px;">
+                                 <h3><a href="{{ document.url | prepend: site.baseurl }}" >{{ document.title }}</a></h3>	
                                  {% if document.subtitle %}
-                                 <h4 class="post-subtitle" style="font-size: 20px;">
-                                            {{ document.subtitle }}
-                                 </h4>
+                                 <h4>{{ document.subtitle }}</h4>
                                  {% endif %}
-                                 <p class="post-meta" style="font-size: 15px;">
+                                 <p style="font-size: 15px;
+                                           margin: 10px 0;
+                                           font-style: italic;
+                                           color: #808080;">
                                             Posted on {{ document.date | date_to_string }}	
                                             <span style="float: right;">
                                                        <i class="fa fa-clock-o"></i> {{ minutes }} min read
                                             </span>
                                  </p>  
-                                 <div class="post-entry" style="padding: 5px 0 10px;
-                                                                font-size: 17px;
-                                                                border-bottom: 2px double {{ site.background-light-col }};">
+                                 <div style="padding: 5px 0 10px;
+                                             font-size: 15px;
+                                             border-bottom: 2px double {{ site.background-light-col }};">
                                             {{ document.content | strip_html|  truncatewords: 20 }}                                                         
                                  </div>
                       </article>
