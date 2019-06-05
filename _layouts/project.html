@@ -76,6 +76,7 @@ layout: base
 				    margin-bottom: -20px;
 				    padding: 10px 5px">
 				{% if page.tags.size > 0 %}
+<!--- Tags -->
 				<div class="blog-tags" style="margin-top: 0; margin-bottom: 10px;">
 				Tags:
 				{% if site.link-tags %}
@@ -87,7 +88,28 @@ layout: base
 				{% endif %}
 				</div>
 				{% endif %}
-				{% include social-share.html %}
+<!--- Social Share -->
+      <section id = "social-share-section" >
+      	<span class="sr-only">Share: </span>
+      	<!--- Share on Twitter -->
+          <a href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}+{{ site.url }}{{ page.url }}"
+      		class="btn btn-social-icon btn-twitter" title="Share on Twitter">
+      		<span class="fa fa-fw fa-twitter" aria-hidden="true"></span>
+      		<span class="sr-only">Twitter</span>
+          </a>
+      	<!--- Share on Facebook -->
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}"
+      		class="btn btn-social-icon btn-facebook" title="Share on Facebook">
+      		<span class="fa fa-fw fa-facebook" aria-hidden="true"></span>
+      		<span class="sr-only">Facebook</span>
+          </a>
+        <!--- Share on LinkedIn -->
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}"
+          class="btn btn-social-icon btn-linkedin" title="Share on LinkedIn">
+      		<span class="fa fa-fw fa-linkedin" aria-hidden="true"></span>
+      		<span class="sr-only">LinkedIn</span>
+      	</a>
+      </section>
 			</div>	
 		</div>
 	</div>
