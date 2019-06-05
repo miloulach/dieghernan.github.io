@@ -76,7 +76,7 @@ timezone: "Europe/Madrid"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year:month_:title/
-paginate: 5
+paginate: 4
 paginate_path: "/blog/page:num/"
 
 kramdown:
