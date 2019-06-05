@@ -5,6 +5,7 @@ subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/Bzel/master/store/BannerBzel.png
 date: 2017-05-25
 donate: true
+tags: [project,pebble,watchface,javascript,C]
 permalink: /Bzel/
 githuburl: https://github.com/dieghernan/Bzel
 output: github_document
