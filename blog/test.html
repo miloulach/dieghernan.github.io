@@ -7,8 +7,12 @@ permalink: /test/
 New update headfoot
 
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
-{% for document in alldocs limit:6 %}
+{% for document in alldocs limit:3 %}
+{% assign a = document.layout |  join: "/" %}
+{% assign b = document.tags | join: "/" %}
+{% assign c = a | append={{ b }} | join: "/" | uniq | sort %}
 <h3>{{ document.title }}<h3>
-  <p> {{ document.layout }}
-  <p> {{  document.tags | join: "/" | uniq | sort  }}
+  <p> {{ a }}
+  <p> {{  b  }}
+   <p> {{ c }}
 {% endfor %}
