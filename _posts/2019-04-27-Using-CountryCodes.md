@@ -2,7 +2,6 @@
 layout: post
 title: Using CountryCodes database and sf package
 subtitle: vignette of the CountryCodes project
-tags: [R,sf,maps,vignette]
 share-img: https://dieghernan.github.io/assets/figs/20190427_imgpost.png
 date: 2019-04-27
 img-to-head: true
