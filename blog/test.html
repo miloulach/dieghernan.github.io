@@ -8,6 +8,9 @@ New update headfoot
 
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
 {% for document in alldocs limit:3 %}
+[% assign tags2=document.tags | join: ','  | split: ',' }}
+{% assign cat=document.layout %}
 <h3>{{ document.title }}<h3>
-  <p> {{ document.tags |  concat: document.layout }}
+  <p> {{ tags2 }}
+   <p> {{ cat }}
 {% endfor %}
