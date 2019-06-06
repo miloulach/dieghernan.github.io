@@ -10,8 +10,11 @@ New update headfoot33333
 {% for document in alldocs  %}
 <h2>{{ document.title }}</h2>
 {% if document.tags.size > 0 %}
-{% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "item","item.tag != document.layout" %}
+{% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "item","item.tags != document.layout" %}
 <p> {{ tagrss | join: '/'}}
+<p> {{ document.layout }}
+ <p> {{ document.tags | join: ','  | split: ',' }}
+  <p> {{ document.tags | join: ','  | split: ',' | inspect }}
 {% else %}
 <p> {{ document.layout }}
 {% endif %}
