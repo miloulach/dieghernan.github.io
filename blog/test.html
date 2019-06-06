@@ -9,10 +9,12 @@ New update headfoot33333
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
 {% for document in alldocs  %}
 <h2>{{ document.title }}</h2>
-{% if document.tags.size > 0 %}
-{% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "tag","tag != document.layout " %}
-<p> {{ document.layout | concat: tagrss | join: '/'}}
-{% else %}
 <p> {{ document.layout }}
+{% if document.tags.size > 0 %}
+  <ul>
+  {% for tag in document.tags  %}
+    <li>{{ tag }}</li>
+  {% endfor %}
+   </ul>
 {% endif %}
 {% endfor %}
