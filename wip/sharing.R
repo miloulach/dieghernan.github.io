@@ -50,8 +50,8 @@ data_clean=cleansharing(data)
 par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
-
-
+df=data.frame(service="motosharing",provider="coup", city="madrid", stringsAsFactors = F)
+coup=st_sf(df,geom=st_geometry(data_clean))
 
 #Muving----
 download.file("https://storage.googleapis.com/providers/a/muving-madrid.json",
@@ -66,8 +66,11 @@ par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
+df=data.frame(service="motosharing",provider="muving", city="madrid", stringsAsFactors = F)
+muving=st_sf(df,geom=st_geometry(data_clean))
+
 #ecooltra----
- download.file("https://storage.googleapis.com/providers/a/cooltra-madrid.json",
+download.file("https://storage.googleapis.com/providers/a/cooltra-madrid.json",
               destfile = "assets/shp/sharing/ecooltra_madrid.json")
 
 
@@ -88,6 +91,8 @@ par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
+df=data.frame(service="motosharing",provider="ecooltra", city="madrid", stringsAsFactors = F)
+ecooltra=st_sf(df,geom=st_geometry(data_clean))
 
 
 #Movo----
@@ -102,6 +107,9 @@ plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 
+df=data.frame(service="motosharing",provider="movo", city="madrid", stringsAsFactors = F)
+movo=st_sf(df,geom=st_geometry(data_clean))
+
 #acciona----
 download.file("https://storage.googleapis.com/providers/a/acciona-madrid.json",
               destfile = "assets/shp/sharing/acciona_madrid.json")
@@ -113,6 +121,8 @@ par(mfrow=c(1,2),mar=c(1,1,1,1))
 plot(data_init,main=paste(init,"-Init"),col="blue")
 plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
+df=data.frame(service="motosharing",provider="acciona", city="madrid", stringsAsFactors = F)
+acciona=st_sf(df,geom=st_geometry(data_clean))
 
 #ioscoot----
 download.file("https://storage.googleapis.com/providers/a/ioscoot-madrid.json",
@@ -122,8 +132,8 @@ init="ioscoot"
 data_init=origsharing(data)
 data_clean=cleansharing(data)
 
-
-
+df=data.frame(service="motosharing",provider="ioscoot", city="madrid", stringsAsFactors = F)
+ioscoot=st_sf(df,geom=st_geometry(data_clean))
 
 
 par(mfrow=c(1,2),mar=c(1,1,1,1))
@@ -132,65 +142,64 @@ plot(st_geometry(data_clean),main=paste(init,"-fix"),col="blue")
 
 
 
-# End------
-data=fromJSON("assets/shp/sharing/ecooltra_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
-motosharing_madrid=data_sf
-#
-data=fromJSON("assets/shp/sharing/movo_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
 
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
-data=fromJSON("assets/shp/sharing/muving_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
+#motosharing----
 
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
+sharing=rbind(rbind(rbind(rbind(rbind(acciona,coup),ecooltra),movo),muving),ioscoot) %>% st_cast("MULTIPOLYGON")
+st_crs(sharing)=4326
+st_write(sharing,"assets/shp/sharing/sharing.gpkg",
+         factorsAsCharacter = FALSE,
+         layer_options = "OVERWRITE=YES")
 
-data=fromJSON("assets/shp/sharing/coup_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
+rm(list = ls())
 
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
-data=fromJSON("assets/shp/sharing/acciona_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
+#Load----
+a=st_read("assets/shp/sharing/sharing.gpkg")
+plot(st_geometry(a),axes=T)
 
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
 
-data=fromJSON("assets/shp/sharing/ioscoot_madrid.json")
-data_geom=cleansharing(data)
-data_sf = st_sf(
-  cbind(provider = unique(data[["areas"]][["provider"]]),
-        city = unique(data[["areas"]][["city"]])),
-  coordinates = st_geometry(data_geom)
-)
+# Barrios Madrid------
 
-motosharing_madrid=rbind(motosharing_madrid,data_sf)
-st_crs(motosharing_madrid) <- 4326
+rm(list = ls())
+tempshp=paste(tempfile(),"zip",sep=".")
+download.file(  "https://datos.madrid.es/egob/catalogo/200078-10-distritos-barrios.zip" ,  destfile =tempshp)
+unzip(tempshp,exdir =tempdir(),junkpaths=T)
+BarriosMad=st_read(paste(tempdir(),"BARRIOS.shp",sep="/"))
+BarriosMad$area_km2=as.double(st_area(BarriosMad))/1000000
 
-motosharing_madrid$area_km2=as.integer(st_area(motosharing_madrid))/1000000
 
-plot(motosharing_madrid[,"provider"],axes=T)
+#http://www-2.munimadrid.es/CSE6/control/seleccionDatos?numSerie=03010102232
+
+library(readxl)
+POPMAD <- read_excel("assets/POPMAD_20190501.xls", 
+                              sheet = "Import")
+
+fin= POPMAD %>%
+  select(CODBAR,
+         NAMEPOB=...11,
+         TOT_POP=TOT,
+         WORKING_POP=age_20_69,
+         NAC_POP=NAC_TOT,
+         EXT_POP=EXT_TOT,
+         PORC_EXT_POP=PORC_EXT)
+
+BarriosMad=full_join(BarriosMad,fin) %>% arrange(CODBAR)
+BarriosMad$DENS_WORKING_POP=BarriosMad$WORKING_POP/BarriosMad$area_km2
+BarriosMad=st_transform(BarriosMad,4326)
+
+
+INPERCAP <- read_excel("assets/URBAN AUDIT.xls", 
+                     sheet = "IMPORT") %>% 
+  subset(KEY=="BAR") %>% select(CODBAR,
+                                NAMEINPERCAP=...1,
+                                INCOME_PER_CAPITA)
+
+BarriosMad=left_join(BarriosMad,INPERCAP) %>% arrange(CODBAR)
+
+st_write(BarriosMad,"assets/shp/sharing/BarriosMad.gpkg",
+         factorsAsCharacter = FALSE,
+         layer_options = "OVERWRITE=YES")
+
+plot(BarriosMad["INCOME_PER_CAPITA"],axes=T)
+
+cd=st_read("assets/shp/sharing/BarriosMad.gpkg")
