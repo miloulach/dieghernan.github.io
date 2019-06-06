@@ -12,5 +12,5 @@ New update headfoot33333
 {% assign cat = document.layout %}
 <h3>{{ document.title }}<h3>
   <p> {{ tags2 }}
-   <p> {{ cat }}
+   <p> {{ cat | concat: tags2 | uniq | sort | join: '/' }}
 {% endfor %}
