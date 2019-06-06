@@ -35,7 +35,7 @@
 	{% endif %}
 	{% if layout.common-css %}
 		<!-- css -->
-		{% for css in layout.common-css %
+		{% for css in layout.common-css %}
 		<link rel="stylesheet" href="{{ css | prepend: site.baseurl | replace: '//', '/' }}" />
 		{% endfor %}
 		<!-- end css -->
