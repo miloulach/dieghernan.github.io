@@ -9,5 +9,6 @@ New update headfoot
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
 {% for document in alldocs limit:6 %}
 <h3>{{ document.title }}<h3>
-<p> {{  document.layout | append: document.tags | join: "/" | uniq | sort  }}
+  <p> {{ document.layout }}
+  <p> {{  document.tags | join: "/" | uniq | sort  }}
 {% endfor %}
