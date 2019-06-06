@@ -4,6 +4,7 @@ title: Using CountryCodes database and sf package
 subtitle: vignette of the CountryCodes project
 share-img: https://dieghernan.github.io/assets/figs/20190427_imgpost.png
 date: 2019-04-27
+tags: [R,sf,maps,vignette]
 img-to-head: true
 linktormd: true
 output: github_document
@@ -12,12 +13,6 @@ output: github_document
 
 This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/projects/countrycodes/)
   by using the `sf` package in R.
-
-
-
-
-
-
 
 
 ## Required R packages

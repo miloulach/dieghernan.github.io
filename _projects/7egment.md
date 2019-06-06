@@ -5,6 +5,7 @@ subtitle: A Pebble (RIP) project
 share-img: https://raw.githubusercontent.com/dieghernan/7egment/master/store/Banner.png
 date: 2017-05-17
 donate: true
+tags: [project,pebble,watchface,javascript,C]
 permalink: /7egment/
 githuburl: https://github.com/dieghernan/7egment
 output: github_document

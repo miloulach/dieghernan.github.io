@@ -37,11 +37,12 @@ layout: null
 				]]>
 			</description>
 			<link>{{ site.url }}{{ document.url }}</link>
+			<category> {{ document.layout }} </category>
 			{% if document.tags.size > 0 %}
 			{% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "tag","tag != document.layout " %}
-			<category> {{ document.layout | concat: tagrss | join: '/'}}</category>
-			{% else %}
-			<category>{{ document.layout }}</category>
+			{% for tag in tagrss  %}
+			<category>{{ tag }}</category>
+			{% endfor %}
 			{% endif %}
 			<media:title type="html"><![CDATA[{{ document.title }} ]]></media:title>
 			<media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/>
