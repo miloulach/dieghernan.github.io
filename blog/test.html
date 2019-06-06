@@ -4,15 +4,16 @@ title: 'TEST'
 subtitle: 'TEST'
 permalink: /test/
 ---
-New update headfoot33333
+Final loop
 
 {% assign alldocs = site.documents | sort: 'date' | reverse | where_exp: "item", "item.includeonfeed == true" %}
 {% for document in alldocs  %}
 <h2>{{ document.title }}</h2>
 <p> {{ document.layout }}
 {% if document.tags.size > 0 %}
+  {% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "tag","tag != document.layout " %} 
   <ul>
-  {% for tag in document.tags  %}
+  {% for tag in tagrss  %}
     <li>{{ tag }}</li>
   {% endfor %}
    </ul>
