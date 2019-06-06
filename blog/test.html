@@ -11,10 +11,7 @@ New update headfoot33333
 <h2>{{ document.title }}</h2>
 {% if document.tags.size > 0 %}
 {% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "tag","tag != document.layout " %}
-<p> {{ tagrss | join: '/'}}
-<p> {{ document.layout }}
- <p> {{ document.tags | join: ','  | split: ',' }}
-  <p> {{ document.tags | join: ','  | split: ',' | inspect }}
+<p> {{ document.layout | concat: tagrss | join: '/'}}
 {% else %}
 <p> {{ document.layout }}
 {% endif %}
