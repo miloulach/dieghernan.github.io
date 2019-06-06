@@ -37,7 +37,7 @@ layout: null
 				]]>
 			</description>
 			<link>{{ site.url }}{{ document.url }}</link>
-			<category term="animal" label="animal" />
+			<atom:category term="animal" label="animal" />
 			<category> {{ document.layout }} </category>
 			{% if document.tags.size > 0 %}
 			{% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "tag","tag != document.layout " %}
