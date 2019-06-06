@@ -32,13 +32,16 @@ layout: null
 				<![CDATA[	
  				{% if document.subtitle %}<p><b>{{ document.subtitle | xml_escape }}</b></p>{% endif %}
     				<p><i>{{ minutes }} min read</i></p>
-				<p>{{ document.content | strip_html | xml_escape | truncatewords: 60 }}</p>
+				<p>{{ document.content | strip_html | xml_escape | truncatewords: 60 }}
+				<a href="{{ site.url }}{{ document.url }}">[more]</a></p>
 				]]>
 			</description>
 			<link>{{ site.url }}{{ document.url }}</link>
-			<category>{{ document.layout }}</category>
 			{% if document.tags.size > 0 %}
-			<category>{{ document.tags | join: "/" }}</category>
+			{% assign tagrss = document.tags | join: ','  | split: ',' | sort | where_exp: "tag","tag != document.layout " %}
+			<category> {{ document.layout | concat: tagrss | join: '/'}}</category>
+			{% else %}
+			<category>{{ document.layout }}</category>
 			{% endif %}
 			<media:title type="html"><![CDATA[{{ document.title }} ]]></media:title>
 			<media:content url="{{ document.share-img }}" medium="image" width="485" height="321"/>
