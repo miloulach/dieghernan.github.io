@@ -10,5 +10,9 @@ New update headfoot
 {% for document in alldocs limit:3 %}
 <h3>{{ document.title }}<h3>
   <p> {{ document.tags |  prepend:document.layout }}
+    
+    <p>{{ document.layout }}
+      <p>{{ document.layout | inspect }}
+    
 
 {% endfor %}
