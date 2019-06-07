@@ -2,8 +2,10 @@
 rm(list = ls())
 library(sf)
 library(jsonlite)
-library(dplyr)
 library(readxl)
+library(cartography)
+library(RColorBrewer)
+library(dplyr)
 
 # 1. Download shapefile----
 
@@ -21,8 +23,55 @@ download.file(
 unzip(filetemp, exdir = tempdir(), junkpaths = T)
 BarriosMad = st_read(paste(tempdir(), "BARRIOS.shp", sep = "/"),
                      stringsAsFactors = FALSE)
-BarriosMad = st_transform(BarriosMad, 4326)
-BarriosMad$area_km2 = as.double(st_area(BarriosMad)) / (1000 ^ 2)
+#BarriosMad = st_transform(BarriosMad, 4326)
+
+# Get tiles----
+tile=getTiles(BarriosMad,type="osm",crop=TRUE)
+#tilesLayer(tile)
+raster::writeRaster(tile,"myprojects/sharing_madrid/assets/CartoTiles.tif",
+                    overwrite=TRUE)
+rm(tile)
+
+tile_import=raster::brick("myprojects/sharing_madrid/assets/CartoTiles.tif")
+# Check area
+BarriosMad$G_area_km2 = as.double(st_area(BarriosMad)) / (1000 ^ 2)
+#Plot and check
+abreaks=as.integer(
+  classInt::classIntervals(BarriosMad$G_area_km2, 
+                           n=8, 
+                           style="kmeans")$brks
+  )
+
+getPalette = colorRampPalette(rev(brewer.pal(9, "RdYlBu")))
+palarea=paste(getPalette(length(abreaks)),
+              60, #alpha
+              sep="")
+
+par(mar=c(0,0,0,0))
+tilesLayer(tile_import)
+choroLayer(BarriosMad,var=names(BarriosMad)[ncol(BarriosMad)],
+           breaks = abreaks,
+           col=palarea,
+           legend.pos="n",add=T)
+
+legendChoro(breaks = paste(abreaks,"km2",sep=" "),
+            pos="left",
+            title.txt = "",
+            col=getPalette(length(abreaks))
+            )
+            
+       names(BarriosMad)
+# Flag M-30
+BarriosMad$G_M30=ifelse(BarriosMad$CODDIS <= '07', 1,0)
+palM30=paste(getPalette(2),
+              60, #alpha
+              sep="")
+
+tilesLayer(tile_import)
+choroLayer(BarriosMad,var=names(BarriosMad)[ncol(BarriosMad)],
+          breaks=c(0,1,2),
+           col=palM30,
+           legend.pos="left",add=T)
 
 st_write(
   BarriosMad,
@@ -47,7 +96,7 @@ INCOME <-
 # Adding data----
 BarriosMad = left_join(BarriosMad,
                        POPMAD %>%
-                         select(CODBAR,
+                         dplyr::select(CODBAR,
                                 POB_20_69,
                                 POP_TOT,
                                 POB_NAC,
@@ -56,7 +105,7 @@ BarriosMad = left_join(BarriosMad,
 
 BarriosMad = left_join(BarriosMad,
                        INCOME %>%
-                         select(CODBAR,
+                         dplyr::select(CODBAR,
                                 INCOME_PER_CAPITA))
 
 # 4. Crime 2018 ----
@@ -99,7 +148,7 @@ polmad=cbind(polmad,allcrimes)
 
 
 tojoin= BarriosMad %>% st_drop_geometry() %>% 
-  select(DISTRITOS=NOMDIS,
+  dplyr::select(DISTRITOS=NOMDIS,
          CODDIS,POP_TOT) %>% 
   group_by(CODDIS,DISTRITOS) %>%
   summarise(DIST_POP=sum(POP_TOT)) 
@@ -140,7 +189,7 @@ land <- read_excel(destfile)
 
 valueHouses= land %>% 
   subset(uso_cod=="V") %>%
-  select(
+  dplyr::select(
     CODBAR=barrio_cod,
     HOUSE_AVE_VAL=val_cat_medio)
 
@@ -148,7 +197,7 @@ BarriosMad = left_join(BarriosMad,valueHouses)
 
 off_building_area= land %>% 
   subset(uso_cod=="O") %>%
-  select(
+  dplyr::select(
     CODBAR=barrio_cod,
     OFFICES_AREA=sup_cons_barrio)
 
@@ -172,4 +221,6 @@ test=st_read("myprojects/sharing_madrid/assets/Madrid_Barrios.gpkg")
 
 names(test)
 ncol(test)
-plot(test[,10:19])
+plot(test[10:20])
+
+
