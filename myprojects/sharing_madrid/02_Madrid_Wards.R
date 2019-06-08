@@ -6,9 +6,12 @@ library(readxl)
 library(cartography)
 library(RColorBrewer)
 library(dplyr)
+library(rosm)
+library(classInt)
+source("pass.R")
+
 
 # 1. Download shapefile----
-
 # source:Portal de Datos Abiertos de Madrid https://datos.madrid.es
 tempfile(fileext = ".zip")
 tempfile(fileext = ".zip")
@@ -25,53 +28,107 @@ BarriosMad = st_read(paste(tempdir(), "BARRIOS.shp", sep = "/"),
                      stringsAsFactors = FALSE)
 #BarriosMad = st_transform(BarriosMad, 4326)
 
-# Get tiles----
-tile=getTiles(BarriosMad,type="osm",crop=TRUE)
-#tilesLayer(tile)
-raster::writeRaster(tile,"myprojects/sharing_madrid/assets/CartoTiles.tif",
-                    overwrite=TRUE)
-rm(tile)
+#2. Get tiles----
+neightile = source_from_url_format(
+  paste(
+    "https://tile.thunderforest.com/neighbourhood/${z}/${x}/${y}.png?apikey=",
+    THUNDERFOREST_API,
+    sep = ""
+  ),
+  attribution = "Maps © Thunderforest, Data © OpenStreetMap contributors",
+  extension = "png"
+)
+register_tile_source(neighbourhood = neightile)
+tile = getTiles(
+  BarriosMad,
+  type = "neighbourhood",
+  crop = TRUE,
+  verbose = TRUE,
+  zoom = 11
+)
+raster::writeRaster(tile,
+                    "myprojects/sharing_madrid/assets/Neighbourhood.tif",
+                    overwrite = TRUE)
+rm(tile, neightile)
 
-tile_import=raster::brick("myprojects/sharing_madrid/assets/CartoTiles.tif")
+tile_import = raster::brick("myprojects/sharing_madrid/assets/Neighbourhood.tif")
+
 # Check area
 BarriosMad$G_area_km2 = as.double(st_area(BarriosMad)) / (1000 ^ 2)
 #Plot and check
-abreaks=as.integer(
-  classInt::classIntervals(BarriosMad$G_area_km2, 
-                           n=8, 
-                           style="kmeans")$brks
-  )
+abreaks = as.integer(classInt::classIntervals(BarriosMad$G_area_km2,
+                                              n = 8,
+                                              style = "kmeans")$brks)
 
 getPalette = colorRampPalette(rev(brewer.pal(9, "RdYlBu")))
-palarea=paste(getPalette(length(abreaks)),
-              60, #alpha
-              sep="")
+palarea = paste(getPalette(length(abreaks)),
+                60, #alpha
+                sep = "")
 
-par(mar=c(0,0,0,0))
+par(mfrow=c(1,2),mar = c(1, 1, 1, 1))
+
 tilesLayer(tile_import)
-choroLayer(BarriosMad,var=names(BarriosMad)[ncol(BarriosMad)],
-           breaks = abreaks,
-           col=palarea,
-           legend.pos="n",add=T)
+choroLayer(
+  BarriosMad,
+  var = "G_area_km2",
+  border = "grey90",
+  lwd = 1,
+  breaks = abreaks,
+  col = palarea,
+  legend.pos = "n",
+  add = T
+)
 
-legendChoro(breaks = paste(abreaks,"km2",sep=" "),
-            pos="left",
-            title.txt = "",
-            col=getPalette(length(abreaks))
-            )
-            
-       names(BarriosMad)
+legendChoro(
+  pos = "topleft",
+  breaks = paste(abreaks, "km2", sep = " "),
+  title.txt = "",
+  col = getPalette(length(abreaks)),
+  nodata = FALSE
+)
+lege
+layoutLayer(
+  title = "Area KM2",
+  postitle = "center",
+  horiz = FALSE,
+  coltitle = "#008080",
+  col=NA,
+  scale=5,
+  posscale = "bottomleft",
+  tabtitle = TRUE,
+  sources = "Portal de Datos Abiertos de Madrid \n Maps © Thunderforest, Data © OpenStreetMap contributors"
+)
+
 # Flag M-30
-BarriosMad$G_M30=ifelse(BarriosMad$CODDIS <= '07', 1,0)
+
+BarriosMad$G_M30=ifelse(BarriosMad$CODDIS <= '07' | BarriosMad$CODBAR %in% 
+                          c("084","085","092","093","094"),
+                         "IN","OUT")
+
 palM30=paste(getPalette(2),
               60, #alpha
               sep="")
 
 tilesLayer(tile_import)
-choroLayer(BarriosMad,var=names(BarriosMad)[ncol(BarriosMad)],
-          breaks=c(0,1,2),
+typoLayer(BarriosMad,var="G_M30",
            col=palM30,
-           legend.pos="left",add=T)
+          legend.title.txt = "",
+          legend.pos="topleft",
+          legend.values.order = c("IN","OUT"),
+          border = "grey90",
+          lwd = 1,
+          add=T)
+layoutLayer(
+  title = "Area inside M-30 road",
+  postitle = "center",
+  horiz = FALSE,
+  coltitle = "#008080",
+  col=NA,
+  scale=5,
+  posscale = "bottomleft",
+  tabtitle = TRUE,
+  sources = "Portal de Datos Abiertos de Madrid \n Maps © Thunderforest, Data © OpenStreetMap contributors"
+)
 
 st_write(
   BarriosMad,
@@ -79,6 +136,7 @@ st_write(
   factorsAsCharacter = FALSE,
   layer_options = "OVERWRITE=YES"
 )
+dev.off()
 
 # 2. Population 2019/05----
 #http://www-2.munimadrid.es/TSE6/control/seleccionDatosBarrio
@@ -96,19 +154,72 @@ INCOME <-
 # Adding data----
 BarriosMad = left_join(BarriosMad,
                        POPMAD %>%
-                         dplyr::select(CODBAR,
-                                POB_20_69,
-                                POP_TOT,
-                                POB_NAC,
-                                POB_EXT,
-                                PORC_EXT))
+                         select(CODBAR,
+                                P_TargetPop=POB_20_69,
+                                P_Overall=POP_TOT,
+                                P_National=POB_NAC,
+                                P_Foreign=POB_EXT,
+                                P_PercForeign=PORC_EXT))
 
 BarriosMad = left_join(BarriosMad,
                        INCOME %>%
-                         dplyr::select(CODBAR,
-                                INCOME_PER_CAPITA))
+                         select(CODBAR,
+                                W_IncomePerCap=INCOME_PER_CAPITA))
+
+
+BarriosMad$D_Density=BarriosMad$P_Overall/BarriosMad$G_area_km2
+#par(mfrow=c(2,2),mar = c(1, 1, 1, 1))
+pal=paste(getPalette(6),
+             60, #alpha
+             sep="")
+
+b=unlist(
+  classIntervals(BarriosMad$P_TargetPop,n=5,style = "pretty")[["brks"]]
+  )
+tilesLayer(tile_import)
+choroLayer(BarriosMad,var="P_TargetPop",
+           breaks=b,
+           col=paste(getPalette(length(b)),
+                     80, #alpha
+                     sep=""),
+           legend.pos = "topleft",
+           add=T)
+
+b=unlist(
+  classIntervals(BarriosMad$P_PercForeign,n=6,style = "pretty")[["brks"]]
+)
+
+tilesLayer(tile_import)
+choroLayer(BarriosMad,var="P_PercForeign",
+           breaks=b,
+           col=paste(getPalette(length(b)),
+                     80, #alpha
+                     sep=""),
+           legend.values.rnd=2,
+           legend.pos = "topleft",
+           add=T)
+b=unlist(
+  classIntervals(BarriosMad$W_IncomePerCap,n=5,style = "quantile")[["brks"]]
+)
+b=as.integer(b/1000)*1000
+
+tilesLayer(tile_import)
+choroLayer(BarriosMad,var="W_IncomePerCap",
+           breaks=b,
+           col=paste(getPalette(length(b)),
+                     80, #alpha
+                     sep=""),
+           legend.pos = "topleft",
+           add=T)
+tilesLayer(tile_import)
+choroLayer(BarriosMad,var="D_Density",
+           nclass=6,col=pal,
+           legend.pos = "topleft",
+           add=T)
 
 # 4. Crime 2018 ----
+
+
 
 for (i in 1:12) {
   d = as.Date(paste("2018", i, "1", sep = "-"))
