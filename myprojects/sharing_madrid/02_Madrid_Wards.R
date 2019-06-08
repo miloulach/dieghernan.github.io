@@ -60,7 +60,7 @@ abreaks = as.integer(classInt::classIntervals(BarriosMad$G_area_km2,
                                               n = 8,
                                               style = "kmeans")$brks)
 
-getPalette = colorRampPalette(rev(brewer.pal(9, "RdYlBu")))
+getPalette = colorRampPalette(rev(brewer.pal(3, "RdYlBu")))
 palarea = paste(getPalette(length(abreaks)),
                 60, #alpha
                 sep = "")
@@ -86,7 +86,7 @@ legendChoro(
   col = getPalette(length(abreaks)),
   nodata = FALSE
 )
-lege
+
 layoutLayer(
   title = "Area KM2",
   postitle = "center",
@@ -168,54 +168,51 @@ BarriosMad = left_join(BarriosMad,
 
 
 BarriosMad$D_Density=BarriosMad$P_Overall/BarriosMad$G_area_km2
-#par(mfrow=c(2,2),mar = c(1, 1, 1, 1))
-pal=paste(getPalette(6),
-             60, #alpha
-             sep="")
+#Plot----
+par(mfrow=c(2,2),mar = c(1, 1, 1, 1))
+#dev.off()
 
 b=unlist(
   classIntervals(BarriosMad$P_TargetPop,n=5,style = "pretty")[["brks"]]
   )
-tilesLayer(tile_import)
+
 choroLayer(BarriosMad,var="P_TargetPop",
            breaks=b,
-           col=paste(getPalette(length(b)),
-                     80, #alpha
-                     sep=""),
-           legend.pos = "topleft",
-           add=T)
+           col=getPalette(length(b)),
+           legend.pos = "topleft")
 
 b=unlist(
   classIntervals(BarriosMad$P_PercForeign,n=6,style = "pretty")[["brks"]]
 )
 
-tilesLayer(tile_import)
 choroLayer(BarriosMad,var="P_PercForeign",
            breaks=b,
-           col=paste(getPalette(length(b)),
-                     80, #alpha
-                     sep=""),
+           col=getPalette(length(b)),
            legend.values.rnd=2,
            legend.pos = "topleft",
-           add=T)
+          )
 b=unlist(
-  classIntervals(BarriosMad$W_IncomePerCap,n=5,style = "quantile")[["brks"]]
+  classIntervals(BarriosMad$W_IncomePerCap,n=5,style = "jenks")[["brks"]]
 )
-b=as.integer(b/1000)*1000
+end=b[length(b)]+10000
+b=as.integer(append(append(0,b[1:length(b)-1]),end)/1000)*1000
 
-tilesLayer(tile_import)
+
 choroLayer(BarriosMad,var="W_IncomePerCap",
            breaks=b,
-           col=paste(getPalette(length(b)),
-                     80, #alpha
-                     sep=""),
-           legend.pos = "topleft",
-           add=T)
-tilesLayer(tile_import)
+           col=getPalette(length(b)),
+           legend.pos = "topleft")
+
+b=unlist(
+  classIntervals(BarriosMad$D_Density,n=6,style = "pretty")[["brks"]]
+)
+b
+
+
 choroLayer(BarriosMad,var="D_Density",
-           nclass=6,col=pal,
-           legend.pos = "topleft",
-           add=T)
+           breaks=b,
+           col=getPalette(length(b)),
+           legend.pos = "topleft")
 
 # 4. Crime 2018 ----
 for (i in 1:12) {
