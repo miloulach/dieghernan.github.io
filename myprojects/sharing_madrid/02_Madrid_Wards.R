@@ -218,9 +218,6 @@ choroLayer(BarriosMad,var="D_Density",
            add=T)
 
 # 4. Crime 2018 ----
-
-
-
 for (i in 1:12) {
   d = as.Date(paste("2018", i, "1", sep = "-"))
   url = paste(
@@ -229,9 +226,9 @@ for (i in 1:12) {
     "policia-estadisticas.xlsx",
     sep = "-"
   )
+
   destfile <- paste(tempdir(), "police.xlsx", sep = "/")
-  download.file(url,
-                destfile)
+  curl::curl_download(url, destfile)
   est <- read_excel(destfile,
                     skip = 1)
   est$refdate=d
@@ -259,22 +256,22 @@ polmad=cbind(polmad,allcrimes)
 
 
 tojoin= BarriosMad %>% st_drop_geometry() %>% 
-  dplyr::select(DISTRITOS=NOMDIS,
-         CODDIS,POP_TOT) %>% 
+  select(DISTRITOS=NOMDIS,
+         CODDIS,P_Overall) %>% 
   group_by(CODDIS,DISTRITOS) %>%
-  summarise(DIST_POP=sum(POP_TOT)) 
+  summarise(DIST_POP=sum(P_Overall)) 
 
 
 tojoin$DISTRITOS=toupper(tojoin$DISTRITOS)
 
 polmad=left_join(polmad,
                     tojoin)
-polmad$DIST_CRIMES_PER_1000=1000*polmad$allcrimes/polmad$DIST_POP
+polmad$C_CrimesPer1000=1000*polmad$allcrimes/polmad$DIST_POP
 
 BarriosMad = left_join(BarriosMad,
                        polmad %>% select(
                          CODDIS,
-                         DIST_CRIMES_PER_1000
+                         C_CrimesPer1000
                          )
                        ) %>% arrange(desc(CODBAR))
 
@@ -294,8 +291,7 @@ st_write(
 
 url="https://datos.madrid.es/egob/catalogo/211328-10-valores-catastrales-barrio.xls"
 destfile <- paste(tempdir(), "land.xls", sep = "/")
-download.file(url,
-              destfile)
+curl::curl_download(url, destfile)
 land <- read_excel(destfile)
 
 valueHouses= land %>% 
