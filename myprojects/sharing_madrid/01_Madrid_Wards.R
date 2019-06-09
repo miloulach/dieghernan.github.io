@@ -51,11 +51,12 @@ raster::writeRaster(tile,
 rm(tile, neightile)
 tile_import = raster::brick("myprojects/sharing_madrid/assets/Neighbourhood.tif")
 
-voyurl = source_from_url_format(  url_format = "http://a.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
-                                  
-                                  attribution = "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.",
-  extension = "png"
-)
+voyurl = source_from_url_format(
+  url_format = c("http://a.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
+                 "http://b.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
+                 "http://c.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png"),
+  attribution = "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.",
+  extension = "png")
 register_tile_source(cartovoyager = voyurl)
 
 tile = getTiles(
@@ -65,6 +66,7 @@ tile = getTiles(
   verbose = TRUE,
   zoom = 11
 )
+tilesLayer(tile)
 raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/CartoVoyager.tif",
                     overwrite = TRUE)
@@ -226,3 +228,4 @@ st_write(
 )
 
 rm(list = ls())
+
