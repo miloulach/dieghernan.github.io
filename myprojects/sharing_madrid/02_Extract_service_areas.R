@@ -15,13 +15,13 @@ cleansharing <- function(data, service, city, provider) {
   df = df[, 3]
   for (i in 1:nrow(df)) {
     if (i == 1) {
-      keep = df[i, ]
+      keep = df[i,]
     } else {
-      if (st_contains(keep, df[i, ], sparse = FALSE)) {
-        keep = st_difference(keep, df[i, ])
+      if (st_contains(keep, df[i,], sparse = FALSE)) {
+        keep = st_difference(keep, df[i,])
         keep = keep[, 1]
       } else {
-        geom = st_combine(rbind(keep, df[i, ]))
+        geom = st_combine(rbind(keep, df[i,]))
         keep = st_sf(st_drop_geometry(keep), geom)
         keep = st_buffer(keep, 0)
         rm(geom)
@@ -103,12 +103,34 @@ motosharing = rbind(motosharing,
 #plot(motosharing[nrow(motosharing), ])
 
 #7. Areas coverage----
+global_service = motosharing %>% group_by(service, city) %>%
+  summarise(drop = n()) %>% select(-drop) %>%
+  mutate(provider = "all")
+
+motosharing = rbind(motosharing, global_service)
+
 motosharing$area_km2 = as.double(st_area(motosharing)) / (1000 ^ 2)
+
+
+global_service = motosharing %>% group_by(service, city) %>%
+  summarise(drop = n()) %>% select(-drop) %>%
+  mutate(provider = "all")
+
+global_service$area_km2 = as.double(st_area(global_service)) / (1000 ^ 2)
+Sharing = rbind(Sharing, global_service)
+
 
 # Timestamp
 motosharing$timestamp = Sys.time()
 
 motosharing = arrange(motosharing, desc(area_km2))
+plot(motosharing)
+
+# Transform to crs
+
+Mad = st_read("myprojects/sharing_madrid/assets/Madrid_Barrios.gpkg")
+motosharing = st_transform(motosharing, st_crs(Mad))
+
 
 #8. Crea gpkg----
 
@@ -120,13 +142,3 @@ st_write(
 )
 
 rm(list = ls())
-
-# 9. Import test----
-test = st_read("myprojects/sharing_madrid/assets/areas_sharing.gpkg",
-               stringsAsFactors = "FALSE")
-
-plot(test["provider"], axes = T)
-plot(test["area_km2"], axes = T)
-
-rm(list = ls())
-dev.off()
