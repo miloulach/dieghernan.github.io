@@ -2,16 +2,22 @@
 rm(list = ls())
 library(sf)
 library(classInt)
+library(cartography)
 library(dplyr)
 library(RColorBrewer)
 
-Barrios = st_read("myprojects/sharing_madrid/assets/Madrid_Barrios.gpkg")
+windowsFonts(
+  roboto=windowsFont("Roboto")
+)
+
+Barrios = st_read("myprojects/sharing_madrid/assets/Madrid_Barrios.gpkg",
+                  stringsAsFactors = FALSE)
 Sharing = st_read("myprojects/sharing_madrid/assets/areas_sharing.gpkg",
                   stringsAsFactors = FALSE)
 
 # 1. Get coverage----
 for (i in 1:nrow(Sharing)) {
-  provmap = Sharing[i, ]
+  provmap = Sharing[i,]
   r = st_intersection(provmap, Barrios)
   r$cov = as.double(st_area(r)) / (1000 ^ 2)
   r$percov = round(r$cov / r$G_area_km2, 4)
@@ -30,11 +36,199 @@ for (i in 1:nrow(Sharing)) {
   Barrios = left_join(Barrios, Fin)
   rm(Fin, provmap, r)
 }
-Barrios$Cov_DistServArea=as.integer(st_distance(st_centroid(Barrios),Sharing[1,]))/1000
+Barrios$Cov_DistServArea = as.integer(st_distance(st_centroid(Barrios), Sharing[1, ])) /
+  1000
+plot(Barrios[10:33], max.plot = 23)
 
-plot(Barrios[10:33],max.plot=23)
+st_write(
+  Barrios,
+  "myprojects/sharing_madrid/assets/Madrid_Barrios_End.gpkg",
+  factorsAsCharacter = FALSE,
+  layer_options = "OVERWRITE=YES"
+)
 
-#2. ModelGlob - Univar
+
+
+
+#2. Var cuts ----
+getPalette = colorRampPalette(rev(brewer.pal(3, "RdYlBu")))
+tile = raster::brick("myprojects/sharing_madrid/assets/Neighbourhood.tif")
+#Init----
+
+
+
+
+#a. G_area----
+var = Barrios$G_area_km2
+classIntervals(var,
+               n = 8,
+               style = "kmeans")
+
+varbreaks = as.integer(classIntervals(var,
+                                      n = 8,
+                                      style = "kmeans")$brks)
+univar=cbind(Barrios,var)
+
+
+par(mar = c(1, 1, 1, 1),
+        family=windowsFont("roboto"))
+
+#tilesLayer(tile)
+choroLayer(
+  univar,
+  var = "var",
+  border = NA,
+  breaks = varbreaks,
+  col =  paste(getPalette(length(varbreaks)),
+                        95, #alpha
+                        sep = ""),
+  legend.pos = "n"
+)
+
+legendChoro(
+  pos = "topleft",
+  breaks = paste(varbreaks, "km2", sep = " "),
+  title.txt = "",
+  col = getPalette(length(varbreaks)),
+  nodata = FALSE
+)
+
+layoutLayer(
+  title = "Madrid - Ward's area (km2)",
+  col="#008080",
+  scale=5,
+  posscale = "bottomright",
+  tabtitle = TRUE,
+  north = TRUE,
+  sources = "Portal de Datos Abiertos de Madrid",
+  author = "dieghernan, 2019"
+)
+
+#b. M30----
+
+tilesLayer(tile)
+typoLayer(Barrios,
+          var="G_M30",
+          legend.title.txt = "",
+          legend.pos="topleft",
+          legend.values.order = c("IN","OUT"),
+          border = NA,
+          col=paste(getPalette(length(unique(Barrios$G_M30))),
+                60, #alpha
+                sep = ""),
+          add=T
+          )
+layoutLayer(
+  title = "Madrid - Wards and M-30 main road",
+  col="#008080",
+  horiz = FALSE,
+  scale=5,
+  posscale = "bottomleft",
+  tabtitle = TRUE,
+  north = TRUE,
+  sources = "Portal de Datos Abiertos de Madrid \n Maps © Thunderforest, Data © OpenStreetMap contributors",
+  author = "dieghernan, 2019"
+)
+
+shpm30=Barrios %>% subset(G_M30=="IN") %>% st_union() %>% st_cast("LINESTRING")
+#----
+names(Barrios)
+var = Barrios$P_TargetPop
+classIntervals(var,
+               n = 5,
+               style = "pretty")
+
+varbreaks = as.integer(classIntervals(var,
+                                      n = 5,
+                                      style = "pretty")$brks)
+univar=cbind(Barrios,var)
+
+
+par(mar = c(1, 1, 1, 1),
+    family=windowsFont("roboto"))
+
+#tilesLayer(tile)
+choroLayer(
+  univar,
+  var = "var",
+  border = NA,
+  breaks = varbreaks,
+  col =  paste(getPalette(length(varbreaks)),
+               95, #alpha
+               sep = ""),
+  legend.pos = "n"
+)
+plot(st_geometry(shpm30),add=T,col="grey50")
+legendChoro(
+  pos = "topleft",
+  breaks = paste(format(varbreaks, nsmall=1, big.mark=","), "pop", sep = " "),
+  title.txt = "",
+  col = getPalette(length(varbreaks)),
+  nodata = FALSE
+)
+
+layoutLayer(
+  title = "Madrid - Population",
+  col="#008080",
+  scale=5,
+  posscale = "bottomright",
+  tabtitle = TRUE,
+  north = TRUE,
+  sources = "Portal de Datos Abiertos de Madrid",
+  author = "dieghernan, 2019"
+)
+
+
+#----
+Barrios$Cov_all
+plot(st_geometry(Barrios), col = "yellow", border = NA, bg = "lightblue1")
+# plot isopleth map
+discLayer(Barrios,
+          df=st_drop_geometry(Barrios),var = "Cov_all",
+          nclass=3)
+
+discLayer(
+  x = mtq.contig, 
+  df = mtq, 
+  var = "MED",
+  type = "rel", 
+  method = "geom", 
+  nclass = 3,
+  threshold = 0.4,
+  sizemin = 0.7, 
+  sizemax = 6, 
+  col = "red4",
+  legend.values.rnd = 1, 
+  legend.title.txt = "Relative\nDiscontinuities", 
+  legend.pos = "right",
+  add = TRUE
+)     
+           
+95, #alpha
+sep = "")
+
+typoLayer(BarriosMad,var="G_M30",
+          col=palM30,
+          legend.title.txt = "",
+          legend.pos="topleft",
+          legend.values.order = c("IN","OUT"),
+          border = "grey90",
+          lwd = 1,
+          add=T)
+
+choroLayer(
+  univar,
+  var = "var",
+  border = "grey",
+  lwd = 2,
+  breaks = varbreaks,
+  col =  paste(getPalette(length(varbreaks)),
+               95, #alpha
+               sep = ""),
+  legend.pos = "n"
+)
+
+#----
 
 
 
@@ -146,6 +340,7 @@ layoutLayer(
   tabtitle = TRUE,
   sources = "Portal de Datos Abiertos de Madrid \n Maps © Thunderforest, Data © OpenStreetMap contributors"
 )
+
 
 
 #Plot----
