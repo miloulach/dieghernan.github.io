@@ -92,7 +92,7 @@ st_write(
 
 #2. Var cuts ----
 getPalette = colorRampPalette(rev(brewer.pal(3, "RdYlBu")))
-tile = raster::brick("myprojects/sharing_madrid/assets/Neighbourhood.tif")
+tile = raster::brick("myprojects/sharing_madrid/assets/CartoVoyager.tif")
 #Init----
 
 
@@ -113,7 +113,7 @@ univar=cbind(Barrios,var)
 par(mar = c(1, 1, 1, 1),
         family=windowsFont("roboto"))
 
-#tilesLayer(tile)
+
 choroLayer(
   univar,
   var = "var",
@@ -121,7 +121,8 @@ choroLayer(
   breaks = varbreaks,
   col =  paste(getPalette(length(varbreaks)),
                         95, #alpha
-                        sep = ""),
+                        sep = "",
+               ),
   legend.pos = "n"
 )
 
