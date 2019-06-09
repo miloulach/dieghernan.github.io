@@ -70,6 +70,42 @@ tilesLayer(tile)
 raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/CartoVoyager.tif",
                     overwrite = TRUE)
+topo=source_from_url_format(
+  url_format = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
+  attribution="Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community ",
+  extension="jpg"
+  )
+register_tile_source(esritopo=topo)
+tile = getTiles(
+  BarriosMad,
+  type = "esritopo",
+  crop = TRUE,
+  zoom=11,
+  verbose = TRUE
+)
+tilesLayer(tile)
+raster::writeRaster(tile,
+                    "myprojects/sharing_madrid/assets/ESRITopo.tif",
+                    overwrite = TRUE)
+
+worlds=source_from_url_format(
+  url_format = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}",
+  attribution="Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community ",
+  extension="jpg"
+)
+register_tile_source(worldstreet=worlds)
+tile = getTiles(
+  BarriosMad,
+  type = "worldstreet",
+  crop = TRUE,
+  zoom=11,
+  verbose = TRUE
+)
+tilesLayer(tile)
+raster::writeRaster(tile,
+                    "myprojects/sharing_madrid/assets/ESRIWorldStreet.tif",
+                    overwrite = TRUE)
+
 # 3. Area kms2----
 BarriosMad$G_area_km2 = as.double(st_area(BarriosMad)) / (1000 ^ 2)
 
