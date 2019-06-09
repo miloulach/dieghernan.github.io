@@ -6,15 +6,55 @@ library(cartography)
 library(dplyr)
 library(RColorBrewer)
 
+bc=st_read("M30.kml")
+st_geometry_type(bc)
+m30=bc[st_geometry_type(bc)=="LINESTRING",] %>% st_cast("LINESTRING")
+
+bc=st_read("M40.kml")
+plot(bc)
+
+plot(bc)
+plot(bc)
+bc=rgdal::readOGR("M30.gpkg")
 windowsFonts(
   roboto=windowsFont("Roboto")
 )
+
+unique(St$VIA_CLASE)
 
 Barrios = st_read("myprojects/sharing_madrid/assets/Madrid_Barrios.gpkg",
                   stringsAsFactors = FALSE)
 Sharing = st_read("myprojects/sharing_madrid/assets/areas_sharing.gpkg",
                   stringsAsFactors = FALSE)
 
+
+
+# 1. Download shapefile----
+# source:Portal de Datos Abiertos de Madrid https://datos.madrid.es
+tempfile(fileext = ".zip")
+tempfile(fileext = ".zip")
+tempdir()
+filetemp = paste(tempdir(), "temp.zip", sep = "/")
+tempdir()
+
+download.file(
+  "https://datos.madrid.es/egob/catalogo/300138-0-Ejes_viario.zip",
+  filetemp
+)
+unzip(filetemp, exdir = tempdir(), junkpaths = T)
+Via = st_read(paste(tempdir(), "EJES_VIA.shp", sep = "/"),
+                     stringsAsFactors = FALSE)
+#Streets
+St=read.csv("https://datos.madrid.es/egob/catalogo/213605-0-callejero-oficial-madrid.csv",
+            sep=";")
+at= St %>% subset(VIA_CLASE %in% c("AUTOPISTA","AUTOVÍA") | 
+                    NOMBRE_TERMINA =="LIMITE TERMINO MUNICIPAL")
+
+
+Via$COD_VIA=as.double(Via$COD_VIA)
+AT=inner_join(Via,at)
+plot(st_geometry(AT))
+dev.off()
 # 1. Get coverage----
 for (i in 1:nrow(Sharing)) {
   provmap = Sharing[i,]
@@ -92,6 +132,7 @@ legendChoro(
   col = getPalette(length(varbreaks)),
   nodata = FALSE
 )
+plot(st_geometry(AT),add=T)
 
 layoutLayer(
   title = "Madrid - Ward's area (km2)",
@@ -158,7 +199,7 @@ choroLayer(
                sep = ""),
   legend.pos = "n"
 )
-plot(st_geometry(shpm30),add=T,col="grey50")
+plot(st_geometry(AT),add=T,col="grey50")
 legendChoro(
   pos = "topleft",
   breaks = paste(format(varbreaks, nsmall=1, big.mark=","), "pop", sep = " "),
