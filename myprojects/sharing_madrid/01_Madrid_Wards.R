@@ -49,9 +49,25 @@ raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/Neighbourhood.tif",
                     overwrite = TRUE)
 rm(tile, neightile)
-
 tile_import = raster::brick("myprojects/sharing_madrid/assets/Neighbourhood.tif")
 
+voyurl = source_from_url_format(  url_format = "http://a.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
+                                  
+                                  attribution = "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.",
+  extension = "png"
+)
+register_tile_source(cartovoyager = voyurl)
+
+tile = getTiles(
+  BarriosMad,
+  type = "cartovoyager",
+  crop = TRUE,
+  verbose = TRUE,
+  zoom = 11
+)
+raster::writeRaster(tile,
+                    "myprojects/sharing_madrid/assets/CartoVoyager.tif",
+                    overwrite = TRUE)
 # 3. Area kms2----
 BarriosMad$G_area_km2 = as.double(st_area(BarriosMad)) / (1000 ^ 2)
 
