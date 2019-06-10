@@ -4,6 +4,7 @@ library(png)
 library(raster)
 library(sf)
 library(dplyr)
+library(rnaturalearth)
 
 # 1. Get Map----
 SPAIN = getData(
@@ -18,7 +19,7 @@ SPAIN = getData(
 # Move Canary Islands
 CAN = SPAIN %>% subset(GID_1 == "ESP.14_1")
 CANNEW = st_sf(st_drop_geometry(CAN),
-               geometry = st_geometry(CAN) + c(20, 7))
+               geometry = st_geometry(CAN) + c(2, 8))
 st_crs(CANNEW) <- st_crs(SPAIN)
 SPAINV2 = rbind(SPAIN %>% subset(GID_1 != "ESP.14_1"),
                 CANNEW) %>% st_transform(4258) # ETRS89 - Spanish Official
@@ -26,43 +27,20 @@ rm(CAN, CANNEW, SPAIN)
 
 
 
-
 #Just for completing the map
-POR = getData(
-  "GADM",
-  download = TRUE,
-  country = "Portugal",
-  level = 0,
-  path = tempdir()
-) %>% st_as_sf()
-FRA = getData(
-  "GADM",
-  download = TRUE,
-  country = "France",
-  level = 0,
-  path = tempdir()
-) %>% st_as_sf()
-ITA = getData(
-  "GADM",
-  download = TRUE,
-  country = "Italy",
-  level = 0,
-  path = tempdir()
-) %>% st_as_sf()
 
-NEIGH = rbind(ITA,rbind(POR, FRA)) %>% st_transform(st_crs(SPAINV2))
-rm(POR, FRA,ITA)
+NEIGH = ne_download(10,returnclass = "sf") %>% st_transform(st_crs(SPAINV2))
+
 # Plot
 
 plot(
   st_geometry(SPAINV2),
-  axes = T,
   col = NA,
   border = NA,
   bg = "#C6ECFF"
 )
 plot(st_geometry(NEIGH), col = "#E0E0E0", add = T)
-plot(st_geometry(SPAINV2), col = "#FEFEE9", add = T,axes=T)
+plot(st_geometry(SPAINV2), col = "#FEFEE9", add = T,lwd=1.2)
 
 
 # 2. Flags----
