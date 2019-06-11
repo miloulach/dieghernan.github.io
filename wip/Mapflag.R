@@ -29,7 +29,7 @@ rm(CAN, CANNEW, SPAIN)
 
 #Just for completing the map
 
-NEIGH = ne_download(10,returnclass = "sf") %>% st_transform(st_crs(SPAINV2))
+NEIGH = ne_countries(50,returnclass = "sf") %>% select(1) %>% st_transform(st_crs(SPAINV2))
 
 # Plot
 
@@ -39,8 +39,8 @@ plot(
   border = NA,
   bg = "#C6ECFF"
 )
-plot(st_geometry(NEIGH), col = "#E0E0E0", add = T)
-plot(st_geometry(SPAINV2), col = "#FEFEE9", add = T,lwd=1.2)
+plot(st_geometry(NEIGH), col = "#E0E0E0",bg = "#C6ECFF", add = T)
+plot(st_geometry(SPAINV2), col = "#FEFEE9", add = T,lwd=2)
 
 
 # 2. Flags----
@@ -49,13 +49,13 @@ flags_wiki <- function(url, name) {
   require(png)
   dest = paste("assets/flags/Flag_", name, ".svg.png", sep = "")
   curl_download(url, dest)
-  #Adjust channels and extent for files with less tahn 3 RGB channels
+  #Adjust channels and extent 
   test = brick(readPNG(dest) * 255)
   extent(test) = extent(brick(dest))
   plotRGB(test)
 }
 dev.off()
-par(mfrow = c(3, 6), mar = c(1, 1, 1, 1))
+par(mfrow = c(3, 6), mar = c(0, 0, 0, 0))
 flags_wiki(
   "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_Andaluc%C3%ADa.svg/800px-Flag_of_Andaluc%C3%ADa.svg.png",
   "ES.AN"
@@ -133,79 +133,139 @@ flags_wiki(
 
 
 #3. raster and plot----
-
-par(mar = c(2, 2, 2, 2))
+dev.off()
+par(mar = c(0, 0, 0, 0))
 # Fix plot
 plot(
   st_geometry(SPAINV2),
-  axes = T,
   col = NA,
-  border = "black",
+  border = NA,
   bg = "#C6ECFF"
 )
 plot(st_geometry(NEIGH), col = "#E0E0E0", add = T)
-plot(st_geometry(SPAINV2), col = "green", add = T,axes=T)
+plot(st_geometry(SPAINV2), col = "green", add = T)
 
 
 # iter---
 for (i in 1:nrow(SPAINV2)) {
+  
   shp = SPAINV2[i, ]
   CCAA = shp$HASC_1
+  print(paste("Iter ",i,CCAA,sep=" "))
   flagpath = paste("assets/flags/Flag_", CCAA, ".svg.png", sep = "")
   
   #Load as raster
   flag = brick(readPNG(flagpath) * 255)
   extent(flag) = extent(brick(flagpath))
   
-  # Prepare for masking
+  # Geotagging
   projection(flag) <- CRS(st_crs(shp)[["proj4string"]])
-  # Adjust the new extent to cover completely the shape and keeping the ratio of the flag
+  # Adjust the new extent in way that the shape is centered and completely covered
+  # Keeping the flag aspect ratio
   ratioflag = extent(flag)@xmax / extent(flag)@ymax
+  
+  #MIddle point
   extshp=extent(shp)
-  extshp
-  new_h=extshp@ymin+(extshp@xmax-extshp@xmin)/ratioflag
-  new_w=extshp@xmin+(extshp@ymax-extshp@ymin)*ratioflag
-  if (new_w<extshp@xmax){
-    new_ext=c(extshp@xmin,extshp@xmax,extshp@ymin,new_h)
+  w=(extshp@xmax-extshp@xmin)/2
+  h=(extshp@ymax-extshp@ymin)/2
+  w_mp=extshp@xmin+w
+  h_mp=extshp@ymin+h
+  
+  if(w>h*ratioflag){
+    new_ext=c(extshp@xmin,extshp@xmax,h_mp-w/ratioflag,h_mp+w/ratioflag)
   } else {
-    new_ext=c(extshp@xmin,new_w,extshp@ymin,extshp@ymax)
+    new_ext=c(w_mp-h*ratioflag,w_mp+h*ratioflag,extshp@ymin,extshp@ymax)
   }
+  
   extent(flag) <- new_ext
+  #Done - masking
   fig = mask(flag, shp)
   
   
   plotRGB(fig, bgalpha = 0, add = T)
 }
 
+
+
 plot(st_geometry(SPAINV2),border="black",lwd=2,axes=T,add=T)
 
-# Test----
+# For blog----
+rm(list = ls())
+library(jsonlite)
 
-
-shp = SPAINV2 %>% subset(HASC_1=="ES.AN")
-CCAA = shp$HASC_1
-flagpath = paste("assets/flags/Flag_", CCAA, ".svg.png", sep = "")
-
-#Load as raster
-flag = brick(readPNG(flagpath) * 255)
-extent(flag) = extent(brick(flagpath))
-
-# Prepare for masking
-projection(flag) <- CRS(st_crs(shp)[["proj4string"]])
-# Adjust the new extent to cover completely the shape and keeping the ratio of the flag
-ratioflag = extent(flag)@xmax / extent(flag)@ymax
-extshp=extent(shp)
-extshp
-new_h=extshp@ymax-(extshp@xmax-extshp@xmin)/ratioflag
-new_w=extshp@xmin+(extshp@ymax-extshp@ymin)*ratioflag
-if (new_w<extshp@xmax){
-  new_ext=c(extshp@xmin,extshp@xmax,new_h,extshp@ymax)
-} else {
-  new_ext=c(extshp@xmin,new_w,extshp@ymin,extshp@ymax)
+df = fromJSON("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodesfull.json")
+ISO_memcol = function(df,
+                      orgtosearch 
+) {
+  ind = match(orgtosearch, unlist(df[1, "org_id"]))
+  or = lapply(1:nrow(df), function(x)
+    unlist(df[x, "org_member"])[ind])
+  or = data.frame(matrix(unlist(or)), stringsAsFactors = F)
+  names(or) = orgtosearch
+  df2 = as.data.frame(cbind(df, or, stringsAsFactors = F))
+  return(df2)
 }
-extent(flag) <- new_ext
-plotRGB(flag)
-plot(st_geometry(shp),add=T)
-fig = mask(flag, shp)
+df_org = ISO_memcol(df, "EU") %>% select(
+  ISO_3166_3,
+  EU) %>% subset(EU=="member")
 
+all=ne_download(50,type="map_subunits",returnclass = "sf")%>%
+  select(ADM0_A3, CONTINENT) %>% 
+  left_join(df_org,by=c("ADM0_A3"="ISO_3166_3")) %>%
+  st_transform(25830)
+
+eu=all %>% subset(!is.na(EU)) %>%
+  subset(CONTINENT =="Europe" | ADM0_A3=="CYP") %>%
+  mutate(EU="EU") %>% group_by(EU) %>% summarise(drop=n()) %>%
+  select(EU)
+
+# Flag
+require(curl)
+require(png)
+url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/800px-Flag_of_Europe.svg.png"
+dest = "assets/flags/Flag_EU.svg.png"
+curl_download(url, dest)
+#Load as raster
+flag = brick(readPNG(dest) * 255)
+extent(flag) = extent(brick(dest))
+shp=eu
+# Geotagging
+projection(flag) <- CRS(st_crs(shp)[["proj4string"]])
+# Adjust the new extent in way that the shape is centered and completely covered
+# Keeping the flag aspect ratio
+ratioflag = extent(flag)@xmax / extent(flag)@ymax
+
+#MIddle point
+extshp=extent(shp)
+w=(extshp@xmax-extshp@xmin)/2
+h=(extshp@ymax-extshp@ymin)/2
+w_mp=extshp@xmin+w
+h_mp=extshp@ymin+h
+
+if(w>h*ratioflag){
+  new_ext=c(extshp@xmin,extshp@xmax,h_mp-w/ratioflag,h_mp+w/ratioflag)
+} else {
+  new_ext=c(w_mp-h*ratioflag,w_mp+h*ratioflag,extshp@ymin,extshp@ymax)
+}
+
+extent(flag) <- new_ext
+#Done - masking
+fig = mask(flag, shp)
+par(mar=c(0,0,0,0))
+plot(st_geometry(eu),col=NA,border=NA,bg = "#C6ECFF")
+plot( ne_countries(50,returnclass = "sf") %>%
+        st_transform(st_crs(eu)) %>%
+        st_geometry(),
+      col = "#E0E0E0",
+      border="white",
+      lwd=1.5,
+     add=T
+     
+     
+     )
+plotRGB(fig,add=T,bg=0)
+
+#WIP----
+#WIP
+stdh_pngbackground<-function(sho)
 
