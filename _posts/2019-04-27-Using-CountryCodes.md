@@ -11,7 +11,7 @@ output: github_document
 ---
 
 
-This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/projects/countrycodes/)
+This vignette is an example of use of the database provided in the Github project [Country Codes and International Organizations & Groups](https://dieghernan.github.io/Country-Codes-and-International-Organizations/)
   by using the `sf` package in R.
 
 
