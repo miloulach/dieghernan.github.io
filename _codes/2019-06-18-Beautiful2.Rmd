@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Beautiful Maps with R (II): Fun with flags"
-subtitle: "Awesome simplified maps with R"
+subtitle: "Put a picture on your map"
 tags: [R,beautiful_maps, maps, raster,flags,sf,function]
 date: 2019-06-18
 share-img: https://dieghernan.github.io/assets/figs/20190618_imgpost-1.png

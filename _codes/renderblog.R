@@ -20,6 +20,6 @@ diegpost <- function(file) {
 #diegpost("2019-05-05-Cast to subsegments")
 #diegpost("2019-05-13-Where-in-the-world")
 #diegpost("2019-05-20-Leaflet_R_Jekyll")
-diegpost("2019-06-02-Beautiful1")
-
+#diegpost("2019-06-02-Beautiful1")
+diegpost("2019-06-18-Beautiful2")
 
