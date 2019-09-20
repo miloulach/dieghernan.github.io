@@ -80,7 +80,7 @@ motosharing = rbind(motosharing,
                     cleansharing(data,
                                  "motosharing",
                                  "madrid", "movo"))
-#plot(motosharing[nrow(motosharing), ])
+plot(motosharing[nrow(motosharing), ])
 
 #5. eCooltra----
 download.file(paste(urbipath, "cooltra-madrid.json", sep = "/"),
@@ -90,9 +90,9 @@ motosharing = rbind(motosharing,
                     cleansharing(data,
                                  "motosharing",
                                  "madrid", "ecooltra"))
-#plot(motosharing[nrow(motosharing), ])
+plot(motosharing[nrow(motosharing), ])
 
-#6. eCooltra----
+#6. ioscoot----
 download.file(paste(urbipath, "ioscoot-madrid.json", sep = "/"),
               destfile = filetemp)
 data = fromJSON(filetemp)
@@ -100,7 +100,7 @@ motosharing = rbind(motosharing,
                     cleansharing(data,
                                  "motosharing",
                                  "madrid", "ioscoot"))
-#plot(motosharing[nrow(motosharing), ])
+plot(motosharing[nrow(motosharing), ])
 
 #7. Areas coverage----
 global_service = motosharing %>% group_by(service, city) %>%
@@ -117,7 +117,7 @@ global_service = motosharing %>% group_by(service, city) %>%
   mutate(provider = "all")
 
 global_service$area_km2 = as.double(st_area(global_service)) / (1000 ^ 2)
-Sharing = rbind(Sharing, global_service)
+Sharing = rbind(motosharing, global_service)
 
 
 # Timestamp

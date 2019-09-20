@@ -5,19 +5,11 @@ library(readxl)
 library(cartography)
 library(rosm)
 library(dplyr)
-
-
 source("pass.R")
-
 
 # 1. Download shapefile----
 # source:Portal de Datos Abiertos de Madrid https://datos.madrid.es
-tempfile(fileext = ".zip")
-tempfile(fileext = ".zip")
-tempdir()
 filetemp = paste(tempdir(), "temp.zip", sep = "/")
-tempdir()
-
 download.file(
   "https://datos.madrid.es/egob/catalogo/200078-10-distritos-barrios.zip",
   filetemp
@@ -25,9 +17,9 @@ download.file(
 unzip(filetemp, exdir = tempdir(), junkpaths = T)
 BarriosMad = st_read(paste(tempdir(), "BARRIOS.shp", sep = "/"),
                      stringsAsFactors = FALSE)
-#BarriosMad = st_transform(BarriosMad, 4326)
 
 #2. Get tiles----
+#Neighbourhood by Thunderforest
 neightile = source_from_url_format(
   paste(
     "https://tile.thunderforest.com/neighbourhood/${z}/${x}/${y}.png?apikey=",
@@ -38,85 +30,106 @@ neightile = source_from_url_format(
   extension = "png"
 )
 register_tile_source(neighbourhood = neightile)
-tile = getTiles(
-  BarriosMad,
-  type = "neighbourhood",
-  crop = TRUE,
-  verbose = TRUE,
-  zoom = 11
-)
+tile = getTiles(BarriosMad,
+                type = "neighbourhood",
+                crop = TRUE,
+                zoom = 11,
+                verbose = TRUE)
 raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/Neighbourhood.tif",
                     overwrite = TRUE)
+tilesLayer(tile)
 rm(tile, neightile)
-tile_import = raster::brick("myprojects/sharing_madrid/assets/Neighbourhood.tif")
 
+#Voyager by Carto
 voyurl = source_from_url_format(
-  url_format = c("http://a.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
-                 "http://b.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
-                 "http://c.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png"),
+  url_format = c(
+    "http://a.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
+    "http://b.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png",
+    "http://c.basemaps.cartocdn.com/rastertiles/voyager/${z}/${x}/${y}.png"
+  ),
   attribution = "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.",
-  extension = "png")
+  extension = "png"
+)
 register_tile_source(cartovoyager = voyurl)
 
-tile = getTiles(
-  BarriosMad,
-  type = "cartovoyager",
-  crop = TRUE,
-  verbose = TRUE,
-  zoom = 11
-)
+tile = getTiles(BarriosMad,
+                type = "cartovoyager",
+                crop = TRUE,
+                zoom = 11,
+                verbose = TRUE)
 tilesLayer(tile)
 raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/CartoVoyager.tif",
                     overwrite = TRUE)
-topo=source_from_url_format(
-  url_format = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
-  attribution="Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community ",
-  extension="jpg"
-  )
-register_tile_source(esritopo=topo)
-tile = getTiles(
-  BarriosMad,
-  type = "esritopo",
-  crop = TRUE,
-  zoom=11,
-  verbose = TRUE
+
+#Voyager NoLabels
+
+voynolaburl = source_from_url_format(
+  url_format = c(
+    "http://a.basemaps.cartocdn.com/rastertiles/voyager_nolabels/${z}/${x}/${y}.png",
+    "http://b.basemaps.cartocdn.com/rastertiles/voyager_nolabels/${z}/${x}/${y}.png",
+    "http://c.basemaps.cartocdn.com/rastertiles/voyager_nolabels/${z}/${x}/${y}.png"
+  ),
+  attribution = "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.",
+  extension = "png"
 )
+register_tile_source(cartovoyagernolab = voynolaburl)
+tile = getTiles(BarriosMad,
+                type = "cartovoyagernolab",
+                crop = TRUE,
+                zoom = 11,
+                verbose = TRUE)
+tilesLayer(tile)
+raster::writeRaster(tile,
+                    "myprojects/sharing_madrid/assets/CartoVoyagerNoLabels.tif",
+                    overwrite = TRUE)
+#Topo by ESRI
+topo = source_from_url_format(url_format = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
+                              attribution = "Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community ",
+                              extension = "jpg")
+register_tile_source(esritopo = topo)
+tile = getTiles(BarriosMad,
+                type = "esritopo",
+                crop = TRUE,
+                zoom = 11,
+                verbose = TRUE)
 tilesLayer(tile)
 raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/ESRITopo.tif",
                     overwrite = TRUE)
 
-worlds=source_from_url_format(
-  url_format = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}",
-  attribution="Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community ",
-  extension="jpg"
-)
-register_tile_source(worldstreet=worlds)
-tile = getTiles(
-  BarriosMad,
-  type = "worldstreet",
-  crop = TRUE,
-  zoom=11,
-  verbose = TRUE
-)
+#WorldStreetMap by ESRI
+worlds = source_from_url_format(url_format = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}",
+                                attribution = "Sources: Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community ",
+                                extension = "jpg")
+register_tile_source(worldstreet = worlds)
+tile = getTiles(BarriosMad,
+                type = "worldstreet",
+                crop = TRUE,
+                zoom = 11,
+                verbose = TRUE)
 tilesLayer(tile)
 raster::writeRaster(tile,
                     "myprojects/sharing_madrid/assets/ESRIWorldStreet.tif",
                     overwrite = TRUE)
+rm(tile, topo, voyurl, worlds)
+
 
 # 3. Area kms2----
 BarriosMad$G_area_km2 = as.double(st_area(BarriosMad)) / (1000 ^ 2)
 
 # 4. M30----
-BarriosMad$G_M30 = ifelse(
-  BarriosMad$CODDIS <= '07' | BarriosMad$CODBAR %in%
-    c("084", "085", "092", "093", "094"),
-  "IN",
-  "OUT"
-)
+BarriosMad$G_MAreas = 
+  ifelse(BarriosMad$CODDIS=='01','Madrid Central',
+  ifelse(
+  BarriosMad$CODDIS <= '07' | 
+    BarriosMad$CODBAR %in% c('092','094','159','084','085','093'),
+  "M-30",
+  "M-40"
+))
 
+plot(BarriosMad["G_MAreas"])
 st_write(
   BarriosMad,
   "myprojects/sharing_madrid/assets/Madrid_Barrios.gpkg",
@@ -225,6 +238,9 @@ st_write(
   layer_options = "OVERWRITE=YES"
 )
 
+
+
+
 #6. Land use----
 # 2017
 # https://datos.madrid.es/egob/catalogo/211328-10-valores-catastrales-barrio.xls
@@ -263,5 +279,33 @@ st_write(
   layer_options = "OVERWRITE=YES"
 )
 
-rm(list = ls())
 
+
+#Highways----
+
+layers = unlist(st_layers("myprojects/sharing_madrid/assets/MadridHighways.kml")[1])
+for (i in 1:length(layers)) {
+  f = st_read(
+    "myprojects/sharing_madrid/assets/MadridHighways.kml",
+    layer = layers[i],
+    stringsAsFactors = FALSE
+  )  %>%
+    subset(Name == layers[i]) %>%
+    select(Name)
+  
+  if (i == 1) {
+    keep = f
+  } else {
+    keep = rbind(keep, f)
+  }
+  rm(f)
+}
+Highways = st_transform(keep, st_crs(BarriosMad))
+
+st_write(
+  Highways,
+  "myprojects/sharing_madrid/assets/MadridHighways.gpkg",
+  factorsAsCharacter = FALSE,
+  layer_options = "OVERWRITE=YES"
+)
+rm(list = ls())
