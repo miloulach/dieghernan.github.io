@@ -7,6 +7,9 @@ library(rosm)
 library(dplyr)
 source("pass.R")
 
+install.packages("rnaturalearth")
+library("rnaturalearth")
+
 # 1. Download shapefile----
 # source:Portal de Datos Abiertos de Madrid https://datos.madrid.es
 filetemp = paste(tempdir(), "temp.zip", sep = "/")

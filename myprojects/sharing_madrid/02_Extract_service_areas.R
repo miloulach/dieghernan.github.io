@@ -49,7 +49,7 @@ download.file(paste(urbipath, "coup-madrid.json", sep = "/"),
               destfile = filetemp)
 data = fromJSON(filetemp)
 motosharing = cleansharing(data, "motosharing", "madrid", "coup")
-#plot(motosharing[nrow(motosharing), ])
+plot(motosharing[nrow(motosharing), ])
 
 
 #2. Muving----
@@ -60,7 +60,7 @@ motosharing = rbind(motosharing,
                     cleansharing(data,
                                  "motosharing",
                                  "madrid", "muving"))
-#plot(motosharing[nrow(motosharing), ])
+plot(motosharing[nrow(motosharing), ])
 
 #3. Acciona----
 download.file(paste(urbipath, "acciona-madrid.json", sep = "/"),
@@ -70,12 +70,18 @@ motosharing = rbind(motosharing,
                     cleansharing(data,
                                  "motosharing",
                                  "madrid", "acciona"))
-#plot(motosharing[nrow(motosharing), ])
+plot(motosharing[nrow(motosharing), ])
 
+dataAcciona=data
 #4. Movo----
 download.file(paste(urbipath, "movo-madrid.json", sep = "/"),
               destfile = filetemp)
 data = fromJSON(filetemp)
+
+aa=cleansharing(data,
+             "motosharing",
+             "madrid", "movo")
+
 motosharing = rbind(motosharing,
                     cleansharing(data,
                                  "motosharing",
