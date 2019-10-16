@@ -1,17 +1,30 @@
-Wikipedia Maps (I): Organ donor rates
-================
-2019-10-23
+---
+layout: post
+title: "Wikipedia Maps (I): Organ donor rates"
+subtitle: "A choropleth map with R"
+tags: [R, Wikipedia, sf,cartography, svg, maps]
+date: 2019-10-16
+share-img: https://dieghernan.github.io/assets/figs/20191016_DonorRate.png
+img-to-head: true
+linktormd: true
+output: github_document
+permalink: /test/
+---
+
 
 This is a quick post on how to create a map as per the [Wikipedia
 conventions](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions#Gradient_maps).
 In this case I have chosen to plot the [international organ donor
 rates](https://en.wikipedia.org/wiki/International_organ_donor_rates),
-retrieved on 2019-02-10.
+retrieved on 2019-02-10m although the data refers to 2017 (Source:
+[IRODaT](http://www.irodat.org/?p=database)).
 
 ### Webscrapping
 
 First step is to webscrap Wikipedia in order to get the final table. For
-doing so, I will use the `rvest` library.
+doing so, I will use the `rvest` library. You can get the *xpaht* you
+want to webscrap as explained
+[here](https://stackoverflow.com/a/57972054/7877917).
 
 ``` r
 library(rvest)
@@ -21,11 +34,15 @@ Base <-
   read_html("https://en.wikipedia.org/wiki/International_organ_donor_rates") %>%
   html_nodes(xpath = '//*[@id="mw-content-text"]/div/table[3]') %>%
   html_table() %>%
-  as.data.frame(stringsAsFactors = F, fix.empty.names = F) %>%
+  as.data.frame(
+    stringsAsFactors = F,
+    fix.empty.names = F
+  ) %>%
   select(Country,
-         RateDonperMill =
-           Number.of.deceased.donors..per.million.of.population)
-knitr::kable(head(Base, 10), format = 'markdown')
+    RateDonperMill = Number.of.deceased.donors..per.million.of.population
+  )
+
+knitr::kable(head(Base, 10), format = "markdown")
 ```
 
 | Country    | RateDonperMill |
@@ -50,6 +67,7 @@ already discussed on previous posts, so here we go:
 ``` r
 library(sf)
 
+# Map import from Eurostat
 WorldMap <-
   st_read(
     "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_10M_2016_3857.geojson",
@@ -57,7 +75,8 @@ WorldMap <-
   ) %>%
   select(ISO_3166_3 = ISO3_CODE)
 
-df = read.csv(
+# CountryCode import
+df <- read.csv(
   "https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodes.csv",
   na.strings = "",
   stringsAsFactors = FALSE,
@@ -67,35 +86,38 @@ df = read.csv(
 WorldMap <- left_join(WorldMap, df)
 ```
 
-### Putting all together
+### Merging all together
 
 Now let’s join and have a look to see what is going on:
 
 ``` r
-DonorRate = inner_join(WorldMap,
-                       Base, by = c("NAME.EN" = "Country")) %>%
-  select(NAME.EN,
-         ISO_3166_3,
-         RateDonperMill)
+DonorRate <- inner_join(WorldMap,
+  Base,
+  by = c("NAME.EN" = "Country")
+) %>%
+  select(
+    NAME.EN,
+    ISO_3166_3,
+    RateDonperMill
+  )
 
-nrow(DonorRate)
+nrowcomp <- cbind(nrow(Base), nrow(DonorRate)) %>%
+  as.data.frame()
+names(nrowcomp) <- c("Initial", "After join")
+knitr::kable(nrowcomp, format = "markdown")
 ```
 
-    ## [1] 88
-
-``` r
-nrow(Base)
-```
-
-    ## [1] 94
+| Initial | After join |
+| ------: | ---------: |
+|      94 |         88 |
 
 Oops\! Joining by name (just the string) doesn’t work for 6 cases. Not
 too bad but let’s try to fix it.
 
 ``` r
-nameex=anti_join(Base, DonorRate, by=c("Country"="NAME.EN"))
+nameex <- anti_join(Base, DonorRate, by = c("Country" = "NAME.EN"))
 
-knitr::kable(nameex,format="markdown")
+knitr::kable(nameex, format = "markdown")
 ```
 
 | Country         | RateDonperMill |
@@ -108,28 +130,38 @@ knitr::kable(nameex,format="markdown")
 | Taiwan          |           0.00 |
 
 ``` r
-nameex$ISO_3166_3 = c("BIH",
-                      "CZE",
-                      "HKG",
-                      "MKD",
-                      "SVK",
-                      "TWN")
+nameex$ISO_3166_3 <- c(
+  "BIH",
+  "CZE",
+  "HKG",
+  "MKD",
+  "SVK",
+  "TWN"
+)
 
-dfclean = DonorRate %>% st_drop_geometry() %>% select(Country = NAME.EN,
-                                                      ISO_3166_3,
-                                                      RateDonperMill) %>% rbind(nameex)
-#Cleanup
-rm(Base,df,nameex,DonorRate)
+dfclean <- DonorRate %>%
+  st_drop_geometry() %>%
+  select(
+    Country = NAME.EN,
+    ISO_3166_3,
+    RateDonperMill
+  ) %>%
+  rbind(nameex)
 
-#Join to map
+# Cleanup
+rm(Base, df, nameex, DonorRate)
 
-MapDonorRate=left_join(WorldMap,dfclean) %>% select(ISO_3166_3,
-                                                    NAME.EN,
-                                                    RateDonperMill,
-                                                    area_km2)
+# Join to map
+MapDonorRate <- left_join(WorldMap, dfclean) %>%
+  select(
+    ISO_3166_3,
+    NAME.EN,
+    RateDonperMill,
+    area_km2
+  )
 ```
 
-### Plot it
+### Make the `.svg` file
 
 As already explained, I would like to follow the Wikipedia conventions,
 so some things to bear in mind:
@@ -141,10 +173,11 @@ so some things to bear in mind:
     in **R**.
   - In terms of projection, Wikipedia recommends the [Equirectangular
     projection](https://en.wikipedia.org/wiki/Equirectangular_projection)
-    but as in their own sample of a gradient map I would choose to use
+    but, as in their own sample of a gradient map, I would choose to use
     the [Robinson
     projection](https://en.wikipedia.org/wiki/Robinson_projection).
-  - I should produce an `.svg` file.
+  - I should produce an `.svg` file following also the naming
+    convention.
 
 Some libraries then to use: `RColorBrewer`, `rsvg` and specially onw of
 my favourites, `cartography`:
@@ -154,52 +187,50 @@ library(RColorBrewer)
 library(cartography)
 library(rsvg)
 
+# Create bbox of the world
+bbox <- st_linestring(rbind(
+  c(-180, 90),
+  c(180, 90),
+  c(180, -90),
+  c(-180, -90),
+  c(-180, 90)
+)) %>%
+  st_segmentize(5) %>%
+  st_cast("POLYGON") %>%
+  st_sfc(crs = 4326) %>%
+  st_transform(crs = "+proj=robin")
+
+# Create SVG
 svg(
-"Organ donor rate per million by country gradient map (2017).svg",
-pointsize = 90,
-width =  1600 / 90,
-height = 728 / 90
+  "Organ donor rate per million by country gradient map (2017).svg",
+  pointsize = 90,
+  width = 1600 / 90,
+  height = 728 / 90
 )
+
 par(mar = c(0.5, 0, 0, 0))
 choroLayer(
-MapDonorRate %>% filter(area_km2 > 400) %>% st_transform("+proj=robin") ,
-var = "RateDonperMill",
-breaks = c(0, 5, 10, 20, 30, 40, 50),
-col = brewer.pal(6, "PuBu"),
-border = "#646464",
-lwd = 0.1,
-colNA = "#E0E0E0",
-legend.pos = "left",
-legend.title.txt = "",
-legend.values.cex = 0.25
+  MapDonorRate %>% filter(area_km2 > 400) %>% st_transform("+proj=robin"),
+  var = "RateDonperMill",
+  breaks = c(0, 5, 10, 20, 30, 40, 50),
+  col = brewer.pal(6, "PuBu"),
+  border = "#646464",
+  lwd = 0.1,
+  colNA = "#E0E0E0",
+  legend.pos = "left",
+  legend.title.txt = "",
+  legend.values.cex = 0.25
 )
+
 # Bounding box
-bbox <- st_linestring(rbind(c(-180, 90),
-c(180, 90),
-c(180,-90),
-c(-180,-90),
-c(-180, 90))) %>%
-st_segmentize(5) %>%
-st_cast("POLYGON") %>%
-st_sfc(crs = 4326) %>%
-st_transform(crs = "+proj=robin")
 plot(bbox,
-add = T,
-border = "#646464",
-lwd = 0.2)
+  add = T,
+  border = "#646464",
+  lwd = 0.2
+)
 
 dev.off()
 ```
-
-    ## png 
-    ##   2
-
-``` r
-rsvg_png("Organ donor rate per million by country gradient map (2017).svg","DonorRate.png")
-```
-
-<img src="test.png" style="display: block; margin: auto;" />
-
-![Alt
-text](test.svg)
-<img src="test.svg">
+<img src="https://dieghernan.github.io/assets/figs/Organ donor rate per million by country gradient map (2017).svg">
+And that’s all. Our `.svg` file is ready to be included in Wikipedia. I
+will update this post once it’s done.
