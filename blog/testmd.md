@@ -1,6 +1,15 @@
-Wikipedia Maps (I): Organ donor rates
-================
-2019-10-23
+---
+layout: post
+title: "Wikipedia Maps (I): Organ donor rates"
+subtitle: "A choropleth map with R"
+tags: [R, Wikipedia, sf,cartography, svg]
+date: 2019-10-23
+share-img: https://dieghernan.github.io/blog/test.png
+img-to-head: true
+linktormd: true
+output: github_document
+permalink: /testmd/
+---
 
 This is a quick post on how to create a map as per the [Wikipedia
 conventions](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Maps/Conventions#Gradient_maps).
