@@ -8,7 +8,7 @@ share-img: https://dieghernan.github.io/assets/figs/20191016_DonorRate.png
 img-to-head: true
 linktormd: true
 output: github_document
-permalink: /test/
+permalink: /testmd/
 ---
 
 
@@ -88,7 +88,7 @@ WorldMap <- left_join(WorldMap, df)
 
 ### Merging all together
 
-Now let’s join and have a look to see what is going on:
+Now letâ€™s join and have a look to see what is going on:
 
 ``` r
 DonorRate <- inner_join(WorldMap,
@@ -111,8 +111,8 @@ knitr::kable(nrowcomp, format = "markdown")
 | ------: | ---------: |
 |      94 |         88 |
 
-Oops\! Joining by name (just the string) doesn’t work for 6 cases. Not
-too bad but let’s try to fix it.
+Oops\! Joining by name (just the string) doesnâ€™t work for 6 cases. Not
+too bad but letâ€™s try to fix it.
 
 ``` r
 nameex <- anti_join(Base, DonorRate, by = c("Country" = "NAME.EN"))
@@ -233,5 +233,5 @@ dev.off()
 ```
 <img src="https://dieghernan.github.io/assets/figs/Organ donor rate per million by country gradient map (2017).svg">
 
-And that’s all. Our `.svg` file is ready to be included in Wikipedia. I
-will update this post once it’s done.
+And thatâ€™s all. Our `.svg` file is ready to be included in Wikipedia. I
+will update this post once itâ€™s done.
