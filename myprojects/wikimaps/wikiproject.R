@@ -43,7 +43,9 @@ bbox <- st_linestring(rbind(
 # Meat consumption (https://en.wikipedia.org/wiki/List_of_countries_by_meat_consumption)----
 Meat <- read.csv("./myprojects/wikimaps/meatconsump.csv", sep=";", stringsAsFactors = F)
 MeatMap <- left_join(WorldMap,Meat) %>% st_transform("+proj=robin")
+
 br=seq(from=0, to=160, by=20)
+
 
 svg("./myprojects/wikimaps/Meat consumption rate (kg) per capita by country gradient map (2009).svg",pointsize = 90, width =  1600/90, height = 800/90)
 par(mar=c(0.5,0,0,0))
