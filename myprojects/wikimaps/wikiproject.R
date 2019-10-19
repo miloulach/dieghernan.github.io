@@ -1,6 +1,5 @@
 ### Project Wiki----
 rm(list = ls())
-setwd("/cloud/project/myprojects/wikimaps")
 
 library(rvest)
 library(sf)
@@ -42,11 +41,11 @@ bbox <- st_linestring(rbind(
   st_sfc(crs = 4326) 
 
 # Meat consumption (https://en.wikipedia.org/wiki/List_of_countries_by_meat_consumption)----
-Meat <- read.csv("meatconsump.csv", sep=";", stringsAsFactors = F)
+Meat <- read.csv("./myprojects/wikimaps/meatconsump.csv", sep=";", stringsAsFactors = F)
 MeatMap <- left_join(WorldMap,Meat) %>% st_transform("+proj=robin")
-br=seq(from=0, to=120, by=20)
+br=seq(from=0, to=160, by=20)
 
-svg("Meat consumption rate (kg) per capita by country gradient map (2009).svg",pointsize = 90, width =  1600/90, height = 800/90)
+svg("./myprojects/wikimaps/Meat consumption rate (kg) per capita by country gradient map (2009).svg",pointsize = 90, width =  1600/90, height = 800/90)
 par(mar=c(0.5,0,0,0))
 choroLayer(MeatMap  ,
            var="KG_PERSON_2009",
@@ -64,6 +63,22 @@ plot(bbox %>% st_transform("+proj=robin"),
      border = "#646464",
      lwd = 0.2)
 dev.off()
-rsvg_png("Meat consumption rate (kg) per capita by country gradient map (2009).svg",
-         "MeatConsump.png")
 
+svg("./myprojects/wikimaps/Meat consumption rate (kg) per capita by country gradient map (2002).svg",pointsize = 90, width =  1600/90, height = 800/90)
+par(mar=c(0.5,0,0,0))
+choroLayer(MeatMap  ,
+           var="KG_PERSON_2002",
+           breaks = br,
+           col=brewer.pal(length(br)-1,"YlOrRd"),
+           border = "#646464",
+           lwd = 0.1,
+           colNA = "#E0E0E0",
+           legend.pos = "left",
+           legend.title.txt = "",
+           legend.values.cex = 0.25
+)
+plot(bbox %>% st_transform("+proj=robin"),
+     add = T,
+     border = "#646464",
+     lwd = 0.2)
+dev.off()
