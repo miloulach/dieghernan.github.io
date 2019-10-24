@@ -3,21 +3,17 @@ setwd("/cloud/project/myprojects/wikimaps")
 # Libraries----
 
 rm(list = ls())
-
-library(openxlsx)
 library(readxl)
 library(sf)
 library(dplyr)
 library(cartography)
-library(viridis)
 library(scales)
-library(jsonlite)
-library(rvest)
 
-
-# Import----
-ALL = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
+# Import maps----
+MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
               stringsAsFactors = FALSE)
+
+
 
 
 CAN = ALL %>% subset(CODNUT2 == "ES70") %>% st_transform(3857)
