@@ -8,188 +8,142 @@ library(sf)
 library(dplyr)
 library(cartography)
 library(scales)
+library(viridis)
 
 # Import maps----
 MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
-              stringsAsFactors = FALSE)
+                stringsAsFactors = FALSE)
+
+WORLD = st_read(
+  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_10M_2016_3857.geojson",
+  stringsAsFactors = FALSE
+)
+
+ESP <-  st_read(
+  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/geojson/NUTS_RG_01M_2016_3857_LEVL_3.geojson",
+  stringsAsFactors = FALSE
+) %>% subset(CNTR_CODE == "ES")
+
+# Move CAN
+
+CANPROV =   ESP[grep("ES7", ESP$NUTS_ID),]
+CANNEW = st_sf(
+  st_drop_geometry(CANPROV),
+  geometry = st_geometry(CANPROV) + c(550000, 920000),
+  crs = st_crs(ESP)
+)
+
+ESPPROV = rbind(ESP[-grep("ES7", ESP$NUTS_ID),],
+                CANNEW)
+
+# Import ESP Codes----
+Cods_ISO_ESP <- read_excel("../../assets/custom/Cods_ISO_ESP.xlsx")
 
 
+ESPCCAA = left_join(ESPPROV, Cods_ISO_ESP,
+                    by = c("NUTS_ID" = "NUTS3")) %>%
+  group_by(ISO2, ISO2_CCAA) %>% summarise(a = 1) %>%
+  select(-a)
 
 
-CAN = ALL %>% subset(CODNUT2 == "ES70") %>% st_transform(3857)
-CANNEW = st_sf(st_drop_geometry(CAN),
-               geometry = st_geometry(CAN) + c(550000, 920000))
+# Move munic CAN
 
-st_crs(CANNEW) <- 3857
+CANMUN = MUNIC %>% subset(CODNUT2 == "ES70") %>% st_transform(st_crs(ESPPROV))
 
-CANNEW = CANNEW %>% st_transform(st_crs(ALL))
+CANMUNNEW = st_sf(
+  st_drop_geometry(CANMUN),
+  geometry = st_geometry(CANMUN) + c(550000, 920000),
+  crs = st_crs(CANMUN)
+)
 
-ALL = ALL %>% subset(CODNUT2 != "ES70") %>% rbind(CANNEW)
+MUNICNEW = rbind(MUNIC %>% subset(CODNUT2 != "ES70") %>% st_transform(st_crs(ESPPROV)),
+                 CANMUNNEW)
+MUNICNEW = left_join(MUNICNEW,
+                     Cods_ISO_ESP %>%
+                       select(
+                         CODNUT3 = NUTS3,
+                         CCAA = ISO2_CCAA,
+                         PROV = ISO3_PROV
+                       ))
 
+# Clean
+rm(CANMUN, CANMUNNEW, CANNEW, CANPROV, ESP, MUNIC)
 
-All.df = st_drop_geometry(ALL)
-
+# Population data----
 Pad18 = read_xlsx("pobmun18.xlsx")
-
 Pad18$CODIGOINE = substr(paste(Pad18$CPRO, Pad18$CMUN, sep = "") , 1, 5)
-fullj = full_join(All.df, Pad18)
 
 
+MapPad18 = left_join(
+  MUNICNEW,
+  Pad18 %>%
+    select(PROVINCIA,
+           CPRO, CMUN,
+           CODIGOINE,
+           NOMBRE,
+           Poblacion18 = POB18)
+) %>% arrange(CODIGOINE)
 
-Map2 = left_join(ALL,
-                 Pad18 %>%
-                   select(PROVINCIA,
-                          CODIGOINE,
-                          NOMBRE,
-                          Poblacion = POB18))
-
-Map2$area = as.double(st_area(Map2)) / 1000000
-Map2$dens = Map2$Poblacion / Map2$area
-
-
-# Group CCAA/PROV----
-
-CCAA <- ALL %>% select(CODNUT2) %>% group_by(CODNUT2) %>%
-  summarise(a = 1) %>% select(-a)
+MapPad18$AreaKM2 = as.double(st_area(MapPad18 %>% st_transform(4326))) / 1000000
+MapPad18$DensKM2 = MapPad18$Poblacion18 / MapPad18$AreaKM2
 
 
-PROV <-  ALL %>% select(CODNUT3) %>% group_by(CODNUT3) %>%
-  summarise(a = 1) %>% select(-a)
+# AU Ministerio Fomento----
+AU_MFom <- read_xlsx("../../assets/custom/AU_MFom18.xlsx")
+AU_MFom$CODIGOINE = AU_MFom$CODE
 
-download.file(
-  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_03M_2016_3857.geojson",
-  "world.geojson"
-)
-
-WORLD = st_read("world.geojson",
-                stringsAsFactors = FALSE) %>% 
-  st_transform(st_crs(Map2))
-
-# Areas metropolitanas----
-download.file(
-  "https://es.wikipedia.org/wiki/Anexo:%C3%81reas_metropolitanas_de_Espa%C3%B1a",
-  "metro.html"
-)
-
-tab = read_html("metro.html") %>%
-  html_nodes(xpath = '//*[@id="mw-content-text"]/div/table') %>%
-  html_table(fill = T) %>%
-  as.data.frame(stringsAsFactors = F,
-                fix.empty.names = F)
-
-tab$name = tab$Área.metropolitana
-tab$pop = as.numeric(gsub(
-  ",",
-  ".",
-  gsub("\\.", "", tab$Ministerio.de.Fomento..2018..5..U.200B.)
-))
-tab = tab %>% select(name, pop) %>% filter(pop > 600000)
-
-coords = function(res) {
-  download.file(
-    paste(
-      "http://api.geonames.org/searchJSON?formatted=true&username=dieghernan&style=medium&maxRows=1&q=",
-      res,
-      sep = ""
-    ),
-    "t.json"
-  )
-  geonames = fromJSON("t.json")
-  geonames = data.frame(geonames[["geonames"]])
-  geonames$dest = res
-  geonames = geonames %>% select(tofun = dest,
-                                 toponymName,
-                                 countryCode,
-                                 long = lng,
-                                 lat)
-  geonames$long = as.numeric(geonames$long)
-  geonames$lat = as.numeric(geonames$lat)
-  
-  return(geonames)
-}
-
-datos = tab
-tab$name
-datos$fixname = c(
-  "Madrid",
-  "Barcelona",
-  "Valencia",
-  "Sevilla",
-  "Malaga",
-  "Bilbao",
-  "Asturias",
-  "Zaragoza",
-  "Alicante",
-  "Murcia",
-  "Jerez"
-)
-datos$tofun = paste(datos$fixname, "+ES", sep = "")
-
-
-for (i in 1:nrow(datos)) {
-  cc = coords(as.character(datos[i, "tofun"]))
-  if (i == 1) {
-    finalcoords = cc
-  } else {
-    finalcoords = rbind(finalcoords, cc)
-  }
-  rm(cc)
-  # file.remove("t.json",)
-}
-
-finpop = left_join(datos, finalcoords)
-
-metro.sf = st_as_sf(finpop, coords = c("long", "lat"),
-                    crs = 4326) %>% st_transform(st_crs(WORLD))
-
-metro.sf2 = metro.sf
-metro.sf$name = "           "
-metro.sffin = rbind(metro.sf, metro.sf2)
+AU = inner_join(MUNICNEW, AU_MFom %>%
+                  filter(!is.na(AREA_URBANA))) %>%
+  group_by(AREA_URBANA) %>%
+  summarise(Pop = sum(POB18)) %>%
+  arrange(desc(Pop))
 
 
 
 # Plot----
+br = c(0, 10, 25, 50, 100, 200, 500, 1000, 5000, 10000, 30000)
+
+#pdi=90
+pdi = 300
+
 svg(
-  "testpad.svg",
-  pointsize = 30,
-  width =  800 / 30,
-  height = 440 / 30
+  "NewPad.svg",
+  pointsize = pdi,
+  width =  160 / pdi,
+  height = 88 / pdi
 )
+
 par(mar = c(0, 0, 0, 0))
-plot(st_geometry(Map2),
-     col = NA,
+plot(st_geometry(ESPPROV),
+     col = "#E0E0E0",
      border = NA,
      bg = "#C6ECFF")
-plot(st_geometry(WORLD),
-     col = "#E0E0E0",
-     bg = "#C6ECFF",
-     add = T)
 
-br = c(0, 30, 60, 90, 120, 200, 300, 500, 1000, 5000, 10000, 30000)
-choroLayer(
-  Map2,
+plot(
+  st_geometry(WORLD),
+  col = "#E0E0E0",
+  bg = "#C6ECFF",
   add = T,
-  var = "dens",
+  lwd = 0.05
+)
+
+choroLayer(
+  MapPad18,
+  add = T,
+  var = "DensKM2",
   border = "#646464",
   breaks = br,
   col = rev(inferno(length(br) - 1, 0.5)),
-  lwd = 0.1,
-  legend.pos = "n"
-  # colNA = "#E0E0E0",
-  # legend.pos = "left",
-  # legend.title.txt = "",
-  # legend.values.cex = 0.25
-  
+  lwd = 0.05,
+  legend.pos = "n",
+  colNA = "#E0E0E0"
 )
-
-
-
 
 legendChoro(
   pos = "left",
   title.txt = " ",
   title.cex = 0.5,
-  values.cex = 0.7,
+  values.cex = 0.15,
   breaks = format(br, big.mark = ","),
   col = rev(inferno(length(br) - 1, 0.5)),
   nodata = T,
@@ -197,37 +151,108 @@ legendChoro(
   nodata.col = "#E0E0E0"
 )
 
-# plot(
-#   st_geometry(PROV),
-#   lwd = 0.5,
-#   lty = 3,
-#   border = "black",
-#   add = T
-# )
-# 
-# plot(st_geometry(CCAA),
-#      lwd = 0.7,
-#      border = "black",
-#      add = T)
+plot(
+  st_geometry(ESPPROV),
+  lwd = 0.15,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(st_geometry(ESPCCAA),
+     lwd = 0.15,
+     border = "black",
+     add = T)
+dev.off()
 
-inferno(length(br) - 1)[1]
-propSymbolsLayer(
-  metro.sf,
-  var = "pop",
-  border = (inferno(length(br) - 1))[1],
-  col = NA,
-  inches = 0.5,
-  lwd = 1,
+#Export----
+MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
+                stringsAsFactors = FALSE)
+
+
+df = st_drop_geometry(MapPad18)
+df = left_join(df, AU_MFom %>%
+                 select(CODIGOINE, AREA_URBANA))
+
+MunExport = left_join(MUNIC,
+                      df) %>% select(
+                        CODIGOINE,
+                        CPRO,
+                        CMUN,
+                        CCAA,
+                        PROVINCIA,
+                        NOMBRE,
+                        POBLACION18 = Poblacion18,
+                        AreaKM2,
+                        DensKM2,
+                        AREA_URBANA
+                      )
+
+exportpad = st_write(
+  MunExport,
+  "MunExport.gpkg",
+  factorsAsCharacter = FALSE,
+  layer_options = "OVERWRITE=YES"
+)
+
+# Plot AU----
+
+# wikicolors = c("#e41a1c",
+#                "#4daf4a",
+#                "#984ea3",
+#                "#ff7f00",
+#                "#377eb8",
+#                "#ffff33")
+
+
+library(RColorBrewer)
+
+pdi = 90
+
+svg(
+  "Large Urban Areas in Spain (2018).svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi
+)
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ESPPROV),
+     col = NA,
+     border = NA,
+     bg = "#C6ECFF")
+plot(st_geometry(WORLD),
+     col = "#E0E0E0",
+     bg = "#C6ECFF",
+     add = T)
+plot(st_geometry(ESPPROV),
+     col = "#FEFEE9",
+     lty = 3,
+     add = T)
+plot(st_geometry(ESPCCAA), col = NA,  add = T)
+
+br2 = c(0, 50000, 100000, 600000, 10000000)
+
+AU$categs = cut(AU$Pop, unique(br2))
+
+typoLayer(
+  AU,
+  var = "categs",
+  col =  brewer.pal(4, "PuOr"),
   legend.pos = "n",
   add = T
 )
-labelLayer(
-  metro.sffin,
-  txt = "name",
-  overlap = F,
-  cex = 0.6,
-  halo = T
+
+legendTypo(
+  pos = "left",
+  title.txt = "",
+  values.cex = 0.3,
+  categ = rev(c(
+    "<50.000", "50.000-100.000", "100.000-600.000", ">600.000"
+  )),
+  nodata = F,
+  col =  brewer.pal(4, "PuOr")
 )
 
 dev.off()
 
+rsvg::rsvg_png("Large Urban Areas in Spain (2018).svg",
+               "Large Urban Areas in Spain (2018).png")
