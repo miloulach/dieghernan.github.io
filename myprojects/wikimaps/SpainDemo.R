@@ -232,13 +232,14 @@ plot(st_geometry(ESPCCAA), col = NA,  add = T)
 br2 = c(0, 50000, 100000, 600000, 10000000)
 
 AU$categs = cut(AU$Pop, unique(br2))
+colAU=magma(6)[2:5]
 
 typoLayer(
   AU,
   var = "categs",
-  col =  brewer.pal(4, "PuOr"),
+  col =  colAU,
   legend.pos = "n",
-  add = T
+  add=T
 )
 
 legendTypo(
@@ -249,7 +250,7 @@ legendTypo(
     "<50.000", "50.000-100.000", "100.000-600.000", ">600.000"
   )),
   nodata = F,
-  col =  brewer.pal(4, "PuOr")
+  col =  colAU
 )
 
 dev.off()
