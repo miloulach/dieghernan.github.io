@@ -237,6 +237,7 @@ colAU=magma(6)[2:5]
 typoLayer(
   AU,
   var = "categs",
+  border=NA,
   col =  colAU,
   legend.pos = "n",
   add=T
