@@ -1,4 +1,4 @@
-setwd("/cloud/project/myprojects/wikimaps")
+setwd("~/R/dieghernan.github.io/myprojects/wikimaps")
 
 # Libraries----
 
@@ -15,7 +15,7 @@ MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
                 stringsAsFactors = FALSE)
 
 WORLD = st_read(
-  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_10M_2016_3857.geojson",
+  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_01M_2016_3857.geojson",
   stringsAsFactors = FALSE
 )
 
@@ -104,13 +104,13 @@ AU = inner_join(MUNICNEW, AU_MFom %>%
 br = c(0, 10, 25, 50, 100, 200, 500, 1000, 5000, 10000, 30000)
 
 #pdi=90
-pdi = 300
+pdi = 90
 
 svg(
-  "NewPad.svg",
+  "Population per km2 by municipality in Spain (2018).svg",
   pointsize = pdi,
-  width =  160 / pdi,
-  height = 88 / pdi
+  width =  1600 / pdi,
+  height = 880 / pdi
 )
 
 par(mar = c(0, 0, 0, 0))
@@ -153,46 +153,122 @@ legendChoro(
 
 plot(
   st_geometry(ESPPROV),
-  lwd = 0.15,
+  lwd = 0.3,
   lty = 3,
   border = "black",
   add = T
 )
 plot(st_geometry(ESPCCAA),
-     lwd = 0.15,
+     lwd = 0.25,
      border = "black",
      add = T)
+
+
+
+dev.off()
+
+# Plot pop----
+rr=st_drop_geometry(MapPad18) %>% arrange(desc(Poblacion18))
+
+br = c(0,  200, 500,  1000, 
+       5000, 10000, 20000, 50000, 
+       100000,
+       500000,
+       1000000,
+       5000000) %>% as.integer()
+
+#pdi=90
+pdi = 90
+
+svg(
+  "Population by municipality in Spain (2018).svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi
+)
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ESPPROV),
+     col = "#E0E0E0",
+     border = NA,
+     bg = "#C6ECFF")
+
+plot(
+  st_geometry(WORLD),
+  col = "#E0E0E0",
+  bg = "#C6ECFF",
+  add = T,
+  lwd = 0.05
+)
+
+choroLayer(
+  MapPad18,
+  add = T,
+  var = "Poblacion18",
+  border = "#646464",
+  breaks = br,
+  col = rev(inferno(length(br) - 1, 0.5)),
+  lwd = 0.05,
+  legend.pos = "n",
+  colNA = "#E0E0E0"
+)
+
+
+legendChoro(
+  pos = "left",
+  title.txt = " ",
+  title.cex = 0.5,
+  values.cex = 0.15,
+  breaks = format(br, big.mark = ","),
+  col = rev(inferno(length(br) - 1, 0.5)),
+  nodata = T,
+  nodata.txt = "n.d.",
+  nodata.col = "#E0E0E0"
+)
+
+plot(
+  st_geometry(ESPPROV),
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(st_geometry(ESPCCAA),
+     lwd = 0.25,
+     border = "black",
+     add = T)
+
 dev.off()
 
 #Export----
-MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
-                stringsAsFactors = FALSE)
-
-
-df = st_drop_geometry(MapPad18)
-df = left_join(df, AU_MFom %>%
-                 select(CODIGOINE, AREA_URBANA))
-
-MunExport = left_join(MUNIC,
-                      df) %>% select(
-                        CODIGOINE,
-                        CPRO,
-                        CMUN,
-                        CCAA,
-                        PROVINCIA,
-                        NOMBRE,
-                        POBLACION18 = Poblacion18,
-                        AreaKM2,
-                        DensKM2,
-                        AREA_URBANA
-                      )
-
-exportpad = st_write(
-  MunExport,
-  "MunExport.gpkg",
-  factorsAsCharacter = FALSE,
-  layer_options = "OVERWRITE=YES"
-)
+# MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
+#                 stringsAsFactors = FALSE)
+# 
+# 
+# df = st_drop_geometry(MapPad18)
+# df = left_join(df, AU_MFom %>%
+#                  select(CODIGOINE, AREA_URBANA))
+# 
+# MunExport = left_join(MUNIC,
+#                       df) %>% select(
+#                         CODIGOINE,
+#                         CPRO,
+#                         CMUN,
+#                         CCAA,
+#                         PROVINCIA,
+#                         NOMBRE,
+#                         POBLACION18 = Poblacion18,
+#                         AreaKM2,
+#                         DensKM2,
+#                         AREA_URBANA
+#                       )
+# 
+# exportpad = st_write(
+#   MunExport,
+#   "MunExport.gpkg",
+#   factorsAsCharacter = FALSE,
+#   layer_options = "OVERWRITE=YES"
+# )
 
 # Plot AU----
 
@@ -209,7 +285,7 @@ library(RColorBrewer)
 pdi = 90
 
 svg(
-  "Large Urban Areas in Spain (2018).svg",
+  "Large Urban Areas in Spain by population (2018).svg",
   pointsize = pdi,
   width =  1600 / pdi,
   height = 880 / pdi
@@ -246,7 +322,7 @@ typoLayer(
 legendTypo(
   pos = "left",
   title.txt = "",
-  values.cex = 0.3,
+  values.cex = 0.15,
   categ = rev(c(
     "<50.000", "50.000-100.000", "100.000-600.000", ">600.000"
   )),
@@ -258,3 +334,47 @@ dev.off()
 
 rsvg::rsvg_png("Large Urban Areas in Spain (2018).svg",
                "Large Urban Areas in Spain (2018).png")
+
+# Plot muns----
+pdi = 90
+
+svg(
+  "test.svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi
+)
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ESPPROV),
+     col = NA,
+     border = NA,
+     bg = "#C6ECFF")
+plot(st_geometry(WORLD),
+     col = "#E0E0E0",
+     bg = "#C6ECFF",
+     add = T)
+plot(st_geometry(ESPPROV),
+     col = "#FEFEE9",
+     lty = 3,
+     add = T)
+plot(st_geometry(ESPCCAA), col = NA,  add = T)
+
+wikicolors = c("#e41a1c",
+               "#4daf4a",
+               "#984ea3",
+               "#ff7f00"
+               )
+
+library(scales)
+typoLayer(
+  MapPad18,
+  var = "CCAA",
+  border=NA,
+  col =  alpha(c(wikicolors,wikicolors,wikicolors,wikicolors,wikicolors),0.4),
+  legend.pos = "n",
+  add=T
+)
+
+
+
+dev.off()
