@@ -113,6 +113,9 @@ svg(
   height = 880 / pdi
 )
 
+png( width = 1600,
+     height = 880,
+     pointsize=90)
 par(mar = c(0, 0, 0, 0))
 plot(st_geometry(ESPPROV),
      col = "#E0E0E0",
@@ -132,6 +135,7 @@ choroLayer(
   add = T,
   var = "DensKM2",
   border = "#646464",
+  # border=NA,
   breaks = br,
   col = rev(inferno(length(br) - 1, 0.5)),
   lwd = 0.05,
