@@ -10,6 +10,48 @@ library(cartography)
 library(scales)
 library(viridis)
 
+# Municipios----
+PENIN = st_read(
+  "~/R/mapslib/CNIG./LineasLimite/recintos_municipales_inspire_peninbal_etrs89.shp",
+  stringsAsFactors = F
+)
+CAN = st_read(
+  "~/R/mapslib/CNIG./LineasLimite/recintos_municipales_inspire_canarias_wgs84.shp",
+  stringsAsFactors = F
+) %>%
+  st_transform(3857)
+
+CAN = st_sf(
+  st_drop_geometry(CAN),
+  geometry = st_geometry(CAN) + c(550000, 920000),
+  crs = st_crs(CAN)
+)
+
+MUNIC = rbind(st_transform(PENIN, 3857),
+              st_transform(CAN, 3857))
+
+MUNIC$CODIGOINE = substr(MUNIC$INSPIREID,
+                         nchar(MUNIC$INSPIREID) - 4,
+                         nchar(MUNIC$INSPIREID))
+
+MUNIC = MUNIC %>% select(CODNUT1,
+                         CODNUT2,
+                         CODNUT3,
+                         CODIGOINE,
+                         MUNICIPIO = NAMEUNIT) %>% arrange(CODIGOINE)
+
+
+library(rmapshaper)
+
+MapPadsimp=ms_simplify(MapPad18,keep_shapes = T)
+Provsimp=MapPadsimp %>% 
+  group_by(CODNUT3) %>% 
+  summarise(a=1)
+CCAAsimp=MapPadsimp %>% 
+  group_by(CODNUT2) %>% 
+  summarise(a=1)
+
+
 # Import maps----
 MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
                 stringsAsFactors = FALSE)
