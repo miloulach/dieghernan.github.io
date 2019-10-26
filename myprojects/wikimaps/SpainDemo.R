@@ -41,75 +41,12 @@ MUNIC = MUNIC %>% select(CODNUT1,
                          MUNICIPIO = NAMEUNIT) %>% arrange(CODIGOINE)
 
 
-library(rmapshaper)
-
-MapPadsimp=ms_simplify(MapPad18,keep_shapes = T)
-Provsimp=MapPadsimp %>% 
-  group_by(CODNUT3) %>% 
-  summarise(a=1)
-CCAAsimp=MapPadsimp %>% 
-  group_by(CODNUT2) %>% 
-  summarise(a=1)
-
-
 # Import maps----
-MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
-                stringsAsFactors = FALSE)
 
 WORLD = st_read(
-  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_01M_2016_3857.geojson",
+  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_10M_2016_3857.geojson",
   stringsAsFactors = FALSE
 )
-
-ESP <-  st_read(
-  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/geojson/NUTS_RG_01M_2016_3857_LEVL_3.geojson",
-  stringsAsFactors = FALSE
-) %>% subset(CNTR_CODE == "ES")
-
-# Move CAN
-
-CANPROV =   ESP[grep("ES7", ESP$NUTS_ID),]
-CANNEW = st_sf(
-  st_drop_geometry(CANPROV),
-  geometry = st_geometry(CANPROV) + c(550000, 920000),
-  crs = st_crs(ESP)
-)
-
-ESPPROV = rbind(ESP[-grep("ES7", ESP$NUTS_ID),],
-                CANNEW)
-
-# Import ESP Codes----
-Cods_ISO_ESP <- read_excel("../../assets/custom/Cods_ISO_ESP.xlsx")
-
-
-ESPCCAA = left_join(ESPPROV, Cods_ISO_ESP,
-                    by = c("NUTS_ID" = "NUTS3")) %>%
-  group_by(ISO2, ISO2_CCAA) %>% summarise(a = 1) %>%
-  select(-a)
-
-
-# Move munic CAN
-
-CANMUN = MUNIC %>% subset(CODNUT2 == "ES70") %>% st_transform(st_crs(ESPPROV))
-
-CANMUNNEW = st_sf(
-  st_drop_geometry(CANMUN),
-  geometry = st_geometry(CANMUN) + c(550000, 920000),
-  crs = st_crs(CANMUN)
-)
-
-MUNICNEW = rbind(MUNIC %>% subset(CODNUT2 != "ES70") %>% st_transform(st_crs(ESPPROV)),
-                 CANMUNNEW)
-MUNICNEW = left_join(MUNICNEW,
-                     Cods_ISO_ESP %>%
-                       select(
-                         CODNUT3 = NUTS3,
-                         CCAA = ISO2_CCAA,
-                         PROV = ISO3_PROV
-                       ))
-
-# Clean
-rm(CANMUN, CANMUNNEW, CANNEW, CANPROV, ESP, MUNIC)
 
 # Population data----
 Pad18 = read_xlsx("pobmun18.xlsx")
@@ -117,7 +54,7 @@ Pad18$CODIGOINE = substr(paste(Pad18$CPRO, Pad18$CMUN, sep = "") , 1, 5)
 
 
 MapPad18 = left_join(
-  MUNICNEW,
+  MUNIC,
   Pad18 %>%
     select(PROVINCIA,
            CPRO, CMUN,
@@ -129,13 +66,27 @@ MapPad18 = left_join(
 MapPad18$AreaKM2 = as.double(st_area(MapPad18 %>% st_transform(4326))) / 1000000
 MapPad18$DensKM2 = MapPad18$Poblacion18 / MapPad18$AreaKM2
 
+# Simplify----
+
+library(rmapshaper)
+MunicSimpl=ms_simplify(MapPad18,keep_shapes = T,keep = 0.10)
+
+ProvSimp=MunicSimpl %>% 
+  group_by(CODNUT3) %>% 
+  summarise(a=1)
+
+CCAASimp=MunicSimpl %>% 
+  group_by(CODNUT2) %>% 
+  summarise(a=1)
+
 
 # AU Ministerio Fomento----
 AU_MFom <- read_xlsx("../../assets/custom/AU_MFom18.xlsx")
 AU_MFom$CODIGOINE = AU_MFom$CODE
 
-AU = inner_join(MUNICNEW, AU_MFom %>%
-                  filter(!is.na(AREA_URBANA))) %>%
+AU = inner_join(MunicSimpl, AU_MFom %>%
+                  filter(!is.na(AREA_URBANA)),
+                by="CODIGOINE") %>%
   group_by(AREA_URBANA) %>%
   summarise(Pop = sum(POB18)) %>%
   arrange(desc(Pop))
@@ -151,15 +102,14 @@ pdi = 90
 svg(
   "Population per km2 by municipality in Spain (2018).svg",
   pointsize = pdi,
-  width =  1600 / pdi,
-  height = 880 / pdi
+  width =  1800 / pdi,
+  height = 1200 / pdi,
+  bg="#C6ECFF"
 )
 
-png( width = 1600,
-     height = 880,
-     pointsize=90)
+
 par(mar = c(0, 0, 0, 0))
-plot(st_geometry(ESPPROV),
+plot(st_geometry(ProvSimp),
      col = "#E0E0E0",
      border = NA,
      bg = "#C6ECFF")
@@ -173,7 +123,7 @@ plot(
 )
 
 choroLayer(
-  MapPad18,
+  MunicSimpl,
   add = T,
   var = "DensKM2",
   border = "#646464",
@@ -189,8 +139,8 @@ legendChoro(
   pos = "left",
   title.txt = " ",
   title.cex = 0.5,
-  values.cex = 0.15,
-  breaks = format(br, big.mark = ","),
+  values.cex = 0.25,
+  breaks = c(" ", format(br, big.mark = ",")[-c(1,length(br))]," "),
   col = rev(inferno(length(br) - 1, 0.5)),
   nodata = T,
   nodata.txt = "n.d.",
@@ -198,23 +148,21 @@ legendChoro(
 )
 
 plot(
-  st_geometry(ESPPROV),
+  st_geometry(ProvSimp),
   lwd = 0.3,
   lty = 3,
   border = "black",
   add = T
 )
-plot(st_geometry(ESPCCAA),
+plot(st_geometry(CCAASimp),
      lwd = 0.25,
      border = "black",
      add = T)
 
-
-
 dev.off()
 
+
 # Plot pop----
-rr=st_drop_geometry(MapPad18) %>% arrange(desc(Poblacion18))
 
 br = c(0,  200, 500,  1000, 
        5000, 10000, 20000, 50000, 
@@ -229,12 +177,13 @@ pdi = 90
 svg(
   "Population by municipality in Spain (2018).svg",
   pointsize = pdi,
-  width =  1600 / pdi,
-  height = 880 / pdi
+  width =  1800 / pdi,
+  height = 1200 / pdi,
+  bg="#C6ECFF"
 )
 
 par(mar = c(0, 0, 0, 0))
-plot(st_geometry(ESPPROV),
+plot(st_geometry(ProvSimp),
      col = "#E0E0E0",
      border = NA,
      bg = "#C6ECFF")
@@ -248,7 +197,7 @@ plot(
 )
 
 choroLayer(
-  MapPad18,
+  MunicSimpl,
   add = T,
   var = "Poblacion18",
   border = "#646464",
@@ -264,8 +213,8 @@ legendChoro(
   pos = "left",
   title.txt = " ",
   title.cex = 0.5,
-  values.cex = 0.15,
-  breaks = format(br, big.mark = ","),
+  values.cex = 0.25,
+  breaks = c(" ", format(br, big.mark = ",")[-c(1,length(br))]," "),
   col = rev(inferno(length(br) - 1, 0.5)),
   nodata = T,
   nodata.txt = "n.d.",
@@ -273,13 +222,13 @@ legendChoro(
 )
 
 plot(
-  st_geometry(ESPPROV),
+  st_geometry(ProvSimp),
   lwd = 0.3,
   lty = 3,
   border = "black",
   add = T
 )
-plot(st_geometry(ESPCCAA),
+plot(st_geometry(CCAASimp),
      lwd = 0.25,
      border = "black",
      add = T)
@@ -333,11 +282,12 @@ pdi = 90
 svg(
   "Large Urban Areas in Spain by population (2018).svg",
   pointsize = pdi,
-  width =  1600 / pdi,
-  height = 880 / pdi
+  width =  1800 / pdi,
+  height = 1200 / pdi,
+  bg = "#C6ECFF"
 )
 par(mar = c(0, 0, 0, 0))
-plot(st_geometry(ESPPROV),
+plot(st_geometry(ProvSimp),
      col = NA,
      border = NA,
      bg = "#C6ECFF")
@@ -345,11 +295,17 @@ plot(st_geometry(WORLD),
      col = "#E0E0E0",
      bg = "#C6ECFF",
      add = T)
-plot(st_geometry(ESPPROV),
-     col = "#FEFEE9",
-     lty = 3,
+plot(
+  st_geometry(ProvSimp),
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(st_geometry(CCAASimp),
+     lwd = 0.25,
+     border = "black",
      add = T)
-plot(st_geometry(ESPCCAA), col = NA,  add = T)
 
 br2 = c(0, 50000, 100000, 600000, 10000000)
 
@@ -368,7 +324,7 @@ typoLayer(
 legendTypo(
   pos = "left",
   title.txt = "",
-  values.cex = 0.15,
+  values.cex = 0.25,
   categ = rev(c(
     "<50.000", "50.000-100.000", "100.000-600.000", ">600.000"
   )),
@@ -378,20 +334,21 @@ legendTypo(
 
 dev.off()
 
-rsvg::rsvg_png("Large Urban Areas in Spain (2018).svg",
-               "Large Urban Areas in Spain (2018).png")
+rsvg::rsvg_png("Large Urban Areas in Spain by population (2018).svg",
+               "Large Urban Areas in Spain by population (2018).png")
 
 # Plot muns----
 pdi = 90
 
 svg(
-  "test.svg",
+  "Muns.svg",
   pointsize = pdi,
-  width =  1600 / pdi,
-  height = 880 / pdi
+  width =  1800 / pdi,
+  height = 1200 / pdi,
+  bg = "#C6ECFF"
 )
 par(mar = c(0, 0, 0, 0))
-plot(st_geometry(ESPPROV),
+plot(st_geometry(ProvSimp),
      col = NA,
      border = NA,
      bg = "#C6ECFF")
@@ -399,11 +356,21 @@ plot(st_geometry(WORLD),
      col = "#E0E0E0",
      bg = "#C6ECFF",
      add = T)
-plot(st_geometry(ESPPROV),
+plot(st_geometry(MunicSimpl),add = T,
      col = "#FEFEE9",
-     lty = 3,
+     border = "grey50",
+     lwd=0.3)
+plot(
+  st_geometry(ProvSimp),
+  lwd = 0.4,
+  lty = 3,
+  border = "grey5",
+  add = T
+)
+plot(st_geometry(CCAASimp),
+     lwd = 0.35,
+     border = "black",
      add = T)
-plot(st_geometry(ESPCCAA), col = NA,  add = T)
 
 wikicolors = c("#e41a1c",
                "#4daf4a",
@@ -411,15 +378,7 @@ wikicolors = c("#e41a1c",
                "#ff7f00"
                )
 
-library(scales)
-typoLayer(
-  MapPad18,
-  var = "CCAA",
-  border=NA,
-  col =  alpha(c(wikicolors,wikicolors,wikicolors,wikicolors,wikicolors),0.4),
-  legend.pos = "n",
-  add=T
-)
+
 
 
 
