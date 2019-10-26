@@ -102,8 +102,8 @@ pdi = 90
 svg(
   "Population per km2 by municipality in Spain (2018).svg",
   pointsize = pdi,
-  width =  1800 / pdi,
-  height = 1200 / pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi,
   bg="#C6ECFF"
 )
 
@@ -177,8 +177,8 @@ pdi = 90
 svg(
   "Population by municipality in Spain (2018).svg",
   pointsize = pdi,
-  width =  1800 / pdi,
-  height = 1200 / pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi,
   bg="#C6ECFF"
 )
 
@@ -282,8 +282,8 @@ pdi = 90
 svg(
   "Large Urban Areas in Spain by population (2018).svg",
   pointsize = pdi,
-  width =  1800 / pdi,
-  height = 1200 / pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi,
   bg = "#C6ECFF"
 )
 par(mar = c(0, 0, 0, 0))
@@ -297,6 +297,7 @@ plot(st_geometry(WORLD),
      add = T)
 plot(
   st_geometry(ProvSimp),
+  col = "#FEFEE9",
   lwd = 0.3,
   lty = 3,
   border = "black",
@@ -304,6 +305,7 @@ plot(
 )
 plot(st_geometry(CCAASimp),
      lwd = 0.25,
+     col = "#FEFEE9",
      border = "black",
      add = T)
 
@@ -343,8 +345,8 @@ pdi = 90
 svg(
   "Muns.svg",
   pointsize = pdi,
-  width =  1800 / pdi,
-  height = 1200 / pdi,
+  width =  1600 / pdi,
+  height = 880 / pdi,
   bg = "#C6ECFF"
 )
 par(mar = c(0, 0, 0, 0))
