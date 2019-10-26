@@ -12,11 +12,11 @@ library(viridis)
 
 # Municipios----
 PENIN = st_read(
-  "~/R/mapslib/CNIG./LineasLimite/recintos_municipales_inspire_peninbal_etrs89.shp",
+  "~/R/mapslib/CNIG/LineasLimite/recintos_municipales_inspire_peninbal_etrs89.shp",
   stringsAsFactors = F
 )
 CAN = st_read(
-  "~/R/mapslib/CNIG./LineasLimite/recintos_municipales_inspire_canarias_wgs84.shp",
+  "~/R/mapslib/CNIG/LineasLimite/recintos_municipales_inspire_canarias_wgs84.shp",
   stringsAsFactors = F
 ) %>%
   st_transform(3857)
@@ -43,8 +43,9 @@ MUNIC = MUNIC %>% select(CODNUT1,
 
 # Import maps----
 
+
 WORLD = st_read(
-  "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_10M_2016_3857.geojson",
+  "~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
   stringsAsFactors = FALSE
 )
 
@@ -103,7 +104,7 @@ svg(
   "Population per km2 by municipality in Spain (2018).svg",
   pointsize = pdi,
   width =  1600 / pdi,
-  height = 880 / pdi,
+  height = 1000 / pdi,
   bg="#C6ECFF"
 )
 
@@ -178,7 +179,7 @@ svg(
   "Population by municipality in Spain (2018).svg",
   pointsize = pdi,
   width =  1600 / pdi,
-  height = 880 / pdi,
+  height = 1200 / pdi,
   bg="#C6ECFF"
 )
 
@@ -283,7 +284,7 @@ svg(
   "Large Urban Areas in Spain by population (2018).svg",
   pointsize = pdi,
   width =  1600 / pdi,
-  height = 880 / pdi,
+  height = 1000 / pdi,
   bg = "#C6ECFF"
 )
 par(mar = c(0, 0, 0, 0))
@@ -295,6 +296,7 @@ plot(st_geometry(WORLD),
      col = "#E0E0E0",
      bg = "#C6ECFF",
      add = T)
+
 plot(
   st_geometry(ProvSimp),
   col = "#FEFEE9",
@@ -303,11 +305,6 @@ plot(
   border = "black",
   add = T
 )
-plot(st_geometry(CCAASimp),
-     lwd = 0.25,
-     col = "#FEFEE9",
-     border = "black",
-     add = T)
 
 br2 = c(0, 50000, 100000, 600000, 10000000)
 
@@ -334,6 +331,10 @@ legendTypo(
   col =  colAU
 )
 
+plot(st_geometry(CCAASimp),
+     lwd = 0.25,
+     border = "black",
+     add = T)
 dev.off()
 
 rsvg::rsvg_png("Large Urban Areas in Spain by population (2018).svg",
@@ -346,7 +347,7 @@ svg(
   "Muns.svg",
   pointsize = pdi,
   width =  1600 / pdi,
-  height = 880 / pdi,
+  height = 1000 / pdi,
   bg = "#C6ECFF"
 )
 par(mar = c(0, 0, 0, 0))
@@ -379,9 +380,6 @@ wikicolors = c("#e41a1c",
                "#984ea3",
                "#ff7f00"
                )
-
-
-
-
-
 dev.off()
+
+
