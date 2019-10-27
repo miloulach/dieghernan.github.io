@@ -382,4 +382,12 @@ wikicolors = c("#e41a1c",
                )
 dev.off()
 
+# Renta----
 
+Renta <- read_xlsx("30824.xlsx", sheet = "export")
+Renta$Renta_Persona_2016=as.double(Renta$Renta_Persona_2016)
+Renta$Renta_Hogar_2016=as.double(Renta$Renta_Hogar_2016)
+Renta$CODIGOINE=Renta$COD
+MunicSimpl2=left_join(MunicSimpl,
+                      Renta)
+df=st_drop_geometry(MunicSimpl2)
