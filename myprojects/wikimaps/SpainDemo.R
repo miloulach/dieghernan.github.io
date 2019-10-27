@@ -390,4 +390,70 @@ Renta$Renta_Hogar_2016=as.double(Renta$Renta_Hogar_2016)
 Renta$CODIGOINE=Renta$COD
 MunicSimpl2=left_join(MunicSimpl,
                       Renta)
-df=st_drop_geometry(MunicSimpl2)
+br3=seq(5000,30000,3000) %>% as.integer()
+
+
+#pdi=90
+pdi = 90
+
+svg(
+  "RentaPers.svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 1200 / pdi,
+  bg="#C6ECFF"
+)
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ProvSimp),
+     col = "#E0E0E0",
+     border = NA,
+     bg = "#C6ECFF")
+
+plot(
+  st_geometry(WORLD),
+  col = "#E0E0E0",
+  bg = "#C6ECFF",
+  add = T,
+  lwd = 0.05
+)
+summary(Renta$Renta_Persona_2016)
+pal=rev(alpha(brewer.pal(length(br3) - 1,"PuOr"),0.5))
+choroLayer(
+  MunicSimpl2,
+  add = T,
+  var = "Renta_Persona_2016",
+  border = "#646464",
+  breaks = br3,
+  col = pal,
+  lwd = 0.05,
+  legend.pos = "n",
+  colNA = "#E0E0E0"
+)
+
+
+legendChoro(
+  pos = "left",
+  title.txt = " ",
+  title.cex = 0.5,
+  values.cex = 0.25,
+  breaks = c(" ", format(br3, big.mark = ",")[-c(1,length(br3))]," "),
+  col = pal,
+  nodata = T,
+  nodata.txt = "n.d.",
+  nodata.col = "#E0E0E0"
+)
+
+plot(
+  st_geometry(ProvSimp),
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(st_geometry(CCAASimp),
+     lwd = 0.25,
+     border = "black",
+     add = T)
+
+dev.off()
