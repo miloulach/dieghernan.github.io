@@ -390,7 +390,9 @@ Renta$Renta_Hogar_2016=as.double(Renta$Renta_Hogar_2016)
 Renta$CODIGOINE=Renta$COD
 MunicSimpl2=left_join(MunicSimpl,
                       Renta)
-br3=seq(5000,30000,3000) %>% as.integer()
+df=st_drop_geometry(MunicSimpl2)
+
+br3=c(0,seq(8000,16000,1000),30000) %>% as.integer()
 
 
 #pdi=90
@@ -418,7 +420,7 @@ plot(
   lwd = 0.05
 )
 summary(Renta$Renta_Persona_2016)
-pal=rev(alpha(brewer.pal(length(br3) - 1,"PuOr"),0.5))
+pal=(alpha(brewer.pal(length(br3) - 1,"PiYG"),0.5))
 choroLayer(
   MunicSimpl2,
   add = T,
