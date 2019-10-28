@@ -1,14 +1,17 @@
-setwd("~/R/dieghernan.github.io/myprojects/wikimaps")
+#setwd("~/R/dieghernan.github.io/myprojects/wikimaps")
 
 # Libraries----
 
 rm(list = ls())
+library(rmapshaper)
 library(readxl)
+library(openxlsx)
 library(sf)
 library(dplyr)
 library(cartography)
 library(scales)
 library(viridis)
+library(RColorBrewer)
 
 # Municipios----
 PENIN = st_read(
@@ -42,57 +45,132 @@ MUNIC = MUNIC %>% select(CODNUT1,
 
 
 # Import maps----
+WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
+                stringsAsFactors = FALSE)
+
+# NOT RUN Mix data----
+# Pad18 = read_xlsx("pobmun18.xlsx")
+# Pad18$CODIGOINE = substr(paste(Pad18$CPRO, Pad18$CMUN, sep = "") , 1, 5)
+# # Area
+#
+# MUNAREA = st_transform(MUNIC, 4326)
+# MUNAREA$AreaKM2 = as.double(st_area(MUNAREA)) / 1000000
+#
+# MunicData = left_join(MUNAREA %>% st_drop_geometry(),
+#                       Pad18)
+# MunicData$NOMBRE = ifelse(is.na(MunicData$NOMBRE),
+#                           MunicData$MUNICIPIO,
+#                           MunicData$NOMBRE)
+# MunicData$DensKM2 = MunicData$POB18 / MunicData$AreaKM2
+#
+# AU_MFom <- read_xlsx("AU_MFom18.xlsx")
+# AU_MFom$CODIGOINE = AU_MFom$CODE
+#
+# MunicData = left_join(MunicData %>% select(-HOMBRES,-MUJERES),
+#                       AU_MFom %>% select(CODIGOINE,
+#                                          AREA_URBANA)
+#                       ,
+#                       by = "CODIGOINE")
+#
+#
+# # Urban Audit--
+# UAOV20 <- read_xlsx("URBAN_AUDIT.xlsx")
+# UACITY <- read_xlsx("URBAN_AUDIT_CITY.xlsx")
+#
+#
+# MunicData = left_join(MunicData,
+#                       UAOV20,
+#                       by = "CODIGOINE")
+# MunicData = left_join(MunicData,
+#                       UACITY,
+#                       by = "CODIGOINE")
+#
+# # Experimental Statistics
+# Renta <- read_xlsx("30824.xlsx", sheet = "export")
+# Renta$Renta_Persona_2016 = as.double(Renta$Renta_Persona_2016)
+# Renta$Renta_Hogar_2016 = as.double(Renta$Renta_Hogar_2016)
+# Renta$CODIGOINE = Renta$COD
+# MunicData = left_join(MunicData,
+#                       Renta %>% select(-NAME),
+#                       by = "CODIGOINE")
+#
+# CODS_ISO = read_xlsx("~/R/mapslib/CUSTOM/Cods_ISO_ESP.xlsx")
+#
+# MunicData = left_join(MunicData,
+#                       CODS_ISO,
+#                       by = c("CODNUT3" = "NUTS3"))
+# MunicData_export = MunicData %>% select(
+#   NUTS0,
+#   NUTS1,
+#   NUTS2,
+#   ISO1_2,
+#   ISO1_3,
+#   ISO2,
+#   ISO3,
+#   CCAA = ISO2_CCAA,
+#   PROVINCIA = ISO3_PROV,
+#   CPRO,
+#   CMUN,
+#   CODIGOINE,
+#   MUNICIPIO = NOMBRE,
+#   AREA_URBANA,
+#   POP_2018 = POB18,
+#   AREAKM2 = AreaKM2,
+#   DENSKM2 = DensKM2,
+#   UA_INCOME_HOUSEHOLDS_2016 = Income_Households_2016,
+#   UA_INCOME_CONSUNIT_2016 = Income_ConsUnit_2016,
+#   UA_PER_CAPITA_INCOME_2016 = Per_capita_income_2016,
+#   UA_POPUNDER14_PERC_2018 = PopUnder14_Perc_2018 ,
+#   UA_POPOVER65_PERC_2018 = PopOver65_Perc_2018 ,
+#   UA_POP_HIGHERISCED_56_PERC_2011 = Population_higherISCED_56_Perc_2011,
+#   UA_FOREIGNERS_PERC_2018 = Foreigners_Perc_2018 ,
+#   UA_UNEMPRATE_2018 = UnemploymentRate_2018,
+#   UA_AVAILBEDS_TOURISM_2017 = AvailableBeds_Tourism_2017,
+#   SS_INCOMEPERCAP_2016 = Renta_Persona_2016,
+#   SS_INCOMEPERHOUSEH_2016 = Renta_Hogar_2016
+# ) %>% arrange(CODIGOINE)
+#
+#
+# write.xlsx(MunicData_export,
+#            "SpainMunic.xlsx")
+# rm(
+#   AU_MFom,
+#   CAN,
+#   CODS_ISO,
+#   MUNAREA,
+#   MunicData,
+#   MunicData_export,
+#   Pad18,
+#   PENIN,
+#   Renta,
+#   UACITY,
+#   UAOV20
+# )
 
 
-WORLD = st_read(
-  "~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
-  stringsAsFactors = FALSE
+# Import and merge-----
+df = read_xlsx("SpainMunic.xlsx")
+MAPMUNIC = left_join(MUNIC %>% select(CODIGOINE),
+                     df ,
+                     by = "CODIGOINE") %>% arrange(CODIGOINE)
+
+st_write(
+  MAPMUNIC,
+  "MAPMUNIC.gpkg",
+  factorsAsCharacter = FALSE,
+  layer_options = "OVERWRITE=YES"
 )
 
-# Population data----
-Pad18 = read_xlsx("pobmun18.xlsx")
-Pad18$CODIGOINE = substr(paste(Pad18$CPRO, Pad18$CMUN, sep = "") , 1, 5)
+# Simplify
+MunicSimpl = ms_simplify(MAPMUNIC, keep_shapes = T, keep = 0.10)
 
+ProvSimp = MunicSimpl %>%
+  group_by(ISO3, PROVINCIA) %>%
+  summarise(a = 1)
 
-MapPad18 = left_join(
-  MUNIC,
-  Pad18 %>%
-    select(PROVINCIA,
-           CPRO, CMUN,
-           CODIGOINE,
-           NOMBRE,
-           Poblacion18 = POB18)
-) %>% arrange(CODIGOINE)
-
-MapPad18$AreaKM2 = as.double(st_area(MapPad18 %>% st_transform(4326))) / 1000000
-MapPad18$DensKM2 = MapPad18$Poblacion18 / MapPad18$AreaKM2
-
-# Simplify----
-
-library(rmapshaper)
-MunicSimpl=ms_simplify(MapPad18,keep_shapes = T,keep = 0.10)
-
-ProvSimp=MunicSimpl %>% 
-  group_by(CODNUT3) %>% 
-  summarise(a=1)
-
-CCAASimp=MunicSimpl %>% 
-  group_by(CODNUT2) %>% 
-  summarise(a=1)
-
-
-# AU Ministerio Fomento----
-AU_MFom <- read_xlsx("../../assets/custom/AU_MFom18.xlsx")
-AU_MFom$CODIGOINE = AU_MFom$CODE
-
-AU = inner_join(MunicSimpl, AU_MFom %>%
-                  filter(!is.na(AREA_URBANA)),
-                by="CODIGOINE") %>%
-  group_by(AREA_URBANA) %>%
-  summarise(Pop = sum(POB18)) %>%
-  arrange(desc(Pop))
-
-
+CCAASimp = MunicSimpl %>%
+  group_by(ISO2, CCAA) %>%
+  summarise(a = 1)
 
 # Plot----
 br = c(0, 10, 25, 50, 100, 200, 500, 1000, 5000, 10000, 30000)
@@ -105,7 +183,7 @@ svg(
   pointsize = pdi,
   width =  1600 / pdi,
   height = 1000 / pdi,
-  bg="#C6ECFF"
+  bg = "#C6ECFF"
 )
 
 
@@ -126,7 +204,7 @@ plot(
 choroLayer(
   MunicSimpl,
   add = T,
-  var = "DensKM2",
+  var = "DENSKM2",
   border = "#646464",
   # border=NA,
   breaks = br,
@@ -141,7 +219,7 @@ legendChoro(
   title.txt = " ",
   title.cex = 0.5,
   values.cex = 0.25,
-  breaks = c(" ", format(br, big.mark = ",")[-c(1,length(br))]," "),
+  breaks = c(" ", format(br, big.mark = ",")[-c(1, length(br))], " "),
   col = rev(inferno(length(br) - 1, 0.5)),
   nodata = T,
   nodata.txt = "n.d.",
@@ -155,18 +233,26 @@ plot(
   border = "black",
   add = T
 )
-plot(st_geometry(CCAASimp),
-     lwd = 0.25,
-     border = "black",
-     add = T)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
 
 dev.off()
 
 
 # Plot pop----
 
-br = c(0,  200, 500,  1000, 
-       5000, 10000, 20000, 50000, 
+br = c(0,
+       200,
+       500,
+       1000,
+       5000,
+       10000,
+       20000,
+       50000,
        100000,
        500000,
        1000000,
@@ -180,7 +266,7 @@ svg(
   pointsize = pdi,
   width =  1600 / pdi,
   height = 1200 / pdi,
-  bg="#C6ECFF"
+  bg = "#C6ECFF"
 )
 
 par(mar = c(0, 0, 0, 0))
@@ -200,7 +286,7 @@ plot(
 choroLayer(
   MunicSimpl,
   add = T,
-  var = "Poblacion18",
+  var = "POP_2018",
   border = "#646464",
   breaks = br,
   col = rev(inferno(length(br) - 1, 0.5)),
@@ -215,7 +301,7 @@ legendChoro(
   title.txt = " ",
   title.cex = 0.5,
   values.cex = 0.25,
-  breaks = c(" ", format(br, big.mark = ",")[-c(1,length(br))]," "),
+  breaks = c(" ", format(br, big.mark = ",")[-c(1, length(br))], " "),
   col = rev(inferno(length(br) - 1, 0.5)),
   nodata = T,
   nodata.txt = "n.d.",
@@ -229,42 +315,15 @@ plot(
   border = "black",
   add = T
 )
-plot(st_geometry(CCAASimp),
-     lwd = 0.25,
-     border = "black",
-     add = T)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
 
 dev.off()
 
-#Export----
-# MUNIC = st_read("../../assets/shp/ESRI/Municipios_IGN.shp",
-#                 stringsAsFactors = FALSE)
-# 
-# 
-# df = st_drop_geometry(MapPad18)
-# df = left_join(df, AU_MFom %>%
-#                  select(CODIGOINE, AREA_URBANA))
-# 
-# MunExport = left_join(MUNIC,
-#                       df) %>% select(
-#                         CODIGOINE,
-#                         CPRO,
-#                         CMUN,
-#                         CCAA,
-#                         PROVINCIA,
-#                         NOMBRE,
-#                         POBLACION18 = Poblacion18,
-#                         AreaKM2,
-#                         DensKM2,
-#                         AREA_URBANA
-#                       )
-# 
-# exportpad = st_write(
-#   MunExport,
-#   "MunExport.gpkg",
-#   factorsAsCharacter = FALSE,
-#   layer_options = "OVERWRITE=YES"
-# )
 
 # Plot AU----
 
@@ -306,18 +365,21 @@ plot(
   add = T
 )
 
-br2 = c(0, 50000, 100000, 600000, 10000000)
+br = c(0, 50000, 100000, 600000, 10000000) %>% as.integer()
 
-AU$categs = cut(AU$Pop, unique(br2))
-colAU=magma(6)[2:5]
+AU = MunicSimpl %>% filter(!is.na(AREA_URBANA)) %>%
+  group_by(AREA_URBANA) %>% summarise(POP_2018 = sum(POP_2018)) %>% arrange(desc(POP_2018))
+
+AU$categs = cut(AU$POP_2018, unique(br))
+colAU = magma(6)[2:5]
 
 typoLayer(
   AU,
   var = "categs",
-  border=NA,
+  border = NA,
   col =  colAU,
   legend.pos = "n",
-  add=T
+  add = T
 )
 
 legendTypo(
@@ -331,14 +393,18 @@ legendTypo(
   col =  colAU
 )
 
-plot(st_geometry(CCAASimp),
-     lwd = 0.25,
-     border = "black",
-     add = T)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
 dev.off()
 
-rsvg::rsvg_png("Large Urban Areas in Spain by population (2018).svg",
-               "Large Urban Areas in Spain by population (2018).png")
+rsvg::rsvg_png(
+  "Large Urban Areas in Spain by population (2018).svg",
+  "Large Urban Areas in Spain by population (2018).png"
+)
 
 # Plot muns----
 pdi = 90
@@ -359,10 +425,13 @@ plot(st_geometry(WORLD),
      col = "#E0E0E0",
      bg = "#C6ECFF",
      add = T)
-plot(st_geometry(MunicSimpl),add = T,
-     col = "#FEFEE9",
-     border = "grey50",
-     lwd=0.3)
+plot(
+  st_geometry(MunicSimpl),
+  add = T,
+  col = "#FEFEE9",
+  border = "grey50",
+  lwd = 0.3
+)
 plot(
   st_geometry(ProvSimp),
   lwd = 0.4,
@@ -370,29 +439,26 @@ plot(
   border = "grey5",
   add = T
 )
-plot(st_geometry(CCAASimp),
-     lwd = 0.35,
-     border = "black",
-     add = T)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.35,
+  border = "black",
+  add = T
+)
 
-wikicolors = c("#e41a1c",
-               "#4daf4a",
-               "#984ea3",
-               "#ff7f00"
-               )
+
 dev.off()
 
-# Renta----
+# Renta per capita----
 
-Renta <- read_xlsx("30824.xlsx", sheet = "export")
-Renta$Renta_Persona_2016=as.double(Renta$Renta_Persona_2016)
-Renta$Renta_Hogar_2016=as.double(Renta$Renta_Hogar_2016)
-Renta$CODIGOINE=Renta$COD
-MunicSimpl2=left_join(MunicSimpl,
-                      Renta)
-df=st_drop_geometry(MunicSimpl2)
+df = st_drop_geometry(MunicSimpl) %>% filter(!is.na(SS_INCOMEPERCAP_2016))
 
-br3=c(0,seq(8000,16000,1000),30000) %>% as.integer()
+mean = weighted.mean(df$SS_INCOMEPERCAP_2016, df$POP_2018)
+down = seq(mean, 0, by = -1000)[1:5]
+up = seq(mean, 30000, by = 1000)[1:5]
+br = sort(unique(c(0, down, up, 30000))) %>% as.integer()
+
+#br = c(0, seq(8000, 16000, 1000), 30000) %>% as.integer()
 
 
 #pdi=90
@@ -403,7 +469,7 @@ svg(
   pointsize = pdi,
   width =  1600 / pdi,
   height = 1200 / pdi,
-  bg="#C6ECFF"
+  bg = "#C6ECFF"
 )
 
 par(mar = c(0, 0, 0, 0))
@@ -419,14 +485,14 @@ plot(
   add = T,
   lwd = 0.05
 )
-summary(Renta$Renta_Persona_2016)
-pal=(alpha(brewer.pal(length(br3) - 1,"PiYG"),0.5))
+
+pal = (alpha(brewer.pal(length(br) - 1, "PRGn"), 0.5))
 choroLayer(
-  MunicSimpl2,
+  MunicSimpl,
   add = T,
-  var = "Renta_Persona_2016",
+  var = "SS_INCOMEPERCAP_2016",
   border = "#646464",
-  breaks = br3,
+  breaks = br,
   col = pal,
   lwd = 0.05,
   legend.pos = "n",
@@ -439,7 +505,7 @@ legendChoro(
   title.txt = " ",
   title.cex = 0.5,
   values.cex = 0.25,
-  breaks = c(" ", format(br3, big.mark = ",")[-c(1,length(br3))]," "),
+  breaks = c(" ", format(br, big.mark = ",")[-c(1, length(br))], " "),
   col = pal,
   nodata = T,
   nodata.txt = "n.d.",
@@ -453,9 +519,253 @@ plot(
   border = "black",
   add = T
 )
-plot(st_geometry(CCAASimp),
-     lwd = 0.25,
-     border = "black",
-     add = T)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
+
+dev.off()
+
+
+# Renta per household----
+
+df = st_drop_geometry(MunicSimpl) %>% filter(!is.na(SS_INCOMEPERHOUSEH_2016))
+# summary(df$SS_INCOMEPERHOUSEH_2016)
+# mean=weighted.mean(df$SS_INCOMEPERHOUSEH_2016,df$POP_2018)
+# down=seq(mean,0,by=-1000)[1:5]
+# up=seq(mean,30000,by=1000)[1:5]
+# br=sort(unique(c(0,down,up,30000))) %>% as.integer()
+
+#mean=weighted.mean(df$SS_INCOMEPERCAP_2016,df$POP_2018)
+down = seq(25000, 0, by = -2500)[1:5]
+up = seq(25000, 50000, by = 2500)[1:5]
+br = sort(unique(c(0, down, up, 300000))) %>% as.integer()
+
+#pdi=90
+pdi = 90
+
+svg(
+  "RentaHH.svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 1200 / pdi,
+  bg = "#C6ECFF"
+)
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ProvSimp),
+     col = "#E0E0E0",
+     border = NA,
+     bg = "#C6ECFF")
+
+plot(
+  st_geometry(WORLD),
+  col = "#E0E0E0",
+  bg = "#C6ECFF",
+  add = T,
+  lwd = 0.05
+)
+
+pal = (alpha(brewer.pal(length(br) - 1, "PRGn"), 0.5))
+choroLayer(
+  MunicSimpl,
+  add = T,
+  var = "SS_INCOMEPERHOUSEH_2016",
+  border = "#646464",
+  breaks = br,
+  col = pal,
+  lwd = 0.05,
+  legend.pos = "n",
+  colNA = "#E0E0E0"
+)
+
+
+legendChoro(
+  pos = "left",
+  title.txt = " ",
+  title.cex = 0.5,
+  values.cex = 0.25,
+  breaks = c(" ", format(br, big.mark = ",")[-c(1, length(br))], " "),
+  col = pal,
+  nodata = T,
+  nodata.txt = "n.d.",
+  nodata.col = "#E0E0E0"
+)
+
+plot(
+  st_geometry(ProvSimp),
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
+
+dev.off()
+
+# UA unemployment---
+# Renta per capita----
+
+df = st_drop_geometry(MunicSimpl) %>% filter(!is.na(SS_INCOMEPERCAP_2016))
+
+mean = weighted.mean(df$SS_INCOMEPERCAP_2016, df$POP_2018)
+down = seq(mean, 0, by = -1000)[1:5]
+up = seq(mean, 30000, by = 1000)[1:5]
+br = sort(unique(c(0, down, up, 30000))) %>% as.integer()
+
+#br = c(0, seq(8000, 16000, 1000), 30000) %>% as.integer()
+
+
+#pdi=90
+pdi = 90
+
+svg(
+  "RentaPers.svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 1200 / pdi,
+  bg = "#C6ECFF"
+)
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ProvSimp),
+     col = "#E0E0E0",
+     border = NA,
+     bg = "#C6ECFF")
+
+plot(
+  st_geometry(WORLD),
+  col = "#E0E0E0",
+  bg = "#C6ECFF",
+  add = T,
+  lwd = 0.05
+)
+
+pal = (alpha(brewer.pal(length(br) - 1, "PRGn"), 0.5))
+choroLayer(
+  MunicSimpl,
+  add = T,
+  var = "SS_INCOMEPERCAP_2016",
+  border = "#646464",
+  breaks = br,
+  col = pal,
+  lwd = 0.05,
+  legend.pos = "n",
+  colNA = "#E0E0E0"
+)
+
+
+legendChoro(
+  pos = "left",
+  title.txt = " ",
+  title.cex = 0.5,
+  values.cex = 0.25,
+  breaks = c(" ", format(br, big.mark = ",")[-c(1, length(br))], " "),
+  col = pal,
+  nodata = T,
+  nodata.txt = "n.d.",
+  nodata.col = "#E0E0E0"
+)
+
+plot(
+  st_geometry(ProvSimp),
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
+
+dev.off()
+
+
+# FOREIGN----
+
+df = st_drop_geometry(MunicSimpl) %>% filter(!is.na(MunicSimpl$UA_FOREIGNERS_PERC_2018))
+summary(df$UA_FOREIGNERS_PERC_2018)
+# mean=weighted.mean(df$SS_INCOMEPERHOUSEH_2016,df$POP_2018)
+# down=seq(mean,0,by=-1000)[1:5]
+# up=seq(mean,30000,by=1000)[1:5]
+# br=sort(unique(c(0,down,up,30000))) %>% as.integer()
+
+#mean=weighted.mean(df$SS_INCOMEPERCAP_2016,df$POP_2018)
+br = c(seq(0, 0.45, by = 0.05), 1)
+
+#pdi=90
+pdi = 90
+
+svg(
+  "Paro.svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 1200 / pdi,
+  bg = "#C6ECFF"
+)
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ProvSimp),
+     col = "#E0E0E0",
+     border = NA,
+     bg = "#C6ECFF")
+
+plot(
+  st_geometry(WORLD),
+  col = "#E0E0E0",
+  bg = "#C6ECFF",
+  add = T,
+  lwd = 0.05
+)
+
+pal = (alpha(brewer.pal(length(br) - 1, "PRGn"), 0.5))
+choroLayer(
+  MunicSimpl,
+  add = T,
+  var = "UA_FOREIGNERS_PERC_2018",
+  border = "#646464",
+  breaks = br,
+  col = pal,
+  lwd = 0.05,
+  legend.pos = "n",
+  colNA = "#E0E0E0"
+)
+
+
+legendChoro(
+  pos = "left",
+  title.txt = " ",
+  title.cex = 0.5,
+  values.cex = 0.25,
+  breaks = c(" ", format(br, big.mark = ",")[-c(1, length(br))], " "),
+  col = pal,
+  nodata = T,
+  nodata.txt = "n.d.",
+  nodata.col = "#E0E0E0"
+)
+
+plot(
+  st_geometry(ProvSimp),
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
 
 dev.off()
