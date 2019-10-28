@@ -48,43 +48,60 @@ MUNIC = MUNIC %>% select(CODNUT1,
 WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
                 stringsAsFactors = FALSE)
 
-# NOT RUN Mix data----
+# # NOT RUN Mix data----
 # Pad18 = read_xlsx("pobmun18.xlsx")
 # Pad18$CODIGOINE = substr(paste(Pad18$CPRO, Pad18$CMUN, sep = "") , 1, 5)
+# 
+# LAU_NUTS <- read_excel("LAU-NUTS.xlsx", sheet = "ES")
+# LAU_NUTS = LAU_NUTS %>%
+#   select(
+#     NAME_NUTS=`LAU NAME NATIONAL`,
+#     NUTS3=`NUTS 3 CODE`,
+#     AreaKM2=`TOTAL AREA (m2)`,
+#     DEGURBA,
+#     CODIGOINE=`LAU CODE`,
+#     CITY_ID,
+#     GREATER_CITY_ID,
+#     GREATER_CITY_NAME,
+#     FUA_ID,
+#     FUA_NAME
+#   )
+# LAU_NUTS$AreaKM2=LAU_NUTS$AreaKM2/1000000
+# MunicData=full_join(Pad18,LAU_NUTS)
+# 
 # # Area
-#
-# MUNAREA = st_transform(MUNIC, 4326)
-# MUNAREA$AreaKM2 = as.double(st_area(MUNAREA)) / 1000000
-#
-# MunicData = left_join(MUNAREA %>% st_drop_geometry(),
-#                       Pad18)
+# MUNdf=st_drop_geometry(MUNIC)
+# MunicData = full_join(MUNdf,
+#                       MunicData)
+# 
+# 
 # MunicData$NOMBRE = ifelse(is.na(MunicData$NOMBRE),
-#                           MunicData$MUNICIPIO,
-#                           MunicData$NOMBRE)
+#                            MunicData$MUNICIPIO,
+#                            MunicData$NOMBRE)
 # MunicData$DensKM2 = MunicData$POB18 / MunicData$AreaKM2
-#
+# 
 # AU_MFom <- read_xlsx("AU_MFom18.xlsx")
 # AU_MFom$CODIGOINE = AU_MFom$CODE
-#
+# 
 # MunicData = left_join(MunicData %>% select(-HOMBRES,-MUJERES),
 #                       AU_MFom %>% select(CODIGOINE,
 #                                          AREA_URBANA)
 #                       ,
 #                       by = "CODIGOINE")
-#
-#
+# 
+# 
 # # Urban Audit--
 # UAOV20 <- read_xlsx("URBAN_AUDIT.xlsx")
 # UACITY <- read_xlsx("URBAN_AUDIT_CITY.xlsx")
-#
-#
+# 
+# 
 # MunicData = left_join(MunicData,
 #                       UAOV20,
 #                       by = "CODIGOINE")
 # MunicData = left_join(MunicData,
 #                       UACITY,
 #                       by = "CODIGOINE")
-#
+# 
 # # Experimental Statistics
 # Renta <- read_xlsx("30824.xlsx", sheet = "export")
 # Renta$Renta_Persona_2016 = as.double(Renta$Renta_Persona_2016)
@@ -93,12 +110,15 @@ WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
 # MunicData = left_join(MunicData,
 #                       Renta %>% select(-NAME),
 #                       by = "CODIGOINE")
-#
+# 
 # CODS_ISO = read_xlsx("~/R/mapslib/CUSTOM/Cods_ISO_ESP.xlsx")
-#
+# 
 # MunicData = left_join(MunicData,
 #                       CODS_ISO,
 #                       by = c("CODNUT3" = "NUTS3"))
+# 
+# 
+# 
 # MunicData_export = MunicData %>% select(
 #   NUTS0,
 #   NUTS1,
@@ -113,7 +133,6 @@ WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
 #   CMUN,
 #   CODIGOINE,
 #   MUNICIPIO = NOMBRE,
-#   AREA_URBANA,
 #   POP_2018 = POB18,
 #   AREAKM2 = AreaKM2,
 #   DENSKM2 = DensKM2,
@@ -127,29 +146,39 @@ WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_01M_2016_3857.geojson",
 #   UA_UNEMPRATE_2018 = UnemploymentRate_2018,
 #   UA_AVAILBEDS_TOURISM_2017 = AvailableBeds_Tourism_2017,
 #   SS_INCOMEPERCAP_2016 = Renta_Persona_2016,
-#   SS_INCOMEPERHOUSEH_2016 = Renta_Hogar_2016
+#   SS_INCOMEPERHOUSEH_2016 = Renta_Hogar_2016,
+#   AREA_URBANA,
+#   DEGURBA,
+#   CITY_ID,
+#   GREATER_CITY_ID,
+#   GREATER_CITY_NAME,
+#   FUA_ID,
+#   FUA_NAME
 # ) %>% arrange(CODIGOINE)
-#
-#
+# 
+# 
 # write.xlsx(MunicData_export,
-#            "SpainMunic.xlsx")
+#             "SpainMunic.xlsx")
 # rm(
 #   AU_MFom,
 #   CAN,
 #   CODS_ISO,
-#   MUNAREA,
 #   MunicData,
 #   MunicData_export,
 #   Pad18,
 #   PENIN,
 #   Renta,
 #   UACITY,
-#   UAOV20
+#   UAOV20,
+#   LAU_NUTS,
+#   MUNdf
 # )
-
+# 
 
 # Import and merge-----
 df = read_xlsx("SpainMunic.xlsx")
+
+
 MAPMUNIC = left_join(MUNIC %>% select(CODIGOINE),
                      df ,
                      by = "CODIGOINE") %>% arrange(CODIGOINE)
@@ -405,6 +434,152 @@ rsvg::rsvg_png(
   "Large Urban Areas in Spain by population (2018).svg",
   "Large Urban Areas in Spain by population (2018).png"
 )
+
+# Plot AU2----
+
+# wikicolors = c("#e41a1c",
+#                "#4daf4a",
+#                "#984ea3",
+#                "#ff7f00",
+#                "#377eb8",
+#                "#ffff33")
+
+
+library(RColorBrewer)
+
+pdi = 90
+
+svg(
+  "Functional Urban Areas in Spain by population (2018).svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 1000 / pdi,
+  bg = "#C6ECFF"
+)
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ProvSimp),
+     col = NA,
+     border = NA,
+     bg = "#C6ECFF")
+plot(st_geometry(WORLD),
+     col = "#E0E0E0",
+     bg = "#C6ECFF",
+     add = T)
+
+plot(
+  st_geometry(ProvSimp),
+  col = "#FEFEE9",
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+
+br = c(0, 50000, 100000, 600000, 10000000) %>% as.integer()
+
+AU = MunicSimpl %>% filter(!is.na(FUA_ID)) %>%
+  group_by(FUA_ID) %>% summarise(POP_2018 = sum(POP_2018)) %>% arrange(desc(POP_2018))
+
+AU$categs = cut(AU$POP_2018, unique(br))
+colAU = magma(6)[2:5]
+
+typoLayer(
+  AU,
+  var = "categs",
+  border = NA,
+  col =  colAU,
+  legend.pos = "n",
+  add = T
+)
+
+legendTypo(
+  pos = "left",
+  title.txt = "",
+  values.cex = 0.25,
+  categ = rev(c(
+    "<50.000", "50.000-100.000", "100.000-600.000", ">600.000"
+  )),
+  nodata = F,
+  col =  colAU
+)
+
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
+dev.off()
+
+rsvg::rsvg_png(
+  "Functional Urban Areas in Spain by population (2018).svg",
+  "Functional Urban Areas in Spain by population (2018).png"
+)
+
+# Plot DegUrb----
+df=st_drop_geometry(MunicSimpl)
+wikicolors = c("#4daf4a",
+               "#e41a1c",
+               "#984ea3")
+
+show_col(wikicolors)
+library(RColorBrewer)
+
+pdi = 90
+
+svg(
+  "DegUrb.svg",
+  pointsize = pdi,
+  width =  1600 / pdi,
+  height = 1000 / pdi,
+  bg = "#C6ECFF"
+)
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(ProvSimp),
+     col = NA,
+     border = NA,
+     bg = "#C6ECFF")
+plot(st_geometry(WORLD),
+     col = "#E0E0E0",
+     bg = "#C6ECFF",
+     add = T)
+
+plot(
+  st_geometry(ProvSimp),
+  col = "#FEFEE9",
+  lwd = 0.3,
+  lty = 3,
+  border = "black",
+  add = T
+)
+
+
+typoLayer(
+  MunicSimpl,
+  var = "DEGURBA",
+  border = NA,
+  col =  wikicolors,
+  legend.pos = "n",
+  add = T
+)
+
+legendTypo(
+  pos = "left",
+  title.txt = "",
+  values.cex = 0.25,
+  categ = c("Área Rural","Zona periférica","Ciudad" ),
+  nodata = T,
+  col =  wikicolors
+)
+
+plot(
+  st_geometry(CCAASimp),
+  lwd = 0.25,
+  border = "black",
+  add = T
+)
+dev.off()
+
 
 # Plot muns----
 pdi = 90
