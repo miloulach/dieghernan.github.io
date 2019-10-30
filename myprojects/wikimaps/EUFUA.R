@@ -5,11 +5,11 @@ rm(list = ls())
 library(sf)
 library(readxl)
 library(dplyr)
-WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_10M_2016_3857.geojson",
+WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_03M_2016_3857.geojson",
                 stringsAsFactors = FALSE)
 
 WORLD = st_transform(WORLD, 3035)
-NUTS3 = st_read("~/R/mapslib/EUROSTAT/NUTS_RG_10M_2016_3857_LEVL_3.geojson",
+NUTS3 = st_read("~/R/mapslib/EUROSTAT/NUTS_RG_03M_2016_3857_LEVL_3.geojson",
                 stringsAsFactors = FALSE)
 NUTS3 = st_transform(NUTS3, 3035)
 df = st_drop_geometry(NUTS3) %>% select(CNTR_ID = CNTR_CODE) %>% unique()
@@ -209,10 +209,10 @@ svg(
   height = 830 / 90,
   bg = "#C6ECFF"
 )
-par(mar = c(0, 0, 0, 0), cex.main = 0.11)
+par(mar = c(0, 0, 0, 0), cex.main = 0.12)
 plot(st_geometry(CONTBBOX), border = NA, col = "#C6ECFF")
 plot(
-  st_geometry(WORLD %>% filter(CNTR_ID != "GL")),
+  st_geometry(WORLD),
   col = "#E0E0E0",
   lwd = 0.1,
   bg = "#C6ECFF",
@@ -432,4 +432,7 @@ choroLayer(
 box(lwd = 1, col = 'black')
 dev.off()
 
-
+rsvg::rsvg_png("NUTS3.svg",
+               "NUTS3.png")
+rsvg::rsvg_png("NUTS3Dens.svg",
+               "NUTS3Dens.png")
