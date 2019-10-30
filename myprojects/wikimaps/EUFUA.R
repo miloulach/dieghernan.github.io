@@ -1,10 +1,12 @@
 #a----
 setwd("~/R/dieghernan.github.io/myprojects/wikimaps")
 
+
 rm(list = ls())
 library(sf)
 library(readxl)
 library(dplyr)
+library(cartography)
 WORLD = st_read("~/R/mapslib/EUROSTAT/CNTR_RG_03M_2016_3857.geojson",
                 stringsAsFactors = FALSE)
 
@@ -25,10 +27,8 @@ class(CONTBBOX) <- "bbox"
 st_bbox(CONTBBOX)
 CONTBBOX = st_as_sfc(CONTBBOX, crs = st_crs(NUTS3))
 CONTBBOX = st_sf(CONT = "1", CONTBBOX, crs = st_crs(NUTS3))
-par(mar = c(0, 0, 0, 0))
-plot(st_geometry(CONTBBOX))
-plot(st_geometry(NUTS3.inner), add = T)
-st_bbox(NUTS3.inner)
+
+
 outerNUTS=c("ES703","ES704","ES705","ES706","ES707",
             "ES708","ES709","FRY10","FRY20","FRY30",
             "FRY40","FRY50","PT200","PT300")
@@ -41,15 +41,18 @@ NUTS3.outer=NUTS3[NUTS3$NUTS_ID %in% outerNUTS,]
 NUTS3.outer = st_transform(NUTS3.outer, 3857)
 NUTS3.inner=NUTS3[NUTS3$NUTS_ID %in% outerNUTS==FALSE,]
 
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(CONTBBOX))
+plot(st_geometry(NUTS3.inner), add = T)
 
 position <- function(x) {
   is.odd <- function(f)
     f %% 2 != 0
   if (is.odd(x)) {
-    x1 = c(0.76, 0.88)
+    x1 = c(0.73, 0.85)
     y1 = c(0.85, 0.97) + (x - 1) / 2 * c(-0.12, -0.12)
   } else{
-    x1 = c(0.88, 1)
+    x1 = c(0.85, 0.97)
     y1 = c(0.85, 0.97) + (x - 2) / 2 * c(-0.12, -0.12)
   }
   posfig = c(x1, y1)
@@ -61,7 +64,7 @@ position <- function(x) {
 
 #TRY----
 dev.off()
-marseq=c(0.05,0,0.1,0.05)
+marseq=c(0.05,0.05,0.15,0.05)
 svg(
   "NUTS3.svg",
   pointsize = 90,
@@ -87,20 +90,24 @@ plot(
   col = "#FEFEE9"
 )
 plot(st_geometry(EU), lwd = 0.25, add = T)
-#Canarias
 
+#Canarias
 par(fig = position(1), mar = marseq, new = TRUE)
-plot(st_geometry(NUTS3.outer %>% filter(CNTR_CODE == "ES")),
-     main = "Canarias (ES)",
-     col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+INSET=NUTS3.outer %>% filter(CNTR_CODE == "ES")
+plot(st_geometry(INSET),col = "#FEFEE9",
+     main="Canarias (ES)")
+box(which = "figure", lwd=1.5)
+box()
 
 #Guadeloupe
 par(fig = position(2), mar = marseq, new = TRUE)
-plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY10")),
-     main = "Guadeloupe (FR)",
-     col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+INSET=NUTS3.outer %>% 
+  filter(NUTS_ID == "FRY10")
+plot(st_geometry(INSET),col = "#FEFEE9",
+     main="Guadeloupe (FR)")
+box(which = "figure", lwd=1.5)
+box()
+
 
 
 #Martinique
@@ -108,7 +115,8 @@ par(fig = position(3), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY20")),
      main = "Martinique (FR)",
      col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Guyane
 par(fig = position(4), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY30")),
@@ -123,37 +131,43 @@ plot(
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY30")),
      col = "#FEFEE9",
      add = T)
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #LaRéunion
 par(fig = position(5), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY40")),
      main = "Réunion (FR)",
      col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Mayotte
 par(fig = position(6), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY50")),
      main = "Mayotte (FR)",
      col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Azores
 par(fig = position(7), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "PT200")),
      main = "Açores (PT)",
      col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Madeira
 par(fig = position(8), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "PT300")),
      main = "Madeira (PT)",
      col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Malta
 par(fig = position(9), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.inner %>% filter(CNTR_CODE == "MT")),
      main = "Malta",
      col = "#FEFEE9")
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 
 #Liechtenstein
 par(fig = position(10), mar = marseq, new = TRUE)
@@ -169,7 +183,8 @@ plot(
 plot(st_geometry(NUTS3.inner %>% filter(CNTR_CODE == "LI")),
      col = "#FEFEE9",
      add=T)
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 dev.off()
 
 
@@ -201,7 +216,6 @@ dev.off()
 
 #Plotdens----
 dev.off()
-marseq=c(0.05,0,0.1,0.05)
 svg(
   "NUTS3Dens.svg",
   pointsize = 90,
@@ -260,7 +274,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Guadeloupe
 par(fig = position(2), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY10")),
@@ -278,7 +293,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Martinique
 par(fig = position(3), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY20")),
@@ -296,7 +312,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Guyane
 par(fig = position(4), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY30")),
@@ -321,7 +338,8 @@ choroLayer(
   colNA = "#E0E0E0"
 )
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY30")), add = T)
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #LaRéunion
 par(fig = position(5), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY40")),
@@ -339,7 +357,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Mayotte
 par(fig = position(6), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "FRY50")),
@@ -357,7 +376,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Azores
 par(fig = position(7), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "PT200")),
@@ -375,7 +395,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Madeira
 par(fig = position(8), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.outer %>% filter(NUTS_ID == "PT300")),
@@ -393,7 +414,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Malta
 par(fig = position(9), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.inner %>% filter(CNTR_CODE == "MT")),
@@ -411,7 +433,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 #Malta
 par(fig = position(10), mar = marseq, new = TRUE)
 plot(st_geometry(NUTS3.inner %>% filter(CNTR_CODE == "LI")),
@@ -429,7 +452,8 @@ choroLayer(
   legend.pos = "n",
   colNA = "#E0E0E0"
 )
-box(lwd = 1, col = 'black')
+box(which = "figure", lwd=1.5)
+box()
 dev.off()
 
 rsvg::rsvg_png("NUTS3.svg",
