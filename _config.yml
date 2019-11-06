@@ -24,6 +24,7 @@ navbar-links:
     - All: "projects"
     - Country Codes & Organizations: "https://dieghernan.github.io/Country-Codes-and-International-Organizations/"
     - Textwatch Clima: "https://dieghernan.github.io/TextWatchClima/"
+  Gallery: "gallery"
   View on Github: "https://github.com/dieghernan/dieghernan.github.io"
 
 avatar: "/assets/img/avatar-icon.png"
