@@ -7,9 +7,10 @@ permalink: /test/
 
 {% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item",
 "item.extname contains '.png'" }} %}
-{{ image_files | size }}
+{{ image_files | size | divided_by: 2  }}
 
 {% for myimage in image_files %}
+ <p>{% increment counter %}
  <p> {{ myimage.path }}
  <p> {{ myimage.extname }}
 {% endfor %}
