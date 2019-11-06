@@ -9,15 +9,13 @@ permalink: /test/
 
 
  <style>
-body {
-  background-color: #008040;
-  color: #ffff00;
-}
+
 .masonry-wrapper {
   padding: 1.5em;
   max-width: 900px;
   margin-right: auto;
   margin-left: auto;
+ background-color: {{ site.navbar-col }};
 }
 .masonry {
   columns: 2;
@@ -25,14 +23,14 @@ body {
 }
 .masonry-item {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: top
   margin-bottom: 5px;
 }
 @media only screen and (max-width: 1023px) and (min-width: 768px) {  .masonry {
     columns: 2;
   }
 }
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1024p
   .masonry {
     columns: 3;
   }
