@@ -40,7 +40,10 @@ permalink: /gallery/
 "item.extname contains '.png'" }} %}
 {% assign looptot = image_files | size | divided_by: 2  %}
 
-<h2 align="center" class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};"><a href="https://commons.wikimedia.org/wiki/Special:ListFiles?limit=50&user=dieghernan84">Wikimedia</a></h2>
+<h2 class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};">
+	<a href="https://commons.wikimedia.org/wiki/Special:ListFiles?limit=50&user=dieghernan84">Wikimedia Commons</a>
+	<p style="margin-bottom: 0;margin-top: auto;font-size: 20px;font-style: normal;">Uploaded files on Wikipedia</p>
+</h2>
 <div class="row-gallery">
 	<div class="column-gallery">  
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png">
@@ -55,7 +58,9 @@ permalink: /gallery/
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282009%29.svg/1000px-Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282009%29.svg.png">
 	</div>
 </div>
-<h2 align="center" class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};"><a href="https://dieghernan.github.io/archive/">Blog</a></h2>
+<h2 class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};"><a href="https://dieghernan.github.io/archive/">Blog</a>
+	<p style="margin-bottom: 0;margin-top: auto;font-size: 20px;font-style: normal;">Plots used on my posts</p>
+</h2>
 <div class="row-gallery">
 	<div class="column-gallery">
 	{% for myimage in image_files %}
