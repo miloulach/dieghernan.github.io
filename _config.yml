@@ -106,6 +106,12 @@ defaults:
       share-img: https://dieghernan.github.io/assets/img/headerblog.png
       date: 2001-01-01
       includeonfeed: true
+  -
+    scope:
+      path: "assets/figs"
+    values:
+      image: true
+
 
 # Use tags index page and make tags on each post clickable
 link-tags: true
