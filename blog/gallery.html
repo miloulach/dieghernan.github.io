@@ -35,23 +35,39 @@ permalink: /gallery/
     }
   }
 </style>
+
+{% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item",
+"item.extname contains '.png'" }} %}
+{% assign looptot = image_files | size | divided_by: 2  %}
+
+<h2 align="center" class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};"><a href="https://commons.wikimedia.org/wiki/Special:ListFiles?limit=50&user=dieghernan84">Wikimedia</a></h2>
 <div class="row-gallery">
 	<div class="column-gallery">  
-		<h2 align="center"><a href="https://commons.wikimedia.org/wiki/Special:ListFiles?limit=50&user=dieghernan84">Wikimedia</a></h2>
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png">
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Population_by_municipality_in_Spain_%282018%29.svg/1000px-Population_by_municipality_in_Spain_%282018%29.svg.png">  
 		<img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Large_Urban_Areas_in_Spain_%282018%29.png">   
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282002%29.svg/1000px-Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282002%29.svg.png">
+	</div>
+	<div class="column-gallery">  
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Organ_donor_rate_per_million_by_country_gradient_map_%282017%29.svg/1000px-Organ_donor_rate_per_million_by_country_gradient_map_%282017%29.svg.png">  
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Prevalence_of_cocaine_use_as_percentage_of_population_by_country_gradient_map_%282009%29.svg/1000px-Prevalence_of_cocaine_use_as_percentage_of_population_by_country_gradient_map_%282009%29.svg.png">   
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Population_by_municipality_in_Spain_%282018%29.svg/1000px-Population_by_municipality_in_Spain_%282018%29.svg.png">  
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282009%29.svg/1000px-Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282009%29.svg.png">
 	</div>
-	<div class="column-gallery">		
-		<h2 align="center"><a href="https://dieghernan.github.io/archive/">Blog</a></h2>
-		{% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item", "item.extname contains '.png'" }} %}
-		{% for myimage in image_files %}
-			<img src="{{ myimage.path | prepend: site.baseurl }}">
-		{% endfor %}
+</div>
+<h2 align="center" class="linked-section" style="border-bottom: 2px solid {{ site.navbar-col }};"><a href="https://dieghernan.github.io/archive/">Blog</a></h2>
+<div class="row-gallery">
+	<div class="column-gallery">
+	{% for myimage in image_files %}
+	{% if forloop.index <looptot %}
+		 <img src="{{ myimage.path | prepend: site.baseurl }}">
+	{% elsif forloop.index == looptot %}
+		<img src="{{ myimage.path | prepend: site.baseurl }}">
 	</div>
+	<div class="column-gallery">  
+	{% else %}
+		<img src="{{ myimage.path | prepend: site.baseurl }}">
+	{% endif %}		
+	{% endfor %}	
+   </div>
 </div>
