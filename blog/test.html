@@ -5,8 +5,8 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-{% for image in site.static_files %}
-  {% if image.path contains 'figs' %}
-  <p>{{ myimage.path }}
-  {% endif %}
+{% assign image_files = site.static_files | where: "image", true %}
+{% for myimage in image_files %}
+ <p> {{ myimage.path }}
+ <p> {{ myimage.extname }}
 {% endfor %}
