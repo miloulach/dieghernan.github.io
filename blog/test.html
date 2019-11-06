@@ -6,55 +6,44 @@ permalink: /test/
 ---
 
 <style>
-	.masonry-wrapper {
-		padding: 1.5em;
-		border-radius: 2px;
-		max-width: 800px;
-		margin-right: auto;
-		margin-left: auto;
-		background-color: #008080;
-	}
-	.masonry {
-		columns: 1;
-		column-gap: 5px;
-	}
-.masonry-item {
-  display: inline-block;
-  vertical-align: top;
-  margin-bottom: 5px;
-}
-	/* Masonry on small screens */
-@media only screen and (max-width: 600px) and (min-width: 140px) {
-  .masonry {
-    column-count: 1;
-  }
-}
 	
-@media only screen and (max-width: 1000px) and (min-width: 600px) {
-	.masonry {    
-		columns: 2;
-  }
+	/* The Masonry Container */
+.masonry {
+  margin: 1.5em auto;
+  max-width: 768px;
+  column-gap: 1.5em;
 }
-@media only screen and (min-width: 1001px) {
+
+/* The Masonry Brick */
+.item {
+  background: #fff;
+  padding: 1em;
+  margin: 0 0 1.5em;
+}
+
+/* Masonry on large screens */
+@media only screen and (min-width: 1024px) {
   .masonry {
-    columns: 3;
+    column-count: 4;
   }
 }
-.masonry-item, .masonry-content {
-  border-radius: 2px;
-  overflow: hidden;
-}
-.masonry-item {
-  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, .3));
-  transition: filter .25s ease-in-out;
-}
-.masonry-item:hover {
-  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, .3));
+
+/* Masonry on medium-sized screens */
+@media only screen and (max-width: 1023px) and (min-width: 768px) {
+  .masonry {
+    column-count: 3;
+  }
 }
 
-    </style>
+/* Masonry on small screens */
+@media only screen and (max-width: 767px) and (min-width: 540px) {
+  .masonry {
+    column-count: 2;
+  }
+}
 
-<div class="masonry-wrapper">
+</style>
+
   <div class="masonry">
   <div class="masonry-item">
     <img src="https://picsum.photos/450/325?image=100" alt="Dummy Image" class="masonry-content">
@@ -146,5 +135,4 @@ permalink: /test/
   <div class="masonry-item">
     <img src="https://picsum.photos/450/300?image=78" alt="Dummy Image" class="masonry-content">
   </div>
-</div>
 </div>
