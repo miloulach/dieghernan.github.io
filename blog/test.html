@@ -7,11 +7,12 @@ permalink: /test/
 
 {% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item",
 "item.extname contains '.png'" }} %}
-{{ image_files | size | divided_by: 2  }}
+{% assign looptot = image_files | size | divided_by: 2  %}
 {% for myimage in image_files %}
- <p>{{ forloop.index }}
-  {% if forloop.index <11 %}
+  {% if forloop.index <looptot %}
 <p>I
+{% elsif forloop.index == looptot %}
+<p> Aqui captura
       {% else %}
 <p>D
     {% endif %}
