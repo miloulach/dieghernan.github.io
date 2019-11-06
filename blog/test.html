@@ -5,12 +5,69 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  
+  .row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    padding: 0 4px;
+  }
+  /* Three cols*/
+  .column {
+    -ms-flex: 33%; /* IE10 */
+    flex: 33%;
+    max-width: 33%;
+    padding: 0 4px;
+  }  
+  .column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%;
+  }
 
-Aaa
-Bbbbbbb
+  @media screen and (max-width: 800px) {
+    column {
+      -ms-flex: 50%;
+      flex: 50%;
+      max-width: 50%;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .column {
+      -ms-flex: 100%;
+      flex: 100%;
+      max-width: 100%;
+    }
+  }
+</style>
 
+<h1>Lev1</h1>
+<h2>Lev</h2>
+<h3>Lev</h3>
+<h4>Lev</h4>
 
-
-
-
-
+<div class="row">
+  <div class="column">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Population_density_by_NUTS_3_region_%282017%29.svg">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Population_by_municipality_in_Spain_%282018%29.svg">  
+    <img src="../assets/figs/20190505_imgpost.png">   
+    <img src="../assets/figs/20190505_imgpost.png">
+  </div>
+  <div class="column">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Organ_donor_rate_per_million_by_country_gradient_map_%282017%29.svg">  
+    <img src=" https://upload.wikimedia.org/wikipedia/commons/6/65/Prevalence_of_cocaine_use_as_percentage_of_population_by_country_gradient_map_%282009%29.svg">   
+    <img src="../assets/figs/20190602_functionex-1.png">
+    <img src="../assets/figs/20190602_imgpost.png">
+    <img src="../assets/figs/20190618_Andalucia-1.png">
+  </div>
+  <div class="column">
+    <img src="../assets/figs/20190618_allCCAA-1.png">
+    <img src="../assets/figs/20190618_preparing-1.png">
+    <img src="../assets/figs/20190618_imgpost-1.png">    
+  </div>
+</div>
