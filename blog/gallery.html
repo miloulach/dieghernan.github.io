@@ -35,10 +35,9 @@ permalink: /gallery/
     }
   }
 </style>
-
 <div class="row-gallery">
 	<div class="column-gallery">  
-		<h4 align="center">Wikimedia</h4>
+		<h2 align="center"><a href="https://commons.wikimedia.org/wiki/Special:ListFiles?limit=50&user=dieghernan84">Wikimedia</a></h2>
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png">
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Population_by_municipality_in_Spain_%282018%29.svg/1000px-Population_by_municipality_in_Spain_%282018%29.svg.png">  
 		<img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Large_Urban_Areas_in_Spain_%282018%29.png">   
@@ -49,14 +48,10 @@ permalink: /gallery/
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282009%29.svg/1000px-Meat_consumption_rate_%28kg%29_per_capita_by_country_gradient_map_%282009%29.svg.png">
 	</div>
 	<div class="column-gallery">		
-	<h4 align="center">Blog</h4>
-		<img src="../assets/figs/20190618_movecan-1.png">
-		<img src="../assets/figs/20190618_imgpost-1.png">
-		<img src="../assets/figs/20190618_Andalucia-1.png">
-		<img src="../assets/figs/20190618_allCCAA-1.png">
-		<img src="../assets/figs/20190602_imgpost-1.png">
-		<img src="../assets/figs/20190602_functionex-1.png">
-		<img src="../assets/figs/20190505_imgpost.png">
-		<img src="../assets/figs/20190427_wiki.png">
+		<h2 align="center"><a href="https://dieghernan.github.io/archive/">Blog</a></h2>
+		{% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item", "item.extname contains '.png'" }} %}
+		{% for myimage in image_files %}
+			<img src="{{ myimage.path | prepend: site.baseurl }}">
+		{% endfor %}
 	</div>
 </div>
