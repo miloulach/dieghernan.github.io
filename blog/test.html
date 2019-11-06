@@ -12,6 +12,7 @@ permalink: /test/
   margin: 1.5em auto;
   max-width: 768px;
   column-gap: 0.2em;
+background-color: {{ site.background-light-col }};
 }
 
 /* The Masonry Brick */
@@ -36,7 +37,7 @@ permalink: /test/
 }
 
 /* Masonry on small screens */
-@media only screen and (max-width: 767px) and (min-width: 540px) {
+@media only screen and (max-width: 767px) and (min-width: 300px) {
   .masonry {
     column-count: 2;
   }
