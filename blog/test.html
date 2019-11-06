@@ -5,7 +5,7 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-{% assign image_files = site.static_files %}
+{% assign image_files = site.static_files | where: myimage.extname, "png" %}
 {% for myimage in image_files %}
   {{ myimage.path }}
 {% endfor %}
