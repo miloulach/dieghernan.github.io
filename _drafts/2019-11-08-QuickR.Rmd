@@ -4,7 +4,7 @@ title: "Quick R: Inset maps"
 subtitle: "An alternative using plot()"
 tags: [R, maps, flags,sf]
 date: 2019-11-08
-share-img: https://dieghernan.github.io/assets/figs/20190618_imgpost-1.png
+share-img: https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png
 img-to-head: true
 linktormd: true
 output: github_document
@@ -41,37 +41,66 @@ library(rnaturalearth)
 I would present here an alternative version of [Drawing beautiful maps programmatically with R, sf and ggplot2](https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-3.html), so the bulk of the detail can be found there. I would focus only in the `plot()`side.
 
 ```{r 20191108_main, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide',fig.width=500/90, fig.height=300/90}
-world <- ne_countries(scale='medium',returnclass = 'sf')
+world <- ne_countries(scale = 'medium', returnclass = 'sf')
 USA <- subset(world, admin == "United States of America")
 
 # Plot mainland USA----
 par(mar = c(0, 0, 0, 0))
 plot(
-  st_geometry(USA %>%
+  st_geometry(world %>%
                 st_transform(2163)),
   xlim = c(-2500000, 2500000),
-  ylim = c(-2300000, 730000)
+  ylim = c(-2300000, 730000),
+  col = "#F6E1B9",
+  border = "#646464",
+  bg = "#C6ECFF"
 )
+plot(
+  st_geometry(USA) %>% st_transform(2163),
+  col = "#FEFEE9",
+  border = "black",
+  add = T
+)
+
 ```
 
 ```{r 20191108_Alaska, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide',fig.width=500/90, fig.height=300/90}
 # Plot Alaska----
 plot(
-  st_geometry(USA %>%
+  st_geometry(world %>%
                 st_transform(3467)),
   xlim = c(-2400000, 1600000),
-  ylim = c(200000, 2500000)
+  ylim = c(200000, 2500000),
+  col = "#F6E1B9",
+  border = "#646464",
+  bg = "#C6ECFF"
   )
+plot(
+  st_geometry(USA) %>% st_transform(3467),
+  col = "#FEFEE9",
+  border = "black",
+  add = T
+)
 ```
 
 ```{r 20191108_Hawaii, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide',fig.width=500/90, fig.height=300/90}
 # Plot Hawaii----
 plot(
-  st_geometry(USA %>%
+  st_geometry(world %>%
                 st_transform(4135)),
   xlim = c(-161, -154),
-  ylim = c(18, 23)
+  ylim = c(18, 23),
+  col = "#F6E1B9",
+  border = "#646464",
+  bg = "#C6ECFF"
+  )
+plot(
+  st_geometry(USA) %>% st_transform(4135),
+  col = "#FEFEE9",
+  border = "black",
+  add = T
 )
+
 ```
 
 ### Insetting
@@ -83,36 +112,69 @@ From now on, I just focus on the inset part, using the `fig()` option on `par()`
 
 So being `x1` and `y1` the starting points and `x2`, `y2` the final points, we just can set up those parameters and adjust the final placement of the insets. Additionally I added a box around the insets using `bbox()`. I didn't mimick Moreno & Basille here and I just worked it by myself.
 
-```{r 20191108_inset, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide',fig.width=500/90, fig.height=300/90}
-par(mar=c(0,0,0,0))
+```{r 20191108_inset, fig.align='center', message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, tidy='styler', results='hide',fig.width=900/90, fig.height=650/90}
+par(mar = c(0, 0, 0, 0))
 plot(
-  st_geometry(USA %>%
+  st_geometry(world %>%
                 st_transform(2163)),
   xlim = c(-2500000, 2500000),
-  ylim = c(-2300000, 730000)
+  ylim = c(-2300000, 730000),
+  col = "#F6E1B9",
+  border = "#646464",
+  bg = "#C6ECFF"
 )
-par(fig=c(0.05,0.26,0.05,0.30),
+plot(
+  st_geometry(USA) %>% st_transform(2163),
+  col = "#FEFEE9",
+  border = "black",
+  add = T
+)
+# Alaska
+par(fig = c(0.01, 0.28, 0.01, 0.33),
     new = TRUE)
 plot(
-  st_geometry(USA %>%
+  st_geometry(world %>%
                 st_transform(3467)),
   xlim = c(-2400000, 1600000),
-  ylim = c(200000, 2500000)
+  ylim = c(200000, 2500000),
+  col = "#F6E1B9",
+  border = "#646464",
+  bg = "#C6ECFF"
+)
+plot(
+  st_geometry(USA) %>% st_transform(3467),
+  col = "#FEFEE9",
+  border = "black",
+  add = T
 )
 box(which = "figure", lwd = 1)
 
-par(fig=c(0.27,0.38,0.05,0.23),
+# Hawaii
+par(fig = c(0.29, 0.45, 0.01, 0.15),
     new = TRUE)
 plot(
-  st_geometry(USA %>%
+  st_geometry(world %>%
                 st_transform(4135)),
-  xlim = c(-161, -154),
-  ylim = c(18, 23)
+  xlim = c(-161,-154),
+  ylim = c(18, 23),
+  col = "#F6E1B9",
+  border = "#646464",
+  bg = "#C6ECFF"
+)
+plot(
+  st_geometry(USA) %>% st_transform(4135),
+  col = "#FEFEE9",
+  border = "black",
+  add = T
 )
 
 box(which = "figure", lwd = 1)
 ```
 
 Results may vary depending of the size of the original plot (Mainland USA) and your plotting device and output. However with a bit of trial-and-error it is quite easy to adjust the final result.
+
+As an example, see one of my contributions to **Wikimedia Commons** that represents a map of the NUTS3 regions of the European Union. Several countries (France, Portugal, Spain) have overseas territories so I made a few insets on the right side.
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png">
 
 
