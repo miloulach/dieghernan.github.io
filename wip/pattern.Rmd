@@ -1,0 +1,142 @@
+---
+layout: post
+title: "Beautiful Maps with R (III): Patterns"
+subtitle: "A solution for b/w and academic maps."
+tags: [R,beautiful_maps, maps, sf]
+date: 2019-06-02
+share-img: https://dieghernan.github.io/assets/figs/20190602_imgpost-1.png
+img-to-head: true
+linktormd: true
+output: github_document
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(global.par = TRUE)
+rm(list = ls())
+
+
+```
+
+On this post I would introduce a couple of functions that may be useful for improving your maps. The goal is to produce different filling patterns that could be added over your shapefiles. 
+
+At this point, I would like to suggest you (if you haven't done it yet) to install the `cartography`package ([vignette](https://cran.r-project.org/web/packages/cartography/vignettes/cartography.html)), as it presents a good bunch of interesting features, and fully compatible with the `sf` environment. In fact, I took some pieces of the base code in order to develop my own `legendPattern` function.
+
+### Required R packages
+
+```{r libs, warning=FALSE, message=FALSE, tidy='styler'}
+library(sf)
+library(rnaturalearth)
+library(dplyr)
+library(RColorBrewer)
+```
+
+### Grid approach
+
+I already worked with the `st_make_grid` on a previous [post](https://dieghernan.github.io/201906_Beautiful1/), and this time I have applied the same approach. Some examples here on how the grid can be used to create patterns:
+
+#### Dots
+
+```{r 20190602_dotex, fig.align='center', message=FALSE, warning=FALSE, dpi=90, fig.width=200/90, fig.height=350/90,  paged.print=FALSE, tidy='styler', results='hide'}
+DE  <- ne_countries(50,
+                    type = "countries",
+                    country = "Germany",
+                    returnclass = "sf") %>%
+  st_transform(3035)
+
+grid = st_make_grid(DE,
+                    what = "corners",
+                    square = F)
+
+# To avoid dots close to the edge
+negbuff = st_buffer(DE, dist = -15 * 1000)
+grid2 = grid[st_contains(negbuff, grid, sparse = F)]
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(DE))
+plot(st_geometry(grid2), col = "red", add = T)
+```
+
+#### Grid
+
+```{r 20190602_gridex, fig.align='center', message=FALSE, warning=FALSE, dpi=90,fig.width=200/90, fig.height=350/90, paged.print=FALSE, tidy='styler', results='hide'}
+# Grid
+grid = st_make_grid(DE,
+                    what = "polygons",
+                    square = T) %>%
+  st_cast("LINESTRING") %>%
+  st_intersection(DE)
+
+# Clean and keep lines only
+grid2 = grid[st_geometry_type(grid) %in% c("LINESTRING", "MULTILINESTRING")]
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(DE))
+plot(st_geometry(grid2), col = "red", add = T)
+```
+
+Easy, right? Let's move to the next level!
+
+#### Horizontal line
+
+```{r 20190602_horex1, warning=FALSE, message=FALSE, tidy='styler', fig.width=200/90, fig.height=350/90, dpi=90, fig.align='center'}
+# Horizontal
+grid = st_make_grid(DE,
+                    what = "polygons",
+                    square = T)
+
+par(mar = c(0, 0, 0, 0))
+plot(grid)
+plot(grid[55], add = T, col = "blue")
+plot(
+  st_point(st_coordinates(grid[55])[1, 1:2]),
+  col = "red",
+  add = T,
+  pch = 16
+)
+
+plot(
+  st_point(st_coordinates(grid[55])[2, 1:2]),
+  col = "orange",
+  add = T,
+  pch = 16
+)
+plot(
+  st_point(st_coordinates(grid[55])[3, 1:2]),
+  col = "pink",
+  add = T,
+  pch = 16
+)
+plot(
+  st_point(st_coordinates(grid[55])[4, 1:2]),
+  col = "black",
+  add = T,
+  pch = 16
+)
+```
+
+As it can be seen, we can extract specific points of each grid. Once that I identified them it is just a matter of connecting points using the `st_linestring` function.
+
+
+```{r 20190602_horex2, warning=FALSE, message=FALSE, tidy='styler', fig.height=350/90,fig.width=200/90, dpi=90, fig.align='center'}
+
+# Select horizontal only
+grid_int = lapply(1:length(grid),
+                  function(j)
+                    st_linestring(st_coordinates(grid[j])[c(1, 2), 1:2])) %>%
+  st_sfc(crs = st_crs(DE)) %>%
+  st_intersection(DE)
+
+# Clean and keep lines only
+grid2 = grid_int[st_geometry_type(grid_int) %in% c("LINESTRING", "MULTILINESTRING")]
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(DE))
+plot(st_geometry(grid2), col = "red", add = T)
+```
+
+### The `patternLayer` function
+
+TBC....
