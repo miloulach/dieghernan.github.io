@@ -139,4 +139,94 @@ plot(st_geometry(grid2), col = "red", add = T)
 
 ### The `patternLayer` function
 
-TBC....
+I put all that together on a function named `patternLayer` **PUT LINK HERE**. The main inputs are:
+
+* `x`: `sf` object. It must be a `POLYGON` or a `MULTIPOLYGON`.
+* `pattern`: fillings availables are `c("dot", "text", "diamond", "grid", "hexagon", "horizontal", "vertical", "zigzag", "left2right", "right2left")`.
+* `density` of the grid. By default the function uses a grid with a minimum of 10 cells on the shortest dimension of the bounding box. Additionally it is possible to pass a `cellsize` value that would feed the `st_make_grid` underlying function.
+* `txt` for the `text` pattern, that should be a character.
+* Different graphical parameters can be also passed, as `add`, `cex`, `lty`, `pch`, etc. Basically three modes are allowed: points, lines and texts.
+
+Let's see how it works.
+```{r 20190602_showfun, warning=FALSE, message=FALSE, tidy='styler', fig.height=350/90,fig.width=500/90, dpi=90, fig.align='center'}
+
+# Load function
+source("patternfun.R")
+
+
+par(mfrow = c(2, 5),
+    mar = c(1, 1, 1, 1),
+    cex = 0.5)
+patternLayer(DE, "dot")
+title("dot")
+patternLayer(DE, "text", txt = "Y")
+title("text")
+patternLayer(DE, "diamond", density = 0.5)
+title("diamond")
+patternLayer(DE, "grid", lwd = 1.5)
+title("grid")
+patternLayer(DE, "hexagon", col = "blue")
+title("hexagon")
+patternLayer(DE, "horizontal", lty = 5)
+title("horizontal")
+patternLayer(DE, "vertical")
+title("vertical")
+patternLayer(DE, "left2right")
+title("left2right")
+patternLayer(DE, "right2left")
+title("right2left")
+patternLayer(DE, "zigzag")
+title("zigzag")
+```
+
+Let's play a little bit more with some of the additional features of the function:
+
+```{r 20190602_playing, warning=FALSE, message=FALSE, tidy='styler', fig.height=350/90,fig.width=500/90, dpi=90, fig.align='center'}
+
+
+par(mar = c(1, 1, 1, 1), mfrow = c(2, 3))
+plot(st_geometry(DE))
+patternLayer(
+  DE,
+  "dot",
+  pch = 10,
+  density = 0.5,
+  cex = 2,
+  col = "darkblue",
+  add = T
+)
+plot(st_geometry(DE))
+patternLayer(
+  DE,
+  "dot",
+  pch = 21,
+  col = "red",
+  bg = "green",
+  cex = 1.25,
+  add = T
+)
+plot(st_geometry(DE), col = "grey")
+patternLayer(
+  DE,
+  "text",
+  txt = "DE",
+  density = 1.1,
+  col = "white",
+  add = T
+)
+plot(st_geometry(DE), col = "blue")
+patternLayer(
+  DE,
+  "horizontal",
+  lty = 3,
+  cellsize = 150 * 1000,
+  add = T
+)
+patternLayer(DE, "zigzag", lwd = 2, col = "red")
+plot(st_geometry(DE), border =  "orange", lwd=2)
+patternLayer(DE,
+             "left2right",
+             density = 2,
+             col = "orange",
+             add = T)
+``` 
