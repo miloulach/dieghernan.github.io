@@ -1,200 +1,342 @@
 ---
 layout: post
-title: "Quick R: Inset maps"
-subtitle: "An alternative using plot()"
-tags: [R, maps, flags,sf]
-date: 2019-11-08
-share-img: https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png
+title: "Beautiful Maps with R (III): Patterns"
+subtitle: "A solution for b/w and academic maps."
+tags: [R,beautiful_maps, maps, sf]
+date: 2019-12-12
+share-img: https://dieghernan.github.io/assets/figs/20191212_imgpost-1.png
 img-to-head: true
 linktormd: true
 output: github_document
 permalink: /testmd/
 ---
 
-How to place an inset map in **R**? There are many solutions out there
-using the `ggplot2`package (see [Drawing beautiful maps programmatically
-with R, sf and
-ggplot2](https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-3.html) by
-Mel Moreno and Mathieu Basille). However, I like the old reliable `plot`
-function, so the question is: is there another way?
+On this post I would introduce a couple of functions that may be useful
+for improving your maps. The goal is to produce different filling
+patterns that could be added over your shapefiles.
 
-There is. I found inspiration
-[here](https://www.statmethods.net/advgraphs/layout.html) and I just
-applied it to a map.
+At this point, I would like to suggest you (if you haven’t done it yet)
+to install the `cartography`package
+([vignette](https://cran.r-project.org/web/packages/cartography/vignettes/cartography.html)),
+as it presents a good bunch of interesting features, and fully
+compatible with the `sf` environment. In fact, I took some pieces of the
+base code in order to develop my own `legendPattern` function.
 
 ### Required R packages
 
 ``` r
 library(sf)
-library(dplyr)
 library(rnaturalearth)
+library(dplyr)
+library(RColorBrewer)
 ```
 
-### Mimicking Moreno & Basille
+### Grid approach
 
-I would present here an alternative version of [Drawing beautiful maps
-programmatically with R, sf and
-ggplot2](https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-3.html), so
-the bulk of the detail can be found there. I would focus only in the
-`plot()`side.
+I already worked with the `st_make_grid` on a previous
+[post](https://dieghernan.github.io/201906_Beautiful1/), and this time I
+have applied the same approach. Some examples here on how the grid can
+be used to create patterns:
+
+#### Dots
 
 ``` r
-world <- ne_countries(scale = "medium", returnclass = "sf")
-USA <- subset(world, admin == "United States of America")
+DE <- ne_countries(50,
+  type = "countries",
+  country = "Germany",
+  returnclass = "sf"
+) %>%
+  st_transform(3035)
 
-# Plot mainland USA----
+grid <- st_make_grid(DE,
+  what = "corners",
+  square = F
+)
+
+# To avoid dots close to the edge
+negbuff <- st_buffer(DE, dist = -15 * 1000)
+grid2 <- grid[st_contains(negbuff, grid, sparse = F)]
 par(mar = c(0, 0, 0, 0))
-plot(
-  st_geometry(world %>%
-    st_transform(2163)),
-  xlim = c(-2500000, 2500000),
-  ylim = c(-2300000, 730000),
-  col = "#F6E1B9",
-  border = "#646464",
-  bg = "#C6ECFF"
-)
-plot(
-  st_geometry(USA) %>% st_transform(2163),
-  col = "#FEFEE9",
-  border = "black",
-  add = T
-)
+plot(st_geometry(DE))
+plot(st_geometry(grid2), col = "red", add = T)
 ```
 
-<img src="2019-11-08-QuickR_files/figure-gfm/20191108_main-1.png" style="display: block; margin: auto;" />
+<img src="../assets/figs/20191212_dotex-1.png" style="display: block; margin: auto;" />
+
+#### Grid
 
 ``` r
-# Plot Alaska----
-plot(
-  st_geometry(world %>%
-    st_transform(3467)),
-  xlim = c(-2400000, 1600000),
-  ylim = c(200000, 2500000),
-  col = "#F6E1B9",
-  border = "#646464",
-  bg = "#C6ECFF"
-)
-plot(
-  st_geometry(USA) %>% st_transform(3467),
-  col = "#FEFEE9",
-  border = "black",
-  add = T
-)
-```
+# Grid
+grid <- st_make_grid(DE,
+  what = "polygons",
+  square = T
+) %>%
+  st_cast("LINESTRING") %>%
+  st_intersection(DE)
 
-<img src="2019-11-08-QuickR_files/figure-gfm/20191108_Alaska-1.png" style="display: block; margin: auto;" />
+# Clean and keep lines only
+grid2 <- grid[st_geometry_type(grid) %in% c("LINESTRING", "MULTILINESTRING")]
 
-``` r
-# Plot Hawaii----
-plot(
-  st_geometry(world %>%
-    st_transform(4135)),
-  xlim = c(-161, -154),
-  ylim = c(18, 23),
-  col = "#F6E1B9",
-  border = "#646464",
-  bg = "#C6ECFF"
-)
-plot(
-  st_geometry(USA) %>% st_transform(4135),
-  col = "#FEFEE9",
-  border = "black",
-  add = T
-)
-```
-
-<img src="2019-11-08-QuickR_files/figure-gfm/20191108_Hawaii-1.png" style="display: block; margin: auto;" />
-
-### Insetting
-
-From now on, I just focus on the inset part, using the `fig()` option on
-`par()`. Quotting
-[statmethods](https://www.statmethods.net/advgraphs/layout.html):
-
-> *(…) think of the full graph area as going from `(0,0)` in the lower
-> left corner to `(1,1)` in the upper right corner. The format of the
-> `fig=` parameter is a numerical vector of the form `c(x1, x2, y1,
-> y2)`(…) `fig=` starts a new plot, so to add to an existing plot use
-> `new=TRUE`.*
-
-So being `x1` and `y1` the starting points and `x2`, `y2` the final
-points, we just can set up those parameters and adjust the final
-placement of the insets. Additionally I added a box around the insets
-using `bbox()`. I didn’t mimick Moreno & Basille here and I just worked
-it by myself.
-
-``` r
 par(mar = c(0, 0, 0, 0))
-plot(
-  st_geometry(world %>%
-    st_transform(2163)),
-  xlim = c(-2500000, 2500000),
-  ylim = c(-2300000, 730000),
-  col = "#F6E1B9",
-  border = "#646464",
-  bg = "#C6ECFF"
-)
-plot(
-  st_geometry(USA) %>% st_transform(2163),
-  col = "#FEFEE9",
-  border = "black",
-  add = T
-)
-# Alaska
-par(
-  fig = c(0.01, 0.28, 0.01, 0.33),
-  new = TRUE
-)
-plot(
-  st_geometry(world %>%
-    st_transform(3467)),
-  xlim = c(-2400000, 1600000),
-  ylim = c(200000, 2500000),
-  col = "#F6E1B9",
-  border = "#646464",
-  bg = "#C6ECFF"
-)
-plot(
-  st_geometry(USA) %>% st_transform(3467),
-  col = "#FEFEE9",
-  border = "black",
-  add = T
-)
-box(which = "figure", lwd = 1)
-
-# Hawaii
-par(
-  fig = c(0.29, 0.45, 0.01, 0.15),
-  new = TRUE
-)
-plot(
-  st_geometry(world %>%
-    st_transform(4135)),
-  xlim = c(-161, -154),
-  ylim = c(18, 23),
-  col = "#F6E1B9",
-  border = "#646464",
-  bg = "#C6ECFF"
-)
-plot(
-  st_geometry(USA) %>% st_transform(4135),
-  col = "#FEFEE9",
-  border = "black",
-  add = T
-)
-
-box(which = "figure", lwd = 1)
+plot(st_geometry(DE))
+plot(st_geometry(grid2), col = "red", add = T)
 ```
 
-<img src="2019-11-08-QuickR_files/figure-gfm/20191108_inset-1.png" style="display: block; margin: auto;" />
+<img src="../assets/figs/20191212_gridex-1.png" style="display: block; margin: auto;" />
 
-Results may vary depending of the size of the original plot (Mainland
-USA) and your plotting device and output. However with a bit of
-trial-and-error it is quite easy to adjust the final result.
+Easy, right? Let’s move to the next level\!
 
-As an example, see one of my contributions to **Wikimedia Commons** that
-represents a map of the NUTS3 regions of the European Union. Several
-countries (France, Portugal, Spain) have overseas territories so I made
-a few insets on the right side.
+#### Horizontal line
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Population_density_by_NUTS_3_region_%282017%29.svg/1000px-Population_density_by_NUTS_3_region_%282017%29.svg.png">
+``` r
+# Horizontal
+grid <- st_make_grid(DE,
+  what = "polygons",
+  square = T
+)
+
+par(mar = c(0, 0, 0, 0))
+plot(grid)
+plot(grid[55], add = T, col = "blue")
+plot(
+  st_point(st_coordinates(grid[55])[1, 1:2]),
+  col = "red",
+  add = T,
+  pch = 16
+)
+
+plot(
+  st_point(st_coordinates(grid[55])[2, 1:2]),
+  col = "orange",
+  add = T,
+  pch = 16
+)
+plot(
+  st_point(st_coordinates(grid[55])[3, 1:2]),
+  col = "pink",
+  add = T,
+  pch = 16
+)
+plot(
+  st_point(st_coordinates(grid[55])[4, 1:2]),
+  col = "black",
+  add = T,
+  pch = 16
+)
+```
+
+<img src="../assets/figs/20191212_horex1-1.png" style="display: block; margin: auto;" />
+
+As it can be seen, we can extract specific points of each grid. Once
+that I identified them it is just a matter of connecting points using
+the `st_linestring` function.
+
+``` r
+# Select horizontal only
+grid_int <- lapply(
+  1:length(grid),
+  function(j)
+    st_linestring(st_coordinates(grid[j])[c(1, 2), 1:2])
+) %>%
+  st_sfc(crs = st_crs(DE)) %>%
+  st_intersection(DE)
+
+# Clean and keep lines only
+grid2 <- grid_int[st_geometry_type(grid_int) %in% c("LINESTRING", "MULTILINESTRING")]
+
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(DE))
+plot(st_geometry(grid2), col = "red", add = T)
+```
+
+<img src="../assets/figs/20191212_horex2-1.png" style="display: block; margin: auto;" />
+
+### The `patternLayer` function
+
+I put all that together on a function named `patternLayer`
+([link](https://raw.githubusercontent.com/dieghernan/dieghernan.github.io/master/assets/functions/patternfun.R)).
+The main inputs are:
+
+  - `x`: `sf` object. It must be a `POLYGON` or a `MULTIPOLYGON`.
+  - `pattern`: fillings available are `c("dot", "text", "diamond",
+    "grid", "hexagon", "horizontal", "vertical", "zigzag", "left2right",
+    "right2left", "circle")`.
+  - `density` of the grid. By default the function uses a grid with a
+    minimum of 10 cells on the shortest dimension of the bounding box.
+    Additionally it is possible to pass a `cellsize` value that would
+    feed the `st_make_grid` underlying function.
+  - `txt` for the `text` pattern, that should be a character.
+  - Different graphical parameters can be also passed, as `add`, `cex`,
+    `lty`, `pch`, etc. Basically three modes are allowed: points, lines
+    and texts.
+
+Let’s see how it works.
+
+``` r
+# Load function
+source("patternfun.R")
+
+
+par(
+  mfrow = c(3, 4),
+  mar = c(1, 1, 1, 1),
+  cex = 0.5
+)
+patternLayer(DE, "dot")
+title("dot")
+patternLayer(DE, "text", txt = "Y")
+title("text")
+patternLayer(DE, "diamond", density = 0.5)
+title("diamond")
+patternLayer(DE, "grid", lwd = 1.5)
+title("grid")
+patternLayer(DE, "hexagon", col = "blue")
+title("hexagon")
+patternLayer(DE, "horizontal", lty = 5)
+title("horizontal")
+patternLayer(DE, "vertical")
+title("vertical")
+patternLayer(DE, "left2right")
+title("left2right")
+patternLayer(DE, "right2left")
+title("right2left")
+patternLayer(DE, "zigzag")
+title("zigzag")
+patternLayer(DE, "circle")
+title("circle")
+```
+
+<img src="../assets/figs/20191212_showfun-1.png" style="display: block; margin: auto;" />
+
+Let’s play a little bit more with some of the additional features of the
+function:
+
+``` r
+par(mar = c(1, 1, 1, 1), mfrow = c(2, 3))
+plot(st_geometry(DE))
+patternLayer(
+  DE,
+  "dot",
+  pch = 10,
+  density = 0.5,
+  cex = 2,
+  col = "darkblue",
+  add = T
+)
+plot(st_geometry(DE))
+patternLayer(
+  DE,
+  "dot",
+  pch = 21,
+  col = "red",
+  bg = "green",
+  cex = 1.25,
+  add = T
+)
+plot(st_geometry(DE), col = "grey")
+patternLayer(
+  DE,
+  "text",
+  txt = "DE",
+  density = 1.1,
+  col = "white",
+  add = T
+)
+plot(st_geometry(DE), col = "blue")
+patternLayer(
+  DE,
+  "horizontal",
+  lty = 3,
+  cellsize = 150 * 1000,
+  add = T
+)
+patternLayer(DE, "zigzag", lwd = 2, col = "red")
+plot(st_geometry(DE), border = "orange", lwd = 2)
+patternLayer(DE,
+  "left2right",
+  density = 2,
+  col = "orange",
+  add = T
+)
+```
+
+<img src="../assets/figs/20191212_playing-1.png" style="display: block; margin: auto;" />
+
+### Adding legends: the `legendPattern` function
+
+As a complementary function, I created also the `legendPattern`
+function, heavily based on the `legends.R` script developed by
+*@riatelab* for the `cartography` package ([source
+code](https://github.com/riatelab/cartography/blob/master/R/legends.R)).
+
+Main parameters are:
+
+  - `pos`, `title.txt`, `title.cex`, `values.cex`,`categ`, `cex` and
+    `frame`: See `?cartography::legendTypo`.
+  - `patterns`: vector of patterns to be created for each element on
+    `categ`.
+  - `ptrn.bg`: Background of the legend box for each `categ`.
+  - `ptrn.text`: Text to be used for each `categ="text"`, as a single
+    value or a vector.
+  - `dot.cex`: `cex` of each `categ="dot"`, as a single value or a
+    vector.
+  - `text.cex`: text size of each `categ="text"`, as a single value or a
+    vector.
+  - As in the case of the `patternLayer`function, different graphical
+    parameters can be passed (`lty`, `lwd`, `pch`, `bg` on points).
+
+Note that is also possible to create solid legends, by setting `col` and
+`ptrn.bg` to the same color. Parameters would respect the order of the
+`categ` variable.
+
+``` r
+par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
+plot(st_geometry(DE)) # Null geometry
+legendPattern(
+  title.txt = "Example 1",
+  categ = c("a", "b"),
+  patterns = "dot",
+  pch = c(16, 23),
+  frame = T
+)
+legendPattern(
+  pos = "left",
+  title.txt = "Example 2",
+  categ = c("c", "d"),
+  patterns = c("text", "zigzag"),
+  ptrn.text = "s",
+  ptrn.bg = "grey80",
+  col = c("red", "blue")
+)
+
+legendPattern(
+  pos = "topright",
+  title.txt = "Example 3",
+  categ = c("e", "f", "solid"),
+  patterns = c("circle", "left2right"),
+  ptrn.bg = c("orange", "yellow", "green"),
+  col = c("white", "white", "green"),
+  lty = c(2, 4),
+  lwd = c(1, 3)
+)
+
+
+legendPattern(
+  pos = "bottomright",
+  title.txt = "Example 4",
+  values.cex = 1.2,
+  categ = c("h", "i", "j", "k"),
+  patterns = c("grid", "diamond", "horizontal", "dot"),
+  cex = 2,
+  pch = 22,
+  col = "white",
+  ptrn.bg = "black",
+  bg = "pink"
+)
+```
+
+<img src="../assets/figs/20191212_playinglegend-1.png" style="display: block; margin: auto;" />
+
+I hope that you find this functions useful. Enjoy and nice mapping!
+
+<img src="../assets/figs/20191212_imgpost-1.png" style="display: block; margin: auto;" />
