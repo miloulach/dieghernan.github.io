@@ -51,8 +51,13 @@ grid = st_make_grid(DE,
                     square = F)
 
 # To avoid dots close to the edge
-negbuff = st_buffer(DE, dist = -15 * 1000)
-grid2 = grid[st_contains(negbuff, grid, sparse = F)]
+# See https://gis.stackexchange.com/questions/343222/remove-points-that-are-close-to-a-border-when-building-a-grid
+
+DEDist=st_union(DE) %>% st_cast("MULTILINESTRING")
+d = as.double(st_distance(grid,DEDist))
+# Points no closer than 20kms
+grid2=grid[d>20000]
+
 par(mar = c(0, 0, 0, 0))
 plot(st_geometry(DE))
 plot(st_geometry(grid2), col = "red", add = T)
