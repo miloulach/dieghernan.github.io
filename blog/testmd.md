@@ -10,7 +10,7 @@ linktormd: true
 leafletmap: true
 output: github_document
 permalink: /testmd/
--
+---
 
 This is a very personal post, where I just show the map of all the
 places I have traveled by
