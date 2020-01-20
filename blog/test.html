@@ -5,10 +5,10 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
+#test svg
 
 	{% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item",
-"item.extname contains 'g'" }} %}
+"item.extname contains '.png' or item.extname contains '.svg'" }} %}
 	{% for myimage in image_files %}
 	 <img class="item" src="{{ myimage.path | prepend: site.baseurl }}">
 	{% endfor %}	
-
