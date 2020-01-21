@@ -44,7 +44,7 @@ The map I wanted to work with corresponds to [NUTS level 2 for Spain](https://en
 
 <sup>*Note: [NUTS](https://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics) (Nomenclature of Territorial Units for Statistics) is the european model for geopolitical subdivisions.*</sup>
 
-```{r 20190618_preparing, fig.align='center', message=FALSE, warning=FALSE, fig.width=700/90,fig.height=750/90,dpi=90, paged.print=FALSE, results='hide'}
+```{r 20190618_preparing, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=700/90,fig.height=750/90,dpi=90, paged.print=FALSE, results='hide'}
 
 SPAIN = st_read(
   "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/geojson/NUTS_RG_03M_2016_3857_LEVL_2.geojson",
@@ -81,7 +81,7 @@ layoutLayer(
 
 First thing to note is that the Canary Islands are still in the same place ;) , far away of Spain's mainland. Just for plotting purposes I am going to place an inset-like map by moving them closer and drawing a box around.
 
-```{r 20190618_movecan, fig.align='center', message=FALSE, warning=FALSE, fig.width=750/90,fig.height=550/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+```{r 20190618_movecan, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=750/90,fig.height=550/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 
 # Move Canary Islands
 CAN = SPAIN %>% subset(NUTS_ID == "ES70")
@@ -130,7 +130,7 @@ Now we have it! A nice map of Spain with a layout based on the [Wikipedia conven
 
 As a first example, I chose [Asturias](https://en.wikipedia.org/wiki/Asturias) to build my code. So the goal here is to create a `RasterBrick` from the desired `*.png` file, add the necessary geographical information and use the shape of Asturias to crop the flag. It seems easy, but I needed to sweat to get the following code ready and working:
 
-```{r 20190618_Asturias, fig.align='center', message=FALSE, warning=FALSE, fig.width=1000/90,fig.height=(500/2)/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+```{r 20190618_Asturias, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=1000/90,fig.height=(500/2)/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 
 
 #1.Shape---
@@ -170,12 +170,12 @@ if (w > h * ratioflag) {
 extent(flag) <- new_ext
 par(mar = c(1, 1, 1, 1), mfrow = c(1, 2))
 plotRGB(flag)
-plot(st_geometry(shp), add = T, lwd = 1.2)
+plot(st_geometry(shp), add = T)
 
 #4.Mask---
 fig = mask(flag, shp)
 plotRGB(fig, bgalpha = 0)
-plot(st_geometry(SPAINV2), add = T, lwd = 2)
+plot(st_geometry(SPAINV2), add = T)
 
 ```
 
@@ -253,7 +253,7 @@ stdh_png2map <- function(sf, png, align = "center") {
 
 Here I present an use case for [Andalusia](https://en.wikipedia.org/wiki/Andalusia):
 
-```{r 20190618_Andalucia, fig.align='center', message=FALSE, warning=FALSE, fig.width=800/(90*2),fig.height=550/(90*2),dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+```{r 20190618_Andalucia, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=800/(90*2),fig.height=550/(90*2),dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 
 # Run it
 AND = stdh_png2map(
@@ -264,7 +264,7 @@ AND = stdh_png2map(
 par(mar = c(0, 0, 0, 0), mfrow = c(1, 1))
 plotRGB(AND)
 plot(SPAINV2 %>% subset(id == "ES61") %>% st_geometry(), 
-     add = T, lwd=2)
+     add = T)
 ```
 
 Now, we are ready to have [fun with flags](https://the-big-bang-theory.com/fun_with_flags/). It's time to make the flag map of the autonomous communities of Spain.
@@ -325,7 +325,7 @@ plot(st_geometry(SPAINV2),
 
 ```
 
-```{r 20190618_allCCAA, echo=FALSE, fig.align='center', fig.height=550/90, fig.width=750/90, message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, results='hide'}
+```{r 20190618_allCCAA, echo=FALSE, fig.align='center', dev='svg', fig.height=550/90, fig.width=750/90, message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, results='hide'}
 par(mar=c(0,0,0,0))
 plot(SPAINV2 %>% 
      st_geometry(),
@@ -484,7 +484,6 @@ plotRGB(
 
 plot(st_geometry(SPAINV2),
      col=NA,
-     lwd=2,
      add = T)
 ```
 
