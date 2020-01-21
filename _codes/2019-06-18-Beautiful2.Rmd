@@ -13,10 +13,13 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy = 'styler')
 knitr::opts_knit$set(global.par = TRUE)
+
 rm(list = ls())
-par(mar = c(0, 0, 0, 0),
-    family = windowsFont("roboto"))
+par(mar = c(0, 0, 0, 0))
 ```
+
+*Updated on 21 January 2020. Blank spaces around the `.png` layer were due to the resoultion of the plotting device. Now all the plots are high quality `.svg` files*<a name="update"></a>
+
 Want to use a flag (or any `*.png` file) as a background of your map? You are in the right post. I am aware that there are some **R** packages out [there](https://github.com/RobertMyles/flagfillr) that are designed to do this, but I decided to challenge myself and see if I could make it from scratch. 
 
 After some research on the web I found an article of [Paul Murrell](https://www.stat.auckland.ac.nz/people/pmur002), **"Raster Images in R Graphics"** [(*The R Journal, Volume 3/1, June 2011*)](https://journal.r-project.org/archive/2011/RJ-2011-008/RJ-2011-008.pdf), which was a good starting point. With a little bit more of trial and error, I finally got a solution based in the `raster`package and some support of the `png` package. 
@@ -44,7 +47,7 @@ The map I wanted to work with corresponds to [NUTS level 2 for Spain](https://en
 
 <sup>*Note: [NUTS](https://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics) (Nomenclature of Territorial Units for Statistics) is the european model for geopolitical subdivisions.*</sup>
 
-```{r 20190618_preparing, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=700/90,fig.height=750/90,dpi=90, paged.print=FALSE, results='hide'}
+```{r 20190618_preparing, fig.align='center', message=FALSE, warning=FALSE,  fig.width=700/90,fig.height=750/90,dpi=90, paged.print=FALSE, results='hide'}
 
 SPAIN = st_read(
   "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/geojson/NUTS_RG_03M_2016_3857_LEVL_2.geojson",
@@ -81,7 +84,7 @@ layoutLayer(
 
 First thing to note is that the Canary Islands are still in the same place ;) , far away of Spain's mainland. Just for plotting purposes I am going to place an inset-like map by moving them closer and drawing a box around.
 
-```{r 20190618_movecan, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=750/90,fig.height=550/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+```{r 20190618_movecan, fig.align='center', message=FALSE, warning=FALSE,  fig.width=750/90,fig.height=550/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 
 # Move Canary Islands
 CAN = SPAIN %>% subset(NUTS_ID == "ES70")
@@ -130,7 +133,7 @@ Now we have it! A nice map of Spain with a layout based on the [Wikipedia conven
 
 As a first example, I chose [Asturias](https://en.wikipedia.org/wiki/Asturias) to build my code. So the goal here is to create a `RasterBrick` from the desired `*.png` file, add the necessary geographical information and use the shape of Asturias to crop the flag. It seems easy, but I needed to sweat to get the following code ready and working:
 
-```{r 20190618_Asturias, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=1000/90,fig.height=(500/2)/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+```{r 20190618_Asturias, fig.align='center', message=FALSE, warning=FALSE,  fig.width=1000/90,fig.height=(500/2)/90,dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 
 
 #1.Shape---
@@ -177,6 +180,7 @@ fig = mask(flag, shp)
 plotRGB(fig, bgalpha = 0)
 plot(st_geometry(SPAINV2), add = T)
 
+
 ```
 
 
@@ -186,7 +190,10 @@ I have found some interesting things when creating this code:
 
 - It is possible to read `*.png` right through the `raster::brick` function to create a `RasterBrick`. The main problem with that is that for `*.png` files where one channel (Red, Green or Blue) is non present (i.e.monochromatic flags) the `RasterBrick` doesn't plot well. For that reason I preferred to import it with `readPNG` before passing it to the `brick` function.
 - When plotting the result with `plotRGB`, use the `bgalpha=0` option, otherwise the non-masked part of the raster would be plotted as well.
-- There is a small area close to the borders where the mask doesn't work. I did some tests but I was not able to fix it. Potential workaround are to use a simplified shapefile (lower level of detail) or also overlap the map increasing the width of the border (`lwd=2` in my example).
+- ~~There is a small area close to the borders where the mask doesn't work. I did some tests but I was not able to fix it. Potential workaround are to use a simplified shapefile (lower level of detail) or also overlap the map increasing the width of the border (`lwd=2` in my example)~~ *Solved <i class="fa fa-thumbs-up"></i>. See [update note](#update)*.
+
+{: .box-note}
+<i class="fa fa-star"></i> **Pro tip:** Depending on your plotting device, you may notice some white slivers of the `*.png` close to the border of the shapefile. What I have found is that this issue would depend on the setup of the plotting device you are using. If you need a high quality plot I suggest to generate a `*.svg` file, and if needed, convert it to `*.png` via `rsvg::rsvg_png()`.
 
 ### The `stdh_png2map` function
 
@@ -253,7 +260,7 @@ stdh_png2map <- function(sf, png, align = "center") {
 
 Here I present an use case for [Andalusia](https://en.wikipedia.org/wiki/Andalusia):
 
-```{r 20190618_Andalucia, fig.align='center', message=FALSE, warning=FALSE, dev='svg', fig.width=800/(90*2),fig.height=550/(90*2),dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+```{r 20190618_Andalucia, fig.align='center', message=FALSE, warning=FALSE,  fig.width=800/(90*2),fig.height=550/(90*2),dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
 
 # Run it
 AND = stdh_png2map(
@@ -325,7 +332,7 @@ plot(st_geometry(SPAINV2),
 
 ```
 
-```{r 20190618_allCCAA, echo=FALSE, fig.align='center', dev='svg', fig.height=550/90, fig.width=750/90, message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, results='hide'}
+```{r 20190618_allCCAA, echo=FALSE, fig.align='center', fig.height=550/90, fig.width=750/90, message=FALSE, warning=FALSE, dpi=90, paged.print=FALSE, results='hide', eval=FALSE}
 par(mar=c(0,0,0,0))
 plot(SPAINV2 %>% 
      st_geometry(),
@@ -489,10 +496,10 @@ plot(st_geometry(SPAINV2),
 
 We are done now. If you have suggestion (or you know how to get rid of the annoying white spaces around the shapes) you can leave a comment. As always, if you enjoyed the post you can share it on your preferred social network.
 
-```{r 20190618_imgpost, fig.height=533/90, fig.width=800/90, dpi=90, include=FALSE}
+```{r 20190618_imgpost, fig.height=533/90, fig.width=800/90, dpi=90, include=FALSE, dev='png', eval=FALSE}
 
 library(jsonlite)
-source("../assets/functions/stdh_png2map.R")
+source("/cloud/project/assets/functions/stdh_png2map.R")
 
 df = fromJSON("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodesfull.json")
 ISO_memcol = function(df,
