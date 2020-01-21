@@ -192,9 +192,6 @@ I have found some interesting things when creating this code:
 - When plotting the result with `plotRGB`, use the `bgalpha=0` option, otherwise the non-masked part of the raster would be plotted as well.
 - ~~There is a small area close to the borders where the mask doesn't work. I did some tests but I was not able to fix it. Potential workaround are to use a simplified shapefile (lower level of detail) or also overlap the map increasing the width of the border (`lwd=2` in my example)~~ *Solved <i class="fa fa-thumbs-up"></i>. See [update note](#update)*.
 
-{: .box-note}
-<i class="fa fa-star"></i> **Pro tip:** Depending on your plotting device, you may notice some white slivers of the `*.png` close to the border of the shapefile. What I have found is that this issue would depend on the setup of the plotting device you are using. If you need a high quality plot I suggest to generate a `*.svg` file, and if needed, convert it to `*.png` via `rsvg::rsvg_png()`.
-
 ### The `stdh_png2map` function
 
 [Here you have](https://github.com/dieghernan/dieghernan.github.io/blob/master/assets/functions/stdh_png2map.R), a complete solution on a function! I made a final adjustment, the parameter `align`, that allows to place the mask in the left, center or right side of the `*.png`, giving the ability to show specific details of the masked figure. This option is only available for "tall" shapes.
@@ -273,6 +270,71 @@ plotRGB(AND)
 plot(SPAINV2 %>% subset(id == "ES61") %>% st_geometry(), 
      add = T)
 ```
+
+
+{: .box-note}
+<i class="fa fa-star"></i> **Pro tip:** Depending on your plotting device, you may notice some white slivers of the `*.png` close to the border of the shapefile. What I have found is that this issue would depend on the setup of the plotting device you are using. If you need a high quality plot I suggest to generate a `*.svg` file, and if needed, convert it to `*.png` via `rsvg::rsvg_png()`. Here I show an extreme example:
+
+```{r 20190618_svg, fig.align='center', message=FALSE, warning=FALSE, dev='png', fig.width=800/(90),fig.height=550/(90),dpi=90, paged.print=FALSE, tidy='styler', results='hide'}
+
+
+MURshp = subset(SPAIN, id == "ES62")
+MUR =  stdh_png2map(
+  MURshp,
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_Region_of_Murcia.svg/100px-Flag_of_the_Region_of_Murcia.svg.png"
+)
+
+#Files
+pngfile = tempfile(pattern = "topng", fileext = ".png")
+svgfile = tempfile(pattern = "tosvg", fileext = ".svg")
+pngconverted = tempfile(pattern = "tosvg", fileext = ".png")
+
+dpi=90
+
+png(pngfile,
+    width = 480,
+    height = 480,
+    pointsize = dpi )
+par(mar = c(0, 0, 0, 0))
+plotRGB(MUR, bgalpha = 0)
+
+dev.off()
+
+
+svg(svgfile,
+    width = 480/dpi,
+    height = 480/dpi,
+    pointsize = dpi)
+par(mar = c(0, 0, 0, 0))
+plotRGB(MUR, bgalpha = 0)
+
+dev.off()
+
+rsvg::rsvg_png(svgfile, pngconverted)
+#Import to rasterbrick
+
+frompng = brick(readPNG(pngfile) * 255)
+fromsvg = brick(readPNG(pngconverted) * 255)
+
+#Plot and compare
+par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+par(col.axis = "white",
+    col.lab = "white",
+    tck = 0)
+plotRGB(frompng,
+        bgalpha = 0,
+        axes = T,
+        main = "PNG")
+box(col = "white")
+plotRGB(fromsvg,
+        bgalpha = 0,
+        axes = T,
+        main = "PNG from SVG")
+box(col = "white")
+
+
+```
+
 
 Now, we are ready to have [fun with flags](https://the-big-bang-theory.com/fun_with_flags/). It's time to make the flag map of the autonomous communities of Spain.
 
@@ -494,7 +556,7 @@ plot(st_geometry(SPAINV2),
      add = T)
 ```
 
-We are done now. If you have suggestion (or you know how to get rid of the annoying white spaces around the shapes) you can leave a comment. As always, if you enjoyed the post you can share it on your preferred social network.
+We are done now. If you have suggestion ~~(or you know how to get rid of the annoying white spaces around the shapes)~~ you can leave a comment. As always, if you enjoyed the post you can share it on your preferred social network.
 
 ```{r 20190618_imgpost, fig.height=533/90, fig.width=800/90, dpi=90, include=FALSE, dev='png', eval=FALSE}
 
