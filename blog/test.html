@@ -5,7 +5,9 @@ subtitle: 'TEST'
 permalink: /test/
 ---
 
-#test svg3
+# TRIGGER
+
+
 
 	{% assign image_files = site.static_files | where: "image", true | sort: 'basename' | reverse | where_exp:"item",
 "item.extname contains 'g'" }} %}
