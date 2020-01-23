@@ -4,7 +4,7 @@ rvm:
 
 
 script: "bundle exec jekyll build"
-script: "bundle exec htmlproofer ./_site"
+script: "bundle exec htmlproofer build"
 
 # branch whitelist, only for GitHub Pages
 branches:
