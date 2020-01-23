@@ -3,4 +3,4 @@ set -e
 
 bundle exec jekyll build
 
-bundle exec htmlproofer ./_site --disable-external --url-ignore "/_post/,/#blog/,/cookies/"  --empty_alt_ignore true
+bundle exec htmlproofer ./_site --disable-external --url-ignore "/_post/,/#blog/,/cookies/"  --incremental --empty_alt_ignore true
