@@ -1,10 +1,4 @@
 source 'https://rubygems.org'
-
-gem "github-pages", '197', group: :jekyll_plugins
-
-# enable tzinfo-data for local build
-# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-gem 'jekyll-paginate'
-
-gem "jekyll"
-gem "html-proofer"
+gem 'github-pages'
+gem 'jekyll-compose', group: [:jekyll_plugins]
+gem 'html-proofer', '~> 3.0', '>= 3.0.5'
