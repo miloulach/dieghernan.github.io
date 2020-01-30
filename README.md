@@ -10,3 +10,4 @@ Theme forked from https://github.com/daattali/beautiful-jekyll
 
 
 [github-star]: https://github.com/dieghernan/dieghernan.github.io/stargazers
+[github-star-badge]: https://img.shields.io/github/stars/dieghernan/dieghernan.github.io.svg?style=social
