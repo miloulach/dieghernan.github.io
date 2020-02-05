@@ -1,0 +1,381 @@
+---
+title: 'new features'
+author: "@dieghernan"
+date: '`r Sys.Date()`'
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true 
+    toc_depth: 1
+vignette: >
+  %\VignetteIndexEntry{new features on cartography}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+  
+  
+```{r echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+rm(list = ls())
+knitr::knit_hooks$set(margin = function(before, options, envir){
+  if (before){
+    par(mar=c(0.1,0.1,1.3,0.1))
+  } 
+})
+```
+
+# Introduction
+
+The aim of this document is to describe the new features added to `cartography` by
+[dieghernan](https://github.com/dieghernan/), basically:
+  
+* `hatchedLayer` and `legendHatched` functions.
+* `pngLayer` and `getPngLayer` functions.
+* Two new `df` object, with up-to-date information. See `?world.df` and '?nuts2016.df`.
+* An image can be now found on `/inst/img/`, for testing purposes.
+
+These functions don't handle `sp` objects on purpose, favoring `sf` instead.
+
+# Hatched Map
+
+Version of typology/choropleth maps using a hatched filling. This is particularly useful for those maps that needs to be printed on black and white, as academic papers. This maps also are useful for representing overlapping dimensions on a map.
+
+## Minimal usage
+
+```{r hatched-min, fig.height=5, fig.width=5, margin=TRUE}
+library(sf)
+library(cartography)
+
+cntries = st_as_sf(nuts0.spdf)
+cntries$id[cntries$id=="GR"] <- "EL"
+
+# use newly added dataset
+cntries = merge(cntries,
+                world.df,
+                by.x = "id",
+                by.y = "id",
+                all.x = TRUE)
+
+#Plot base map
+ghostLayer(cntries)
+plot(st_geometry(st_as_sf(world.spdf)), add = TRUE)
+plot(st_geometry(cntries), add = TRUE)
+plot(st_geometry(cntries[cntries$eu,]), col = "grey60", add = TRUE)
+plot(st_geometry(cntries[cntries$efta,]), col = "black", add = TRUE)
+#Add hatching
+hatchedLayer(
+  cntries[cntries$ea,],
+  pattern = "right2left",
+  col = "white",
+  density = 3,
+  add = TRUE
+)
+legendTypo(
+  "topright",
+  title.txt = "",
+  categ = c("EU", "EFTA"),
+  col = c("grey60", "black"),
+  nodata = FALSE
+)
+
+legendHatched(
+  "right",
+  title.txt = "Within EU",
+  categ = "Euro Area",
+  patterns = "right2left",
+  frame = TRUE
+)
+layoutLayer(
+  title = "European Trade Blocks",
+  theme = "grey.pal",
+  sources = "© EuroGeographics for the administrative boundaries.",
+  author =  paste0("cartography ", packageVersion("cartography")),
+  scale = 500,
+  frame = TRUE
+)
+
+```
+
+
+
+
+## Core usage
+
+```{r hatched, fig.height=5, fig.width=5, margin=TRUE}
+library(sf)
+library(cartography)
+
+
+shp=st_as_sf(countries.spdf)
+shp$id=ifelse(shp$ID=="GR", "EL", as.character(shp$ID))
+world=merge(shp,world.df, all.x=TRUE)
+
+
+
+ghostLayer(shp)
+
+# Plot World
+plot(world$geometry, col = "white", add = TRUE)
+#Add layers for non european area - left2right
+NOEUR = subset(world, region != "Europe" | is.na(region))
+hatchedLayer(
+  NOEUR,
+  pattern = "left2right",
+  add = TRUE,
+  #Basic usage
+  density = 2,
+  #Densify default grid
+  lwd = 1.2,
+  lty = 3,
+  col = "grey50"
+)            #Formatting
+
+#Extract Europe Regions
+EUR = subset(world, region == "Europe")[, "subregion"]
+levels <- sort(unique(EUR$subregion))
+
+#Plot Regions
+# First element with zigzag
+hatchedLayer(EUR[EUR$subregion == levels[1], ],
+             add = TRUE,
+             pattern = "zigzag",
+             cellsize = 100000)
+
+#dot with parms
+hatchedLayer(
+  EUR[EUR$subregion == levels[2], ],
+  add = TRUE,
+  pattern = "dot",
+  pch = 4,
+  cex = 0.5,
+  cellsize = 100000
+)
+
+#vertical
+hatchedLayer(EUR[EUR$subregion == levels[3], ],
+             add = TRUE,
+             pattern = "vertical",
+             cellsize = 75000)
+
+#another dot
+hatchedLayer(EUR[EUR$subregion == levels[4], ],
+             add = TRUE,
+             pattern = "dot",
+             pch= 7)
+
+#create legend
+legendHatched(
+  pos = "topright",
+  title.txt = "",
+  title.cex = 0.1,
+  categ = c(levels, "Others"),
+  patterns = c("zigzag",
+               "dot",
+               "vertical",
+               "dot",
+               "left2right"),
+  pch = c(4,7),
+  lty = c(1, 1, 3),
+  col = c(rep("black", length(levels)), "grey50"),
+  frame = TRUE
+)
+
+layoutLayer(
+  title = "Regions of Europe (United Nations)",
+  theme = "grey.pal",
+  sources = "© EuroGeographics for the administrative boundaries.",
+  author =  paste0("cartography ", packageVersion("cartography")),
+  scale = 500,
+  frame = TRUE
+) 
+```
+
+`legendHatched` honors the order on the parameters. In this case, two `dot` patterns are presents, so `pch = c(4,7)` takes care of that. Note that three line-type patterns are also plotted, as and in the previous case, `lty = c(1, 1, 3)` respect that order.
+
+## Advance usage
+
+`hatchedLayer` also could be useful for plotting several dimensions on the same map, in combination with another functions of the package.
+
+```{r hatched-adv, fig.height=5, fig.width=5, margin=TRUE}
+
+library(sf)
+library(cartography)
+
+# use newly added dataset
+shp=st_as_sf(countries.spdf)
+shp$id=ifelse(shp$ID=="GR", "EL", as.character(shp$ID))
+world=merge(shp,world.df, all.x=TRUE)
+
+#Warsaw Pact - roughly mapped via UN Region
+wp <- subset(world, subregion == "Eastern Europe")
+
+#European Union - after Brexit
+eu <- subset(world, eu==TRUE)
+
+#Euro Area
+ea <- subset(world, ea==TRUE)
+
+#Flags for plotting
+flag = ifelse(world$iso3 %in% eu$iso3,
+              "European Union",
+              world$region)
+
+flag = ifelse(!flag %in% c("Europe", "European Union"), "Other",
+              flag)
+world$flag <- flag
+
+
+
+#Plot lims
+ghostLayer(world)
+
+#Combine with typoLayer
+typoLayer(
+  x = world,
+  var = "flag",
+  legend.pos = "n",
+  legend.values.order = c("European Union",
+                          "Europe",
+                          "Other"),
+  col = c("#A6BDDB",
+          "#FEFEE9",
+          "#E0E0E0"),
+  add = TRUE
+)
+
+#hatching
+hatchedLayer(
+  x = ea,
+  pattern = "left2right",
+  cellsize = 100000,
+  add = TRUE
+)
+
+hatchedLayer(
+  x = wp,
+  pattern = "vertical",
+  col="red",
+  cellsize = 75000,
+  add = TRUE
+)
+
+#Legend
+legendHatched(
+  pos = "right",
+  title.txt = "Economic Region",
+  categ = c(
+    "Euro Area",
+    "Former \nWarsaw Pact",
+    "European Union",
+    "Europe",
+    "Other"
+  ),
+  patterns = c("left2right", "vertical"),
+  col = c("black", "red", "#A6BDDB",
+          "#FEFEE9",
+          "#E0E0E0"),
+  ptrn.bg = c("white", "white", "#A6BDDB",
+              "#FEFEE9",
+              "#E0E0E0"),
+  frame = TRUE
+)
+
+layoutLayer(
+  title = "European Countries - Blocks",
+  theme = "blue.pal",
+  sources = "© EuroGeographics for the administrative boundaries.",
+  author =  paste0("cartography ", packageVersion("cartography")),
+  scale = 500,
+  frame = TRUE
+)
+
+```
+
+
+# png Layer
+
+This new capability geotags a `.png` file, effectively converting the image into a tile. This allows the user to create visual maps by masking an image to the shape of a `POLYGON/MULTIPOLYGON`.
+
+For high-quality png maps, **it is recommended to plot your map on a `.svg` device**.
+
+## Minimal usage
+
+```{r pnglayer-min, fig.height=4, fig.width=6, margin=TRUE}
+
+library(sf)
+library(cartography)
+
+
+cntries = st_as_sf(nuts0.spdf)
+cntries$id[cntries$id=="GR"] <- "EL"
+
+# use newly added dataset
+cntries = merge(cntries,
+                world.df,
+                by.x = "id",
+                by.y = "id",
+                all.x = TRUE)
+
+eu=subset(cntries,eu==TRUE)
+
+
+#High quality png
+flagrepo = "https://raw.githubusercontent.com/hjnilsson/country-flags/master/png1000px/"
+
+eupos <- getPngLayer(eu,
+                     paste(flagrepo, "/eu.png", sep = ""))
+euneg <-  getPngLayer(eu,
+                      paste(flagrepo, "/eu.png", sep = ""),
+                      inverse = TRUE)
+pngLayer(euneg, alpha = 120)
+pngLayer(eupos, add = TRUE)
+
+
+ukpos = getPngLayer(cntries[cntries$id == "UK", ],
+                    paste(flagrepo, "/gb.png", sep = ""))
+
+pngLayer(ukpos, add = TRUE)
+
+```
+
+
+## Core usage
+
+```{r pnglayer, fig.height=5, fig.width=5, margin=TRUE}
+library(sf)
+library(cartography)
+
+cntries = st_as_sf(countries.spdf)
+cntries$id=as.character(cntries$ID)
+cntries$id[cntries$id=="GR"] <- "EL"
+cntries=merge(cntries,world.df, all.x=TRUE)
+cntriesclean=subset(cntries, !is.na(iso2) & region =="Europe")
+
+
+plot(st_geometry(cntries), col="grey90")
+
+#Iterate for Europe
+#Get flags from repo - low qualityn to speed up the vignette
+flagrepo = "https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/"
+
+
+for (i in 1:nrow(cntriesclean)) {
+  cntry <- as.character(st_drop_geometry(cntriesclean[i, "iso2"]))
+  a = getPngLayer(cntriesclean[i,],
+                  paste(flagrepo, tolower(cntry), ".png", sep = ""))
+  pngLayer(a, add = TRUE)
+}
+#Add borders
+plot(st_geometry(cntries), add = TRUE, col = NA, lwd=0.4)
+
+layoutLayer(
+  title = "Flags of Europe",
+  theme = "blue.pal",
+  sources = "© EuroGeographics for the administrative boundaries.",
+  author =  paste0("cartography ", packageVersion("cartography")),
+  scale = 500,
+  frame = TRUE
+) 
+```
