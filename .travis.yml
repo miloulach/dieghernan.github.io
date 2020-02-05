@@ -1,0 +1,15 @@
+language: ruby
+
+cache: bundler
+
+script:
+- JEKYLL_ENV=production bundle exec jekyll build --destination site
+
+deploy:
+  provider: pages
+  local-dir: ./site
+  github-token: $GITHUB_TOKEN
+  target-branch: master
+  skip-cleanup: true
+  keep-history: true
+  
