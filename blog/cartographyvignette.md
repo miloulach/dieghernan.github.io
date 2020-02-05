@@ -1,10 +1,10 @@
 ---
 layout: project
-title: "TIT"
-subtitle: "SUB"
+title: "Vignette: new features on cartography package"
+subtitle: "Pakcage expansion"
 tags: [R,beautiful_maps, maps, sf, cartography, vignette]
 date: 2020-02-04
-redirect_to: https://dieghernan.github.io/gallery/
+permalink: /cartographyvignette/
 output: github_document
 ---
 
