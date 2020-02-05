@@ -3,13 +3,15 @@ source "https://rubygems.org"
 # Jekyll version
 gem "jekyll", "~> 3.8.4"
 
+gem "jekyll-sitemap"
+
 # Plugins
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.6"
   gem "jekyll-paginate", "~> 1.1.0"
-  gem "jekyll-toc", 
-  gem "jekyll-sitemap"
+  gem "jekyll-toc"
 end
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
