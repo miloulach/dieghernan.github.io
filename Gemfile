@@ -1,9 +1,17 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem "github-pages", '193', group: :jekyll_plugins
+# Jekyll version
+gem "jekyll", "~> 3.8.4"
 
-# enable tzinfo-data for local build
-# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-gem 'jekyll-paginate'
+# Plugins
+group :jekyll_plugins do
+  gem "jekyll-feed", "~> 0.6"
+  gem "jekyll-paginate", "~> 1.1.0"
+  gem "jekyll-toc"
+end
 
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+# Performance-booster for watching directories on Windows
+gem "wdm", "~> 0.1.0" if Gem.win_platform?
