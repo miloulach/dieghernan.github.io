@@ -77,7 +77,7 @@ title-separator: "-"
 timezone: "Europe/Madrid"
 markdown: kramdown
 highlighter: rouge
-permalink: /:year:month_:title/
+permalink: /:year-:month-:day-:title/
 paginate: 4
 paginate_path: "/blog/page:num/"
 
