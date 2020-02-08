@@ -1,4 +1,5 @@
 [![Star on GitHub][github-star-badge]][github-star]
+[![HitCount](http://hits.dwyl.com/dieghernan/dieghernangithubio.svg)](http://hits.dwyl.com/dieghernan/dieghernangithubio)
 
 Source code of my blog https://dieghernan.github.io/
 
