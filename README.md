@@ -1,5 +1,7 @@
 [![Star on GitHub][github-star-badge]][github-star]
 [![HitCount](http://hits.dwyl.com/dieghernan/dieghernangithubio.svg)](http://hits.dwyl.com/dieghernan/dieghernangithubio)
+![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fdieghernan%2Fdieghernan.github.io)
+![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Friatelab%2Fcartography)
 
 Source code of my blog https://dieghernan.github.io/
 
