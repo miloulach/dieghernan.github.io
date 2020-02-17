@@ -10,15 +10,7 @@ output: github_document
 
   
   
-```{r echo=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
-rm(list = ls())
-knitr::knit_hooks$set(margin = function(before, options, envir){
-  if (before){
-    par(mar=c(0.1,0.1,1.3,0.1))
-  } 
-})
-```
+
 
 # Introduction
 
@@ -34,13 +26,13 @@ The aim of this document is to describe the new features added to `cartography` 
 These functions don't handle `sp` objects on purpose, favoring `sf` instead.
 
 # Installation
-```{r install, message=FALSE, warning=FALSE}
+
+```r
 library(devtools)
 
 devtools::install_github("dieghernan/cartography", ref="PRlayers")
 
 library(cartography)
-
 ```
 
 
@@ -50,7 +42,8 @@ Version of typology/choropleth maps using a hatched filling. This is particularl
 
 ## Example 1
 
-```{r hatched-min, fig.height=7, fig.width=7, margin=TRUE}
+
+```r
 library(sf)
 library(jsonlite)
 library(dplyr)
@@ -58,6 +51,13 @@ library(dplyr)
 #Shape
 cntries = st_read("https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_20M_2016_3857.geojson",
                   stringsAsFactors = FALSE)
+## Reading layer `CNTR_RG_20M_2016_3857' from data source `https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_20M_2016_3857.geojson' using driver `GeoJSON'
+## Simple feature collection with 257 features and 6 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -20037510 ymin: -30240970 xmax: 20037510 ymax: 18446790
+## epsg (SRID):    3857
+## proj4string:    +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs
 
 # Include trade blocks
 df <- fromJSON("https://raw.githubusercontent.com/dieghernan/Country-Codes-and-International-Organizations/master/outputs/Countrycodesfull.json")
@@ -123,15 +123,17 @@ layoutLayer(
   scale = 500,
   frame = TRUE
 )
-
 ```
+
+![plot of chunk hatched-min](../assets/figs//hatched-min-1.svg)
 
 
 
 
 ## Example 2
 
-```{r hatched, fig.height=7, fig.width=7, margin=TRUE}
+
+```r
 library(sf)
 library(cartography)
 
@@ -214,13 +216,16 @@ layoutLayer(
 ) 
 ```
 
+![plot of chunk hatched](../assets/figs//hatched-1.svg)
+
 `legendHatched` honors the order on the parameters. In this case, two `dot` patterns are presents, so `pch = c(4,7)` takes care of that. Note that three line-type patterns are also plotted, as and in the previous case, `lty = c(1, 1, 3)` respect that order.
 
 ## Example 3
 
 `hatchedLayer` also could be useful for plotting several dimensions on the same map, in combination with another functions of the package.
 
-```{r hatched-adv, fig.height=7, fig.width=7, margin=TRUE}
+
+```r
 
 library(sf)
 library(cartography)
@@ -311,8 +316,9 @@ layoutLayer(
   scale = 500,
   frame = TRUE
 )
-
 ```
+
+![plot of chunk hatched-adv](../assets/figs//hatched-adv-1.svg)
 
 
 # png Layer
@@ -324,7 +330,8 @@ For high-quality png maps, **it is recommended to plot your map on a `.svg` devi
 
 ## Example 1
 
-```{r pnglayer, fig.height=7, fig.width=5, margin=TRUE}
+
+```r
 library(sf)
 library(cartography)
 
@@ -364,9 +371,12 @@ layoutLayer(
 ) 
 ```
 
+![plot of chunk pnglayer](../assets/figs//pnglayer-1.svg)
+
 ## Example 2
 
-```{r png-adv, fig.height=5, fig.width=7, margin=TRUE}
+
+```r
 
 library(sf)
 library(cartography)
@@ -383,8 +393,9 @@ urluk=flagrepo = "https://raw.githubusercontent.com/hjnilsson/country-flags/mast
 UKpng=getPngLayer(UK,urluk)
 
 pngLayer(UKpng, add=TRUE)
-
 ```
+
+![plot of chunk png-adv](../assets/figs//png-adv-1.svg)
 
 # wordcloudLayer
 
@@ -394,7 +405,8 @@ Wordcloud layers fitted into a map shape provide a good trade-off between physic
 
 ## Example 1
 
-```{r wordcloud1, fig.height=7, fig.width=7, margin=TRUE}
+
+```r
 
 eu$dens=eu$pop/eu$area_km2
 
@@ -413,11 +425,13 @@ layoutLayer(
   scale = 500,
   frame = TRUE
 ) 
-
 ```
 
+![plot of chunk wordcloud1](../assets/figs//wordcloud1-1.svg)
+
 ## Example 2
-```{r wordcloud2, fig.height=7, fig.width=7, margin=TRUE}
+
+```r
 
 # Genres from MB--
 #Import genres
@@ -461,5 +475,6 @@ layoutLayer(title="Most frequent genres on US",
             sources="Musicbrainz",
               author =  paste0("cartography ", packageVersion("cartography")),
             theme="orange.pal")
-
 ```
+
+![plot of chunk wordcloud2](../assets/figs//wordcloud2-1.svg)
