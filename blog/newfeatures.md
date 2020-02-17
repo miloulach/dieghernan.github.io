@@ -20,7 +20,6 @@ The aim of this document is to describe the new features added to `cartography` 
 * `hatchedLayer` and `legendHatched` functions.
 * `pngLayer` and `getPngLayer` functions.
 * `wordcloudLayer` function.
-* An image can be now found on /inst/img/, for testing purposes.
 * An image can be now found on `/inst/img/`, for testing purposes.
 
 These functions don't handle `sp` objects on purpose, favoring `sf` instead.
