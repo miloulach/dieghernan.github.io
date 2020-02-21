@@ -20,6 +20,7 @@ The aim of this document is to describe the new features added to `cartography` 
 * `hatchedLayer` and `legendHatched` functions.
 * `pngLayer` and `getPngLayer` functions.
 * `wordcloudLayer` function.
+* An image can be now found on /inst/img/, for testing purposes.
 * An image can be now found on `/inst/img/`, for testing purposes.
 
 These functions don't handle `sp` objects on purpose, favoring `sf` instead.
@@ -28,8 +29,8 @@ These functions don't handle `sp` objects on purpose, favoring `sf` instead.
 
 ```r
 library(devtools)
-
 devtools::install_github("dieghernan/cartography", ref="PRlayers")
+
 
 library(cartography)
 ```
@@ -124,7 +125,7 @@ layoutLayer(
 )
 ```
 
-![plot of chunk hatched-min](../assets/figs//hatched-min-1.svg)
+![plot of chunk hatched-min](../assets/figs/hatched-min-1.svg)
 
 
 
@@ -163,8 +164,7 @@ levels <- sort(unique(EUR$SUBREGION.EN))
 # First element with zigzag
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[1], ],
              add = TRUE,
-             pattern = "zigzag",
-             cellsize = 100000)
+             pattern = "zigzag")
 
 #dot with parms
 hatchedLayer(
@@ -173,20 +173,20 @@ hatchedLayer(
   pattern = "dot",
   pch = 4,
   cex = 0.5,
-  cellsize = 100000
-)
+  density = 2)
 
 #vertical
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[3], ],
              add = TRUE,
              pattern = "vertical",
-             cellsize = 75000)
+             density = 3)
 
 #another dot
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[4], ],
              add = TRUE,
              pattern = "dot",
-             pch= 7)
+             pch= 15,
+             density = 2.5)
 
 #create legend
 legendHatched(
@@ -199,7 +199,7 @@ legendHatched(
                "vertical",
                "dot",
                "left2right"),
-  pch = c(4,7),
+  pch = c(4,15),
   lty = c(1, 1, 3),
   col = c(rep("black", length(levels)), "grey50"),
   frame = TRUE
@@ -215,9 +215,9 @@ layoutLayer(
 ) 
 ```
 
-![plot of chunk hatched](../assets/figs//hatched-1.svg)
+![plot of chunk hatched](../assets/figs/hatched-1.svg)
 
-`legendHatched` honors the order on the parameters. In this case, two `dot` patterns are presents, so `pch = c(4,7)` takes care of that. Note that three line-type patterns are also plotted, as and in the previous case, `lty = c(1, 1, 3)` respect that order.
+`legendHatched` honors the order on the parameters. In this case, two `dot` patterns are presents, so `pch = c(4,15)` takes care of that. Note that three line-type patterns are also plotted, as and in the previous case, `lty = c(1, 1, 3)` respect that order.
 
 ## Example 3
 
@@ -317,7 +317,7 @@ layoutLayer(
 )
 ```
 
-![plot of chunk hatched-adv](../assets/figs//hatched-adv-1.svg)
+![plot of chunk hatched-adv](../assets/figs/hatched-adv-1.svg)
 
 
 # png Layer
@@ -370,7 +370,7 @@ layoutLayer(
 ) 
 ```
 
-![plot of chunk pnglayer](../assets/figs//pnglayer-1.svg)
+![plot of chunk pnglayer](../assets/figs/pnglayer-1.svg)
 
 ## Example 2
 
@@ -394,7 +394,7 @@ UKpng=getPngLayer(UK,urluk)
 pngLayer(UKpng, add=TRUE)
 ```
 
-![plot of chunk png-adv](../assets/figs//png-adv-1.svg)
+![plot of chunk png-adv](../assets/figs/png-adv-1.svg)
 
 # wordcloudLayer
 
@@ -426,7 +426,7 @@ layoutLayer(
 ) 
 ```
 
-![plot of chunk wordcloud1](../assets/figs//wordcloud1-1.svg)
+![plot of chunk wordcloud1](../assets/figs/wordcloud1-1.svg)
 
 ## Example 2
 
@@ -476,4 +476,4 @@ layoutLayer(title="Most frequent genres on US",
             theme="orange.pal")
 ```
 
-![plot of chunk wordcloud2](../assets/figs//wordcloud2-1.svg)
+![plot of chunk wordcloud2](../assets/figs/wordcloud2-1.svg)

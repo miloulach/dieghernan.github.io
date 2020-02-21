@@ -23,13 +23,14 @@ diegpost <- function(file) {
 #diegpost("2019-06-02-Beautiful1")
 #diegpost("2019-06-18-Beautiful2")
 #diegpost("2019-11-07-QuickR")
+diegpost("2020-06-02-Brexit")
 
-ezknit(
-  "/cloud/project/_codes/2019-06-18-Beautiful2.Rmd",
-  wd="/cloud/project/assets",
-  out_dir = "../_posts",
-  fig_dir = "../assets/figs",
-  keep_html = FALSE,
-  chunk_opts = list(dev='svg'),
-  verbose = T
-)
+# ezknit(
+#   "/cloud/project/_codes/2019-06-18-Beautiful2.Rmd",
+#   wd="/cloud/project/assets",
+#   out_dir = "../_posts",
+#   fig_dir = "../assets/figs",
+#   keep_html = FALSE,
+#   chunk_opts = list(dev='svg'),
+#   verbose = T
+# )
