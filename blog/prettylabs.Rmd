@@ -5,10 +5,19 @@ subtitle: "Vignette of getFormatNums"
 tags: [R, sf, cartography, vignette]
 date: 2020-03-10
 permalink: /prettylabs/
-output: github_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false 
+    toc_depth: 1
+vignette: >
+  %\VignetteIndexEntry{Pretty labs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-  
+source code: [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/blog/prettylabs.Rmd)
+
   
 ```{r echo=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)

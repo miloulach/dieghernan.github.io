@@ -8,6 +8,8 @@ permalink: /prettylabs/
 output: github_document
 ---
 
+source code: [here](https://github.com/dieghernan/dieghernan.github.io/blob/master/blog/prettylabs.Rmd)
+
 # Installation
 
 ``` r
