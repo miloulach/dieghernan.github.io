@@ -8,43 +8,27 @@ permalink: /prettylabs/
 output: github_document
 ---
 
-  
-  
-```{r echo=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
-rm(list = ls())
-knitr::knit_hooks$set(margin = function(before, options, envir){
-  if (before){
-    par(mar=c(0.1,0.1,1.3,0.1))
-  } 
-})
-```
-
-
 # Installation
-```{r install, message=FALSE, warning=FALSE}
+
+``` r
 library(devtools)
 
 devtools::install_github("dieghernan/cartography", ref="prettylabs")
 
 library(cartography)
-
-
-
 ```
 
 # man
+
 ## `getFormatNums`: Pretty format for labels
 
 ### Description
 
-
- Convert numeric arrays into formatted strings.
-
+Convert numeric arrays into formatted strings.
 
 ### Usage
 
-```r
+``` r
 getFormatNums(
   v,
   thousands = "",
@@ -58,48 +42,50 @@ getFormatNums(
 )
 ```
 
-
 ### Arguments
 
-Argument      |Description
-------------- |----------------
-```v```     |     a vector of numeric values.
-```thousands```     |     thousands separator.
-```decimals```     |     decimals separator.
-```values.rnd```     |     desired number of digits after the decimal separator.
-```prefix, suffix```     |     strings to be pasted before of after the number, see Details.
-```align```     |     alignment of the final string, possible values are "left" or "right".
-```leadzero```     |     logical, convert leading zeros to `" ."` for values in (-1,1).
-```replace.zero```     |     replace zero values for this parameter. See Details.
+| Argument         | Description                                                           |
+| ---------------- | --------------------------------------------------------------------- |
+| `v`              | a vector of numeric values.                                           |
+| `thousands`      | thousands separator.                                                  |
+| `decimals`       | decimals separator.                                                   |
+| `values.rnd`     | desired number of digits after the decimal separator.                 |
+| `prefix, suffix` | strings to be pasted before of after the number, see Details.         |
+| `align`          | alignment of the final string, possible values are “left” or “right”. |
+| `leadzero`       | logical, convert leading zeros to `" ."` for values in (-1,1).        |
+| `replace.zero`   | replace zero values for this parameter. See Details.                  |
 
 ### Details
 
+If `suffix` contains `"%"` the values are converted to percentages.
 
- If `suffix` contains `"%"` the values are converted to percentages.
- 
- `NA` values of `v` are converted to `"NA"` . 
- 
- If `replace.zero` is not `NULL` , exact zeroes would be replaced for this value.
+`NA` values of `v` are converted to `"NA"` .
 
+If `replace.zero` is not `NULL` , exact zeroes would be replaced for
+this value.
 
 ### Value
 
-
- A character vector containing the formatted values.
-
+A character vector containing the formatted values.
 
 ### Author
 
-
- dieghernan, [https://github.com/dieghernan/](https://github.com/dieghernan/) 
-
+dieghernan, <https://github.com/dieghernan/>
 
 ### Examples
 
-```{r examples, dev='svg', fig.height=7, fig.width=7, margin=TRUE}
+``` r
 library(sf)
+## Linking to GEOS 3.5.1, GDAL 2.2.2, PROJ 4.9.2
 mtq <-
   st_read(system.file("gpkg/mtq.gpkg", package = "cartography"))
+## Reading layer `mtq' from data source `/home/rstudio-user/R/x86_64-pc-linux-gnu-library/3.6/cartography/gpkg/mtq.gpkg' using driver `GPKG'
+## Simple feature collection with 34 features and 7 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 690574 ymin: 1592536 xmax: 735940.2 ymax: 1645660
+## epsg (SRID):    32620
+## proj4string:    +proj=utm +zone=20 +datum=WGS84 +units=m +no_defs
 # Population density
 mtq$POPDENS <- 1e6 * mtq$POP / st_area(x = mtq)
 brks <- getBreaks(mtq$POPDENS, 6)
@@ -119,6 +105,11 @@ legendChoro(
   title.txt = "Population Density",
   pos = "topright"
 )
+```
+
+![](prettylabs_files/figure-gfm/examples-1.svg)<!-- -->
+
+``` r
 
 # Percentage of population
 mtq$PORCPOP <- mtq$POP / sum(mtq$POP)
@@ -145,6 +136,11 @@ legendChoro(
   pos = "topright",
   nodata = FALSE
 )
+```
+
+![](prettylabs_files/figure-gfm/examples-2.svg)<!-- -->
+
+``` r
 
 # Area percent
 mtq$AREA <- (st_area(mtq) / sum(st_area(mtq)))
@@ -168,17 +164,24 @@ legendChoro(
   pos = "left",
   nodata = FALSE
 )
-
 ```
 
- 
+![](prettylabs_files/figure-gfm/examples-3.svg)<!-- -->
+
 # `discLayer` and `legendGradLines`
- 
-```{r discl, dev='svg', fig.height=7, fig.width=7, margin=TRUE}
+
+``` r
 
 library(sf)
 mtq <-
   st_read(system.file("gpkg/mtq.gpkg", package = "cartography"))
+## Reading layer `mtq' from data source `/home/rstudio-user/R/x86_64-pc-linux-gnu-library/3.6/cartography/gpkg/mtq.gpkg' using driver `GPKG'
+## Simple feature collection with 34 features and 7 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 690574 ymin: 1592536 xmax: 735940.2 ymax: 1645660
+## epsg (SRID):    32620
+## proj4string:    +proj=utm +zone=20 +datum=WGS84 +units=m +no_defs
 # Get borders
 mtq.borders <- getBorders(x = mtq)
 # Median Income
@@ -211,15 +214,23 @@ discLayer(
   prefix = "$ ",
   suffix = " this is a long suffix"
 )
-
 ```
+
+![](prettylabs_files/figure-gfm/discl-1.svg)<!-- -->
 
 # `legendCirclesSymbols` (and partially `propSymbolsLayer`)
 
-```{r legC, dev='svg', fig.height=7, fig.width=7, margin=TRUE}
+``` r
 
 library(sf)
 mtq <- st_read(system.file("gpkg/mtq.gpkg", package="cartography"))
+## Reading layer `mtq' from data source `/home/rstudio-user/R/x86_64-pc-linux-gnu-library/3.6/cartography/gpkg/mtq.gpkg' using driver `GPKG'
+## Simple feature collection with 34 features and 7 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 690574 ymin: 1592536 xmax: 735940.2 ymax: 1645660
+## epsg (SRID):    32620
+## proj4string:    +proj=utm +zone=20 +datum=WGS84 +units=m +no_defs
 plot(st_geometry(mtq))
 box()
 
@@ -239,8 +250,6 @@ legendCirclesSymbols(pos = "left",
                      var = c(min(mtq$POP), max(mtq$POP)),
                      inches = 0.2, style = "e",
                      prefix = "pop     is ")
-
 ```
- 
- 
 
+![](prettylabs_files/figure-gfm/legC-1.svg)<!-- -->
