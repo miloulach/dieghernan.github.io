@@ -180,6 +180,8 @@ Testing has been performed over the next distributions:
 
 With sample = 5,000,000 observations. Corner cases of the thresold (i.e. 0,1) has been already tested.
 
+Performance is very good IMO, sampling not needed.
+
 ``` r
 #Replicate Phyton Results: https://github.com/chad-m/head_tail_breaks_algorithm/blob/master/htb.py
 #[0.03883742394002349, 0.177990388624465, 0.481845351678573]
