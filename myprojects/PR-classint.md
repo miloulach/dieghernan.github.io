@@ -46,7 +46,7 @@ The underlying hypothesis is to create partitions until the `head` and the `tail
 So the stopping criteria is satisfied when the last `head` and the last `tail` are evenly balanced. 
 
 In terms of thresold, Jiang et al. (2013) set 40% as a good approximation, meaning that if the `head` 
-contains more than 40% of the overall observatios the distribution is not considered heavy-
+contains more than 40% of the observatios the distribution is not considered heavy-tailed.
 
 The final breaks are the vector of `mean` values.
 
