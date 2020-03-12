@@ -19,6 +19,11 @@ hierarchy for data with a heavy-tailed distribution. The heavy-tailed distributi
 skewed, with a minority of large values in the head and a majority of small values in the tail,
 commonly characterized by a power law, a lognormal or an exponential function." (...)*
 
+*"(...)This new classification scheme partitions all of the data values around the mean into two parts and 
+continues the process iteratively for the values (above the mean) in the head until the head part
+ values are no longer heavy-tailed distributed. Thus, the number of classes and the class intervals are both 
+naturally determined."(...)*
+
 *"The heavy-tailed distribution is commonly found in many societal and
 natural phenomena, including geographical systems. Small events are far more common in geographic
 spaces than large events (Jiang 2010), particularly in urban, architectural environments (Salingaros
