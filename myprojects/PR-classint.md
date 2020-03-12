@@ -172,7 +172,7 @@ Some inline checks:
 
 Testing has been performed over the next distributions:
 - Pareto
-- Exponential
+- Exponential (with extra 10 extreme values)
 - Lognormal
 - Weibull
 - Normal (non heavy-tailed)
