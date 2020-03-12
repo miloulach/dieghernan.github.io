@@ -38,7 +38,7 @@ geographic spaces and which should be reflected in the map. "*
 The method itself consists on a four-step process performed recursively until a stopping condition is satisfied:
 1. Compute the `mean` of a range of values `values`.
 2. Break `values` into the `tail` (as `values < mean`) and the `head` (as `values > mean`).
-3. Assess it the proportion of `head` over `values` is lower or equal than a given thresold (i.e. `length(head)/length(valies) <= thresold`)
+3. Assess it the proportion of `head` over `values` is lower or equal than a given thresold (i.e. `length(head)/length(values) <= thresold`)
 4. If 3 is `TRUE`, repeat 1 to 3 until the condition is `FALSE` or no more partitions are posible (i.e. `length(head) < 2`). 
 
 It is importat to note that, at the beginning of a new iteration, `values` are replaced by `head`. 
