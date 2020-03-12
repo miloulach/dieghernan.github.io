@@ -164,7 +164,7 @@ ht_index(sample_par, 0.35)
 Some inline checks:
 - Loop until `i == 100`. As per my tests, no more than 25 iterations has been observed. See also [Tests and stress](#tests-and-stress).
 - `thr` is restricted to `[0,.99)`.
-- If `head` has only one value the loop stops, given that no more partitions are possible
+- If `head` has only one value (or even 0, observed on an initial test) the loop stops, given that no more partitions are possible
 - Another checks as `NA`, remove `class`, etc. are already implemented on `classIntervals`.
 
 
