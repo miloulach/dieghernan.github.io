@@ -43,7 +43,7 @@ The method itself consists on a four-step process performed recursively until a 
 
 It is importat to note that, at the beginning of a new iteration, `values` are replaced by `head`. 
 The underlying hypothesis is to create partitions until the `head` and the `tail` are balanced in terms of distribution.
-So the stopping criteria is satisfy when the last `head` and the last `tail` are evenly balanced. 
+So the stopping criteria is satisfied when the last `head` and the last `tail` are evenly balanced. 
 
 In terms of thresold, Jiang et al. (2013) set 40% as a good approximation, meaning that if the `head` 
 contains more than 40% of the overall observatios the distribution is not considered heavy-
