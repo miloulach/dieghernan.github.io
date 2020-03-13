@@ -3,7 +3,7 @@
 As an introductory remark, this method corresponds to "Head/tail breaks" 
 as per Jiang (2013). On Jiang (2019) this method is named 
 as 1.0 given that a 2.0 algorithm with 
-more relaxed conditions is presented on that paper.
+more relaxed conditions is presented.
 
 - [Motivation](#motivation)
 - [Breaking method](#breaking-method)
