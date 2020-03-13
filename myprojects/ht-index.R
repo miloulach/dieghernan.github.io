@@ -1,7 +1,8 @@
 rm(list = ls())
 
+
 initrun <- Sys.time()
-#Implementation of head/tails 1.0, another version (2.0 - Jiang (2019)) does exists, but it is not under the scope of this study.
+#Implementation of head/tails 1.0
 
 
 #1. Characterization of heavy-tail distributions----
@@ -9,7 +10,7 @@ set.seed(1234)
 #Pareto distributions a=2 b=6 n=1000
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 
-cols = adjustcolor("grey80", alpha.f = 0.8)
+cols <- adjustcolor("grey80", alpha.f = 0.8)
 opar <- par(no.readonly = TRUE)
 par(mar = c(2, 2, 3, 1))
 #Figures
@@ -33,6 +34,8 @@ hist(
 )
 
 #2. Step by step example----
+set.seed(1234)
+sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 var <- sample_par
 ht_thresold <- 0.35 #Cherry-picked value for the example
 
@@ -43,17 +46,21 @@ breaks <- c(mu0)
 n0 <- length(var)
 head0 <- var[var > mu0]
 prop0 <- length(head0) / n0
+
 plot(
   density(var),
   lty = 3,
   ylab = "",
   xlab = "",
-  main = "Iter1"
+  main = "Iter2"
 )
 abline(v = mu0, col = "red")
 text(x = 6,
      y = 1,
      labels = paste0("PropHead: ", round(prop0, 4)))
+
+
+
 prop0 <= ht_thresold &
   n0 > 1 #Additional control to stop if no more breaks are possible
 
@@ -68,6 +75,7 @@ breaks <- c(breaks, mu1)
 n1 <- length(var)
 head1 <- var[var > mu1]
 prop1 <- length(head1) / n1
+
 plot(
   density(var),
   lty = 3,
@@ -93,16 +101,21 @@ summiter <- data.frame(
   prophead = c(prop0, prop1)
 )
 summiter$breaks <- breaks
-print(summiter)
+summiter
 
 
 
 #3. Standalone function----
+set.seed(1234)
+#Pareto distributions a=2 b=6 n=1000
+sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
+
 # Default thresold = 0.4 as per Jiang et al. (2013)
 
+
 ht_index <- function(var, ht_thresold = 0.4) {
-  thr <-
-    min(0.999, max(0, ht_thresold)) #prop on head could never be > 1
+  thr <-  min(0.999,
+              max(0, ht_thresold)) #prop on head could never be > 1
   head <- var
   breaks <- NULL #Init on null
   #Safe-check loop to set a maximum of iterations
@@ -113,11 +126,9 @@ ht_index <- function(var, ht_thresold = 0.4) {
     ntot <- length(head)
     #Switch head
     head <- head[head > mu]
-    nhead <- length(head)
-    prop <- nhead / ntot
-    if (prop <= thr & nhead > 1) {
-      next
-    } else {
+    prop <- length(head) / ntot
+    keepiter <- prop <= thr & length(head) > 1
+    if (isFALSE(keepiter)) {
       #Just for checking the execution
       # to remove on implementation
       print(paste("loop end on ", i))
@@ -156,31 +167,30 @@ legend(
 )
 
 #4. Test and stress----
-
-#Replicate Phyton Results: https://github.com/chad-m/head_tail_breaks_algorithm/blob/master/htb.py
+#Replicate Phyton Results:
+# https://github.com/chad-m/head_tail_breaks_algorithm/blob/master/htb.py
 #[0.03883742394002349, 0.177990388624465, 0.481845351678573]
 pareto_data <- (1.0 / (1:100)) ^ 1.16
 ht_index(pareto_data)
 
 benchmarkdist <- function(dist, thr = 0.4, title = "") {
   init <- Sys.time()
-  print(ht_index(dist, thr))
+  br <- ht_index(dist, thr)
   print(Sys.time() - init)
-  
   plot(density(dist),
        col = "black",
        main = paste0(title, ", thresold =", thr))
   abline(
-    v = ht_index(dist, thr),
-    col = "red",
-    lwd = 0.1,
+    v = br,
+    col = "green",
     lty = 3
   )
 }
 
 stress <- function(dist) {
-  ht_index(dist, 0)
-  ht_index(dist, 1)
+  a <- ht_index(dist, 0)
+  b <- ht_index(dist, 1)
+  print("Checked 0 and 1")
 }
 
 #Scalability: 5 millions
@@ -192,19 +202,30 @@ paretodist <- 6820 / (1 - runif(5000000)) ^ (1 / 4)
 
 benchmarkdist(paretodist, title = "Pareto Dist")
 
+br <- ht_index(paretodist, .4)
+abline(v=br)
+
 #Exponential dist
 expdist <- rexp(5000000)
 expdist <- c(expdist, rep(max(expdist), 10))
 
-benchmarkdist(expdist, 0.1, title = "Exp. Dist")
+benchmarkdist(expdist, 0.95, title = "Exp. Dist")
 
 #Lognorm
-lognormdist = rlnorm(5000000)
+lognormdist <- rlnorm(5000000)
 benchmarkdist(lognormdist, 1, title = "LogNorm. Dist")
 
 #Weibull
 weibulldist <- rweibull(5000000, 1, scale = 5)
 benchmarkdist(weibulldist, title = "Weibull Dist")
+
+#Normal dist
+normdist <- rnorm(5000000)
+benchmarkdist(normdist, 0.6, "Normal Dist")
+
+#Left-tailed distr
+leftnorm <- rep(normdist[normdist < mean(normdist)], 2)
+benchmarkdist(leftnorm, 0.6, "Trunc. Left,Normal Dist")
 
 #Stress params
 stress(pareto_data)
@@ -212,17 +233,15 @@ stress(paretodist)
 stress(expdist)
 stress(lognormdist)
 stress(weibulldist)
+stress(normdist)
+stress(leftnorm)
 
 
-#Normal dist
-normdist = rnorm(5000000)
-benchmarkdist(normdist, 0.6, "Normal Dist")
 
-#Left-tailed distr
-leftnorm <- rep(normdist[normdist < mean(normdist)], 2)
-benchmarkdist(leftnorm, 0.6, "Trunc. Left,Normal Dist")
 
-# On non skewed or left tails thresold should be stressed beyond 50%, otherwise just the first iter (i.e. min, mean, max) is returned.
+
+# On non skewed or left tails thresold should be stressed beyond 50%,
+# otherwise just the first iter (i.e. min, mean, max) is returned.
 par(opar)
 
 
@@ -299,9 +318,17 @@ par(opar)
 
 print(paste0("Full running time:", Sys.time() - initrun))
 
+tempdir()
 #6. References----
-# Jiang, Bin (2013). "Head/tail breaks: A new classification scheme for data with a heavy-tailed distribution", The Professional Geographer, 65 (3), 482 – 494.
+# Jiang, Bin (2013). "Head/tail breaks:
+# A new classification scheme for data with a heavy-tailed distribution",
+# The Professional Geographer, 65 (3), 482 – 494.
 
-# Jiang, Bin, Liu, Xintao and Jia, Tao (2013). "Scaling of geographic space as a universal rule for map generalization", Annals of the Association of American Geographers, 103(4), 844 – 855.
+# Jiang, Bin, Liu, Xintao and Jia, Tao (2013).
+# "Scaling of geographic space as a universal rule for map generalization",
+# Annals of the Association of American Geographers, 103(4), 844 – 855.
 
-#Jiang, B. (2019). "A recursive definition of goodness of space for bridging the concepts of space and place for sustainability". Sustainability, 11(15), 4091. 
+#Jiang, B. (2019).
+# "A recursive definition of goodness of space for bridging the
+# concepts of space and place for sustainability".
+# Sustainability, 11(15), 4091. 
