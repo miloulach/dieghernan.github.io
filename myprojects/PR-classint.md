@@ -8,6 +8,9 @@ more relaxed conditions is presented.
 Full R script [on this gist](https://gist.github.com/dieghernan/0f4593cd74f53b1dfe70cb4f62385cf7).
 Rendered `reprex` [on this gist](https://gist.github.com/dieghernan/def704dd13bf4fe68ee7d33e4e717edf).
 
+On my computer (PC Windows 10) the full script 
+run on 25 secs, including several test and plots.
+
 
 ## Index
 
@@ -438,7 +441,133 @@ for full test-suit results.
 ##### *[Back to Index](#index)*
 ## Case study
 
+In order to check the method with real data I
+used the algorithm to create a choropleth map
+of the European population, using the `cartography` package.
 
+As expected by Jiang (2013), head/tails seems to emphasise better
+extreme values of the distribution:
+![](https://i.imgur.com/MbMLLSR.png)
+![](https://i.imgur.com/2mtANJg.png)
+![](https://i.imgur.com/0UQJcEm.png)
+
+
+Full script of the Case study (including
+benchmark with `classIntervals` styles):
+
+``` r
+
+# 5. Case study: Population----
+library(cartography)
+library(sf)
+#> Warning: package 'sf' was built under R version 3.5.3
+#> Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
+library(classInt)
+#> Warning: package 'classInt' was built under R version 3.5.3
+
+nuts3 <- st_as_sf(nuts3.spdf)
+nuts3 <- merge(nuts3, nuts3.df)
+
+nrow(nuts3)
+#> [1] 1448
+
+nuts3$var <- nuts3$pop2008 / 1000 #Thousands
+
+opar <- par(no.readonly = TRUE)
+par(mar = c(3, 2.5, 2, 1))
+plot(density(nuts3$var),
+     main = "NUTS3 Pop2008 (thousands)",
+     ylab = "",
+     xlab = "")
+```
+
+![](https://i.imgur.com/q19Ao0C.png)
+
+``` r
+
+
+#benchmark
+init <- Sys.time()
+brks_ht <- ht_index(nuts3$var)
+#> [1] "prop:0.31767955801105 nhead:460"
+#> [1] "prop:0.267391304347826 nhead:123"
+#> [1] "prop:0.252032520325203 nhead:31"
+#> [1] "prop:0.32258064516129 nhead:10"
+#> [1] "prop:0.3 nhead:3"
+#> [1] "prop:0.333333333333333 nhead:1"
+#> [1] "Breaks found:  6 , Intervals: 7"
+#> [1]    15.4710   402.6459   862.5118  1638.0025  2979.9322  5084.1036  8035.3390
+#> [8] 12573.8360
+Sys.time() - init
+#> Time difference of 0.0009970665 secs
+
+init <- Sys.time()
+brks_fisher <-
+  classIntervals(nuts3$var, style = "fisher", n = 7)$brks
+Sys.time() - init
+#> Time difference of 0.0219841 secs
+
+init <- Sys.time()
+brks_kmeans <-
+  classIntervals(nuts3$var, style = "kmeans", n = 7)$brks
+Sys.time() - init
+#> Time difference of 0.007397175 secs
+
+
+cols <- c(carto.pal("harmo.pal", 7))
+
+
+
+par(mar = c(0, 0, 0, 0))
+choroLayer(
+  nuts3,
+  var = "var",
+  breaks = brks_ht,
+  legend.title.txt = "HT-index",
+  col = cols,
+  border = NA,
+  legend.pos = "right"
+)
+```
+
+![](https://i.imgur.com/MbMLLSR.png)
+
+``` r
+
+choroLayer(
+  nuts3,
+  var = "var",
+  breaks = brks_fisher,
+  legend.title.txt = "Fisher",
+  col = cols,
+  border = NA,
+  legend.pos = "right"
+)
+```
+
+![](https://i.imgur.com/2mtANJg.png)
+
+``` r
+
+choroLayer(
+  nuts3,
+  var = "var",
+  breaks = brks_kmeans,
+  legend.title.txt = "Kmeans",
+  col = cols,
+  border = NA,
+  legend.pos = "right"
+)
+```
+
+![](https://i.imgur.com/0UQJcEm.png)
+
+``` r
+par(opar)
+
+paste0("Full running time:", Sys.time() - initrun)
+#> [1] "Full running time:24.792090177536"
+```
 
 
 ##### *[Back to Index](#index)*
