@@ -1,4 +1,4 @@
-reprex::reprex()
+#reprex::reprex()
 
 
 rm(list = ls())
@@ -152,7 +152,6 @@ ht_index <- function(var, style = "headtails", ...) {
     return(breaks)
   }
 }
-ht_index(sample_par, thr = 0.35)
 
 plot(
   density(sample_par),
@@ -163,9 +162,9 @@ plot(
   main = "sample_par: breaks"
 )
 axis(2)
-abline(v = ht_index(sample_par, 0.35), col = "green")
+abline(v = ht_index(sample_par, thr = 0.35), col = "green")
 abline(
-  v = ht_index(sample_par, 0.4),
+  v = ht_index(sample_par, thr = 0.4),
   col = "orange",
   lty = 3,
   lwd = 0.5
@@ -177,6 +176,7 @@ legend(
   lty = c(1, 3),
   cex = 0.8
 )
+
 
 #4. Test and stress----
 #Init table on default
