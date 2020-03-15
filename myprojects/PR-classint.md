@@ -138,48 +138,103 @@ prop1 <= thr  & n1 > 1
 This is the function to be implemented. Comments are likely to be removed.
 
 ``` r
+ 
+#3. Standalone function----
 # Default thresold = 0.4 as per Jiang et al. (2013)
 
-ht_index <- function(var, ht_thresold = 0.4) {
-  thr <-
-    min(0.999, max(0, ht_thresold)) #prop on head could never be > 1
-  head <- var
-  breaks <- NULL #Init on null
-  #Safe-check loop to set a maximum of iterations
-  #Option to set a WHILE loop and set an additional par to stop the loop
-  for (i in 1:100) {
-    mu <- mean(head)
-    breaks <- c(breaks, mu)
-    ntot <- length(head)
-    #Switch head
-    head <- head[head > mu]
-    nhead <- length(head)
-    prop <- nhead / ntot
-    if (prop <= thr & nhead > 1) {
-      next
-    } else {
-      #Just for checking the execution
-      # to remove on implementation
-      print(paste("loop end on ", i))
-      break
+
+ht_index <- function(var, style = "headtails", ...) {
+  if (style == "headtails") {
+    # Contributed Diego Hernangomez
+    dots <- list(...)
+    thr = ifelse(is.null(dots$thr),
+                 .4,
+                 dots$thr)
+    
+    thr <-  min(1,max(0, thr))
+    head <- var
+    breaks <- NULL #Init on null
+    #Safe-check loop to set a maximum of iterations
+    #Option to set a WHILE loop and set an additional par to stop the loop
+    for (i in 1:100) {
+      mu <- mean(head, na.rm = TRUE)
+      breaks <- c(breaks, mu)
+      ntot <- length(head)
+      #Switch head
+      head <- head[head > mu]
+      prop <- length(head) / ntot
+      keepiter <- prop <= thr & length(head) > 1
+      print(paste0("prop:", prop, " nhead:", length(head)))
+      if (isFALSE(keepiter)) {
+        #Just for checking the execution
+        # to remove on implementation
+        print(paste("Breaks found: ", i, ", Intervals:", i+1))
+        break
+      }
     }
+    #Add min and max to complete intervals
+    breaks <- sort(unique(c(
+      min(var, na.rm = TRUE),
+      breaks,
+      max(var, na.rm = TRUE)
+    )))
+    #Remove on implementation
+    print(breaks)
+    return(breaks)
   }
-  #Add min and max to complete intervals
-  breaks <- unique(c(min(var), breaks, max(var)))
-  breaks <- sort(breaks)
-  return(breaks)
 }
-ht_index(sample_par, 0.35)
-#> [1] "loop end on  2"
-#> [1] 2.000114 2.422568 2.971249 6.716770
+
+
 ```
 
 Some inline checks:
 - Loop until `i == 100`. As per my tests, no more than 25 iterations has been observed. See also [Tests and stress](#tests-and-stress).
-- `thr` is restricted to `[0,.99)`.
-- If `head` has only one value (or even 0, observed on an initial test) the loop stops, given that no more partitions are possible
+- `thr` is restricted to `[0,1]`.
+- `thr` is passed via `...`.
+- If `head` has only one value (or even 0, observed on one test) the loop stops, given that no more partitions are possible
 - Another checks as `NA`, remove `class`, etc. are already implemented on `classIntervals`.
 
+See some comparisons using `thr = .35` and `thr = .40`.
+
+```r
+plot(
+  density(sample_par),
+  lty = 3,
+  axes = FALSE,
+  ylab = "",
+  xlab = "",
+  main = "sample_par: breaks"
+)
+axis(2)
+abline(v = ht_index(sample_par, thr = 0.35), col = "green")
+#> [1] "prop:0.316 nhead:316"
+#> [1] "prop:0.373417721518987 nhead:118"
+#> [1] "Breaks found:  2 , Intervals: 3"
+#> [1] 2.000114 2.422568 2.971249 6.716770
+abline(
+  v = ht_index(sample_par, thr = 0.4),
+  col = "orange",
+  lty = 3,
+  lwd = 0.5
+)
+#> [1] "prop:0.316 nhead:316"
+#> [1] "prop:0.373417721518987 nhead:118"
+#> [1] "prop:0.355932203389831 nhead:42"
+#> [1] "prop:0.285714285714286 nhead:12"
+#> [1] "prop:0.333333333333333 nhead:4"
+#> [1] "prop:0.25 nhead:1"
+#> [1] "Breaks found:  6 , Intervals: 7"
+#> [1] 2.000114 2.422568 2.971249 3.559716 4.227112 5.055604 6.181099 6.716770
+legend(
+  "right",
+  legend = c("thresold .35", "thresold .4"),
+  col = c("green", "orange"),
+  lty = c(1, 3),
+  cex = 0.8
+)
+```
+
+![](https://i.imgur.com/hfl7ZwG.png)
 
 
 ##### *[Back to Index](#index)*
