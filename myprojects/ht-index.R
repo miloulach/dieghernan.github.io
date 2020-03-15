@@ -1,3 +1,6 @@
+reprex::reprex()
+
+
 rm(list = ls())
 
 
@@ -7,7 +10,7 @@ initrun <- Sys.time()
 
 #1. Characterization of heavy-tail distributions----
 set.seed(1234)
-#Pareto distributions a=2 b=6 n=1000
+#Pareto distribution a=2 b=6 n=1000
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 
 cols <- adjustcolor("grey80", alpha.f = 0.8)
@@ -37,7 +40,7 @@ hist(
 set.seed(1234)
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 var <- sample_par
-ht_thresold <- 0.35 #Cherry-picked value for the example
+thr <- 0.35 #Cherry-picked thresold  for the example
 
 #Step1
 mu0 <- mean(var)
@@ -61,7 +64,7 @@ text(x = 6,
 
 
 
-prop0 <= ht_thresold &
+prop0 <= thr &
   n0 > 1 #Additional control to stop if no more breaks are possible
 
 
@@ -88,7 +91,7 @@ text(x = 6,
      y = 1,
      labels = paste0("PropHead: ", round(prop1, 4)))
 
-prop1 <= ht_thresold  & n1 > 1
+prop1 <= thr  & n1 > 1
 
 # End given that condition is FALSE
 
@@ -101,46 +104,54 @@ summiter <- data.frame(
   prophead = c(prop0, prop1)
 )
 summiter$breaks <- breaks
-summiter
+knitr::kable(summiter, format = "markdown")
 
 
 
 #3. Standalone function----
-set.seed(1234)
-#Pareto distributions a=2 b=6 n=1000
-sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
-
 # Default thresold = 0.4 as per Jiang et al. (2013)
 
 
-ht_index <- function(var, ht_thresold = 0.4) {
-  thr <-  min(0.999,
-              max(0, ht_thresold)) #prop on head could never be > 1
-  head <- var
-  breaks <- NULL #Init on null
-  #Safe-check loop to set a maximum of iterations
-  #Option to set a WHILE loop and set an additional par to stop the loop
-  for (i in 1:100) {
-    mu <- mean(head)
-    breaks <- c(breaks, mu)
-    ntot <- length(head)
-    #Switch head
-    head <- head[head > mu]
-    prop <- length(head) / ntot
-    keepiter <- prop <= thr & length(head) > 1
-    if (isFALSE(keepiter)) {
-      #Just for checking the execution
-      # to remove on implementation
-      print(paste("loop end on ", i))
-      break
+ht_index <- function(var, style = "headtails", ...) {
+  if (style == "headtails") {
+    # Contributed Diego Hernangomez
+    dots <- list(...)
+    thr = ifelse(is.null(dots$thr),
+                 .4,
+                 dots$thr)
+    
+    thr <-  min(0.999,
+                max(0, thr)) #prop on head could never be > 1
+    head <- var
+    breaks <- NULL #Init on null
+    #Safe-check loop to set a maximum of iterations
+    #Option to set a WHILE loop and set an additional par to stop the loop
+    for (i in 1:100) {
+      mu <- mean(head, na.rm = TRUE)
+      breaks <- c(breaks, mu)
+      ntot <- length(head)
+      #Switch head
+      head <- head[head > mu]
+      prop <- length(head) / ntot
+      keepiter <- prop <= thr & length(head) > 1
+      print(paste0("prop:", prop, " nhead:", length(head)))
+      if (isFALSE(keepiter)) {
+        #Just for checking the execution
+        # to remove on implementation
+        print(paste("Breaks found: ", i, ", Intervals:"))
+        break
+      }
     }
+    #Add min and max to complete intervals
+    breaks <- sort(unique(c(
+      min(var, na.rm = TRUE),
+      breaks,
+      max(var, na.rm = TRUE)
+    )))
+    return(breaks)
   }
-  #Add min and max to complete intervals
-  breaks <- unique(c(min(var), breaks, max(var)))
-  breaks <- sort(breaks)
-  return(breaks)
 }
-ht_index(sample_par, 0.35)
+ht_index(sample_par, thr = 0.35)
 
 plot(
   density(sample_par),
@@ -167,83 +178,121 @@ legend(
 )
 
 #4. Test and stress----
-#Replicate Phyton Results:
-# https://github.com/chad-m/head_tail_breaks_algorithm/blob/master/htb.py
-#[0.03883742394002349, 0.177990388624465, 0.481845351678573]
-pareto_data <- (1.0 / (1:100)) ^ 1.16
-ht_index(pareto_data)
+#Init table on default
+testresults <- data.frame(
+  Title = NA,
+  nsample  = NA,
+  thresold = NA,
+  nbreaks = NA,
+  time_secs = NA
+)
 
-benchmarkdist <- function(dist, thr = 0.4, title = "") {
-  init <- Sys.time()
-  br <- ht_index(dist, thr)
-  print(Sys.time() - init)
-  plot(density(dist),
-       col = "black",
-       main = paste0(title, ", thresold =", thr))
-  abline(
-    v = br,
-    col = "green",
-    lty = 3
-  )
-}
+benchmarkdist <-
+  function(dist,
+           thr = 0.4,
+           title = "",
+           plot = TRUE) {
+    dist = c(na.omit(dist))
+    init <- Sys.time()
+    br <- ht_index(dist, thr = thr)
+    a <- Sys.time() - init
+    print(a)
+    test <- data.frame(
+      Title = title,
+      nsample  = format(length(dist), scientific = FALSE, big.mark = ","),
+      thresold = thr,
+      nbreaks = length(br) - 1,
+      time_secs = as.character(a)
+    )
+    testresults <- unique(rbind(testresults, test))
+    
+    if (plot) {
+      plot(density(dist),
+           col = "black",
+           main = paste0(title, ", thr =", thr, ", nbreaks = ", length(br)-1))
+      abline(v = br,
+             col = "green",
+             lty = 3)
+    }
+    return(testresults)
+  }
 
-stress <- function(dist) {
-  a <- ht_index(dist, 0)
-  b <- ht_index(dist, 1)
-  print("Checked 0 and 1")
-}
+
 
 #Scalability: 5 millions
+set.seed(2389)
 
-# Pareto dist params(6820,4)
-#shape <- 4
-#scale <- 6820
-paretodist <- 6820 / (1 - runif(5000000)) ^ (1 / 4)
-
-benchmarkdist(paretodist, title = "Pareto Dist")
-
-br <- ht_index(paretodist, .4)
-abline(v=br)
-
+#Pareto distributions a=7 b=14
+paretodist <- 7 / (1 - runif(5000000)) ^ (1 / 14)
 #Exponential dist
 expdist <- rexp(5000000)
-expdist <- c(expdist, rep(max(expdist), 10))
-
-benchmarkdist(expdist, 0.95, title = "Exp. Dist")
-
 #Lognorm
 lognormdist <- rlnorm(5000000)
-benchmarkdist(lognormdist, 1, title = "LogNorm. Dist")
-
 #Weibull
 weibulldist <- rweibull(5000000, 1, scale = 5)
-benchmarkdist(weibulldist, title = "Weibull Dist")
-
 #Normal dist
 normdist <- rnorm(5000000)
-benchmarkdist(normdist, 0.6, "Normal Dist")
-
 #Left-tailed distr
 leftnorm <- rep(normdist[normdist < mean(normdist)], 2)
-benchmarkdist(leftnorm, 0.6, "Trunc. Left,Normal Dist")
+#LogCauchy "super-heavy tail"
+logcauchdist <- exp(rcauchy(5000000, 2, 4))
+#Remove Inf - this check is already implemented on classIntervals
+logcauchdist <- logcauchdist[logcauchdist < Inf]
 
-#Stress params
-stress(pareto_data)
-stress(paretodist)
-stress(expdist)
-stress(lognormdist)
-stress(weibulldist)
-stress(normdist)
-stress(leftnorm)
+#Tests
+testresults <- benchmarkdist(paretodist, title = "Pareto Dist")
+testresults <-
+  benchmarkdist(paretodist, 0, title = "Pareto Dist", plot = FALSE)
+testresults <-
+  benchmarkdist(paretodist, 1, title = "Pareto Dist", plot = FALSE)
+
+testresults <- benchmarkdist(expdist, title = "ExpDist")
+testresults <-
+  benchmarkdist(expdist, 0, title = "ExpDist", plot = FALSE)
+testresults <-
+  benchmarkdist(expdist, 1, title = "ExpDist", plot = FALSE)
+
+testresults <- benchmarkdist(lognormdist, 0.75, title = "LogNorm")
+testresults <-
+  benchmarkdist(lognormdist, 0, title = "LogNorm", plot = FALSE)
+testresults <-
+  benchmarkdist(lognormdist, 1, title = "LogNorm", plot = FALSE)
+
+testresults <- benchmarkdist(weibulldist, 0.25, title = "Weibull")
+testresults <-
+  benchmarkdist(weibulldist, 0, title = "Weibull", plot = FALSE)
+testresults <-
+  benchmarkdist(weibulldist, 1, title = "Weibull", plot = FALSE)
+
+testresults <- benchmarkdist(normdist, 0.8, title = "Normal")
+testresults <-
+  benchmarkdist(normdist, 0, title = "Normal", plot = FALSE)
+testresults <-
+  benchmarkdist(normdist, 1, title = "Normal", plot = FALSE)
 
 
+testresults <-
+  benchmarkdist(leftnorm, 0.6, title = "Left. Trunc. Normal")
+testresults <-
+  benchmarkdist(leftnorm, 0, title = "Left. Trunc. Normal", plot = FALSE)
+testresults <-
+  benchmarkdist(leftnorm, 1, title = "Left. Trunc. Normal", plot = FALSE)
 
 
+testresults <-
+  benchmarkdist(logcauchdist, 0.7896, title = "LogCauchy", plot = FALSE)
+testresults <-
+  benchmarkdist(logcauchdist, 0, title = "LogCauchy", plot = FALSE)
+testresults <-
+  benchmarkdist(logcauchdist, 1, title = "LogCauchy", plot = FALSE)
 
 # On non skewed or left tails thresold should be stressed beyond 50%,
 # otherwise just the first iter (i.e. min, mean, max) is returned.
 par(opar)
 
+ht_index(logcauchdist, thr = .7896)
+
+knitr::kable(testresults[-1, ], format = "markdown", row.names = FALSE)
 
 # 5. Case study: Population----
 library(cartography)
@@ -267,21 +316,22 @@ plot(density(nuts3$var),
 
 #benchmark
 init <- Sys.time()
-brks_ht <- ht_index(nuts3$var, .5)
+brks_ht <- ht_index(nuts3$var)
 Sys.time() - init
 
 init <- Sys.time()
 brks_fisher <-
-  classIntervals(nuts3$var, style = "fisher", n = 8)$brks
+  classIntervals(nuts3$var, style = "fisher", n = 7)$brks
 Sys.time() - init
 
 init <- Sys.time()
 brks_kmeans <-
-  classIntervals(nuts3$var, style = "kmeans", n = 8)$brks
+  classIntervals(nuts3$var, style = "kmeans", n = 7)$brks
 Sys.time() - init
 
 
-cols = carto.pal("red.pal", 9)
+cols = c(carto.pal("harmo.pal", 7))
+
 
 
 par(mar = c(0, 0, 0, 0))
@@ -318,7 +368,7 @@ par(opar)
 
 print(paste0("Full running time:", Sys.time() - initrun))
 
-tempdir()
+
 #6. References----
 # Jiang, Bin (2013). "Head/tail breaks:
 # A new classification scheme for data with a heavy-tailed distribution",
