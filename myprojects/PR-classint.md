@@ -5,28 +5,31 @@ as per Jiang (2013). On Jiang (2019) this method is named
 as 1.0 given that a 2.0 algorithm with 
 more relaxed conditions is presented.
 
+## Index
+
 - [Motivation](#motivation)
 - [Breaking method](#breaking-method)
 - [Step by step example](#step-by-step)
 - [Standalone version](#standalone-version)
 - [Tests and stress](#tests-and-stress)
-- Case study
+- [Case study](#case-study)
 - [References](#references)
+- [Annex: Test result](#test-results)
 
 ## Motivation
 [*Taken from of Jiang (2013)* - brief summary]
 
-*"This paper introduces a new classification scheme – head/tail breaks – in order to find groupings or
+> *"This paper introduces a new classification scheme – head/tail breaks – in order to find groupings or
 hierarchy for data with a heavy-tailed distribution. The heavy-tailed distributions are heavily right
 skewed, with a minority of large values in the head and a majority of small values in the tail,
 commonly characterized by a power law, a lognormal or an exponential function." (...)*
 
-*"(...)This new classification scheme partitions all of the data values around the mean into two parts and 
+> *"(...)This new classification scheme partitions all of the data values around the mean into two parts and 
 continues the process iteratively for the values (above the mean) in the head until the head part
  values are no longer heavy-tailed distributed. Thus, the number of classes and the class intervals are both 
 naturally determined."(...)*
 
-*"The heavy-tailed distribution is commonly found in many societal and
+> *"The heavy-tailed distribution is commonly found in many societal and
 natural phenomena, including geographical systems. Small events are far more common in geographic
 spaces than large events (Jiang 2010), particularly in urban, architectural environments (Salingaros
 and West 1999, Jiang 2009). For example, there are far more small cities than large ones (Zipf 1949);
@@ -35,23 +38,26 @@ more low-density areas than high-density ones (Jiang and Liu 2011). This is the 
 geographic spaces and which should be reflected in the map. "*
 
 
+##### *[Back to Index](#index)*
 ## Breaking method
 
 The method itself consists on a four-step process performed recursively until a stopping condition is satisfied:
 1. Compute the `mean` of a range of values `values`.
 2. Break `values` into the `tail` (as `values < mean`) and the `head` (as `values > mean`).
-3. Assess it the proportion of `head` over `values` is lower or equal than a given thresold (i.e. `length(head)/length(values) <= thresold`)
-4. If 3 is `TRUE`, repeat 1 to 3 until the condition is `FALSE` or no more partitions are posible (i.e. `length(head) < 2`). 
+3. Assess it the proportion of `head` over `values` is lower or equal than a given threshold (i.e. `length(head)/length(values) <= thresold`)
+4. If 3 is `TRUE`, repeat 1 to 3 until the condition is `FALSE` or no more partitions are possible (i.e. `length(head) < 2`). 
 
-It is importat to note that, at the beginning of a new iteration, `values` are replaced by `head`. 
+It is important to note that, at the beginning of a new iteration, `values` are replaced by `head`. 
 The underlying hypothesis is to create partitions until the `head` and the `tail` are balanced in terms of distribution.
 So the stopping criteria is satisfied when the last `head` and the last `tail` are evenly balanced. 
 
-In terms of thresold, Jiang et al. (2013) set 40% as a good approximation, meaning that if the `head` 
-contains more than 40% of the observatios the distribution is not considered heavy-tailed.
+In terms of threshold, Jiang et al. (2013) set 40% as a good approximation, meaning that if the `head` 
+contains more than 40% of the observations the distribution is not considered heavy-tailed.
 
 The final breaks are the vector of `mean` values.
 
+
+##### *[Back to Index](#index)*
 ## Step by step
 Pseudo-code as per Jiang (2019):
 ```
@@ -66,19 +72,21 @@ End Function
 ```
 
 My example in **R** (for illustrative purposes):
+
 ```r
 #1. Characterization of heavy-tail distributions----
 set.seed(1234)
-#Pareto distributions a=2 b=6 n=1000
+#Pareto distribution a=2 b=6 n=1000
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 ```
-![Imgur](https://i.imgur.com/LdrU73P.png)
+![](https://i.imgur.com/pw6McvG.png)
 
-``` r
+```r
+#2. Step by step example----
 set.seed(1234)
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 var <- sample_par
-ht_thresold <- 0.35 #Cherry-picked value for the example
+thr <- 0.35 #Cherry-picked thresold  for the example
 
 #Step1
 mu0 <- mean(var)
@@ -87,8 +95,12 @@ breaks <- c(mu0)
 n0 <- length(var)
 head0 <- var[var > mu0]
 prop0 <- length(head0) / n0
+```
 
-prop0 <= ht_thresold &
+![](https://i.imgur.com/bLXniiu.png)
+
+``` r
+prop0 <= thr &
   n0 > 1 #Additional control to stop if no more breaks are possible
 #> [1] TRUE
 
@@ -103,30 +115,24 @@ breaks <- c(breaks, mu1)
 n1 <- length(var)
 head1 <- var[var > mu1]
 prop1 <- length(head1) / n1
+```
 
-prop1 <= ht_thresold  & n1 > 1
+![](https://i.imgur.com/wt9KwiL.png)
+
+``` r
+prop1 <= thr  & n1 > 1
 #> [1] FALSE
 
 # End given that condition is FALSE
-
-#Summary
-summiter <- data.frame(
-  iter = c(1, 2),
-  n = c(n0, n1),
-  nhead = c(length(head0), length(head1)),
-  mu = c(mu0, mu1),
-  prophead = c(prop0, prop1)
-)
-summiter$breaks <- breaks
-summiter
-#>   iter    n nhead       mu  prophead   breaks
-#> 1    1 1000   316 2.422568 0.3160000 2.422568
-#> 2    2  316   118 2.971249 0.3734177 2.971249
 ```
 
-<sup>Created on 2020-03-12 by the [reprex package](https://reprex.tidyverse.org) (v0.3.0)</sup>
+| iter|    n| nhead|       mu|  prophead|   breaks|
+|----:|----:|-----:|--------:|---------:|--------:|
+|    1| 1000|   316| 2.422568| 0.3160000| 2.422568|
+|    2|  316|   118| 2.971249| 0.3734177| 2.971249|
 
 
+##### *[Back to Index](#index)*
 ## Standalone version
 
 This is the function to be implemented. Comments are likely to be removed.
@@ -175,17 +181,19 @@ Some inline checks:
 - Another checks as `NA`, remove `class`, etc. are already implemented on `classIntervals`.
 
 
+
+##### *[Back to Index](#index)*
 ## Tests and stress
 
 Testing has been performed over the next distributions:
 - Pareto
 - Exponential (with extra 10 extreme values)
-- Lognormal
+- Log-normal
 - Weibull
 - Normal (non heavy-tailed)
 - Truncated Normal (left-tailed)
 
-With sample = 5,000,000 observations. Corner cases of the thresold (i.e. 0,1) has been already tested.
+With sample = 5,000,000 observations. Corner cases of the threshold (i.e. 0,1) has been already tested.
 
 Performance is very good IMO, sampling not needed.
 
@@ -319,7 +327,29 @@ benchmarkdist(leftnorm, 0.6, "Trunc. Left,Normal Dist")
 ```
 
 
+
+##### *[Back to Index](#index)*
+## Case study
+
+
+
+
+##### *[Back to Index](#index)*
 ## References
 - Jiang, B. (2013). "Head/tail breaks: A new classification scheme for data with a heavy-tailed distribution", *The Professional Geographer*, 65 (3), 482 – 494. https://arxiv.org/abs/1209.2801v1
 - Jiang, B. Liu, X. and Jia, T. (2013). "Scaling of geographic space as a universal rule for map generalization", *Annals of the Association of American Geographers*, 103(4), 844 – 855. https://arxiv.org/abs/1102.1561v3
 - Jiang, B. (2019). "A recursive definition of goodness of space for bridging the concepts of space and place for sustainability". *Sustainability*, 11(15), 4091. https://arxiv.org/abs/1909.01073v1
+
+
+##### *[Back to Index](#index)*
+## Test results
+
+
+
+
+
+
+
+
+
+##### *[Back to Index](#index)*
