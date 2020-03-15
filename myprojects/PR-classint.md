@@ -154,7 +154,7 @@ ht_index <- function(var, style = "headtails", ...) {
   if (style == "headtails") {
     # Contributed Diego Hernangomez
     dots <- list(...)
-    thr = ifelse(is.null(dots$thr),
+    thr <- ifelse(is.null(dots$thr),
                  .4,
                  dots$thr)
     
