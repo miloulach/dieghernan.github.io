@@ -565,8 +565,6 @@ choroLayer(
 ``` r
 par(opar)
 
-paste0("Full running time:", Sys.time() - initrun)
-#> [1] "Full running time:24.792090177536"
 ```
 
 
