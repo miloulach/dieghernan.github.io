@@ -9,7 +9,7 @@ Full R script [on this gist](https://gist.github.com/dieghernan/0f4593cd74f53b1d
 Rendered `reprex` [on this gist](https://gist.github.com/dieghernan/def704dd13bf4fe68ee7d33e4e717edf).
 
 On my computer (PC Windows 10) the full script 
-run on 25 secs, including several test and plots.
+run on 25 secs, including several tests and plots.
 
 
 ## Index
