@@ -5,13 +5,17 @@ as per Jiang (2013). On Jiang (2019) this method is named
 as 1.0 given that a 2.0 algorithm with 
 more relaxed conditions is presented.
 
+Full R script [on this gist](https://gist.github.com/dieghernan/0f4593cd74f53b1dfe70cb4f62385cf7).
+Rendered `reprex` [on this gist](https://gist.github.com/dieghernan/def704dd13bf4fe68ee7d33e4e717edf).
+
+
 ## Index
 
 - [Motivation](#motivation)
 - [Breaking method](#breaking-method)
 - [Step by step example](#step-by-step)
 - [Standalone version](#standalone-version)
-- [Tests and stress](#tests-and-stress)
+- [Testing](#testing)
 - [Case study](#case-study)
 - [References](#references)
 - [Annex: Test result](#test-results)
@@ -238,7 +242,7 @@ legend(
 
 
 ##### *[Back to Index](#index)*
-## Tests and stress
+## Testing
 
 Testing has been performed over the following distributions:
 - Pareto
