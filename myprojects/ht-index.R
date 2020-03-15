@@ -55,7 +55,7 @@ plot(
   lty = 3,
   ylab = "",
   xlab = "",
-  main = "Iter2"
+  main = "Iter1"
 )
 abline(v = mu0, col = "red")
 text(x = 6,
@@ -120,8 +120,7 @@ ht_index <- function(var, style = "headtails", ...) {
                  .4,
                  dots$thr)
     
-    thr <-  min(0.999,
-                max(0, thr)) #prop on head could never be > 1
+    thr <-  min(1,max(0, thr))
     head <- var
     breaks <- NULL #Init on null
     #Safe-check loop to set a maximum of iterations
@@ -138,7 +137,7 @@ ht_index <- function(var, style = "headtails", ...) {
       if (isFALSE(keepiter)) {
         #Just for checking the execution
         # to remove on implementation
-        print(paste("Breaks found: ", i, ", Intervals:"))
+        print(paste("Breaks found: ", i, ", Intervals:", i+1))
         break
       }
     }
@@ -148,6 +147,8 @@ ht_index <- function(var, style = "headtails", ...) {
       breaks,
       max(var, na.rm = TRUE)
     )))
+    #Remove on implementation
+    print(breaks)
     return(breaks)
   }
 }
@@ -278,6 +279,12 @@ testresults <-
 testresults <-
   benchmarkdist(leftnorm, 1, title = "Left. Trunc. Normal", plot = FALSE)
 
+testresults <-
+  benchmarkdist(leftnorm, 200, title = "Left. Trunc. Normal", plot = FALSE)
+
+testresults <-
+  benchmarkdist(leftnorm, -100, title = "Left. Trunc. Normal", plot = FALSE)
+
 
 testresults <-
   benchmarkdist(logcauchdist, 0.7896, title = "LogCauchy", plot = FALSE)
@@ -290,7 +297,7 @@ testresults <-
 # otherwise just the first iter (i.e. min, mean, max) is returned.
 par(opar)
 
-ht_index(logcauchdist, thr = .7896)
+
 
 knitr::kable(testresults[-1, ], format = "markdown", row.names = FALSE)
 
@@ -330,7 +337,7 @@ brks_kmeans <-
 Sys.time() - init
 
 
-cols = c(carto.pal("harmo.pal", 7))
+cols <- c(carto.pal("harmo.pal", 7))
 
 
 
@@ -366,7 +373,7 @@ choroLayer(
 )
 par(opar)
 
-print(paste0("Full running time:", Sys.time() - initrun))
+paste0("Full running time:", Sys.time() - initrun)
 
 
 #6. References----

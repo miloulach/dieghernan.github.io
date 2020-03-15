@@ -35,7 +35,7 @@ hist(
 )
 ```
 
-![](https://i.imgur.com/QQyP4qx.png)
+![](https://i.imgur.com/82b55A7.png)
 
 ``` r
 
@@ -58,7 +58,7 @@ plot(
   lty = 3,
   ylab = "",
   xlab = "",
-  main = "Iter2"
+  main = "Iter1"
 )
 abline(v = mu0, col = "red")
 text(x = 6,
@@ -66,7 +66,7 @@ text(x = 6,
      labels = paste0("PropHead: ", round(prop0, 4)))
 ```
 
-![](https://i.imgur.com/8JDdEV2.png)
+![](https://i.imgur.com/WreFUIc.png)
 
 ``` r
 
@@ -101,7 +101,7 @@ text(x = 6,
      labels = paste0("PropHead: ", round(prop1, 4)))
 ```
 
-![](https://i.imgur.com/FHhFkIh.png)
+![](https://i.imgur.com/2QhUzhD.png)
 
 ``` r
 
@@ -169,8 +169,7 @@ ht_index <- function(var, style = "headtails", ...) {
                  .4,
                  dots$thr)
     
-    thr <-  min(0.999,
-                max(0, thr)) #prop on head could never be > 1
+    thr <-  min(1,max(0, thr))
     head <- var
     breaks <- NULL #Init on null
     #Safe-check loop to set a maximum of iterations
@@ -187,7 +186,7 @@ ht_index <- function(var, style = "headtails", ...) {
       if (isFALSE(keepiter)) {
         #Just for checking the execution
         # to remove on implementation
-        print(paste("Breaks found: ", i, ", Intervals:"))
+        print(paste("Breaks found: ", i, ", Intervals:", i+1))
         break
       }
     }
@@ -197,13 +196,16 @@ ht_index <- function(var, style = "headtails", ...) {
       breaks,
       max(var, na.rm = TRUE)
     )))
+    #Remove on implementation
+    print(breaks)
     return(breaks)
   }
 }
 ht_index(sample_par, thr = 0.35)
 #> [1] "prop:0.316 nhead:316"
 #> [1] "prop:0.373417721518987 nhead:118"
-#> [1] "Breaks found:  2 , Intervals:"
+#> [1] "Breaks found:  2 , Intervals: 3"
+#> [1] 2.000114 2.422568 2.971249 6.716770
 #> [1] 2.000114 2.422568 2.971249 6.716770
 
 plot(
@@ -231,7 +233,7 @@ legend(
 )
 ```
 
-![](https://i.imgur.com/FOwpT6M.png)
+![](https://i.imgur.com/p0qzFy7.png)
 
 ``` r
 
@@ -313,18 +315,22 @@ testresults <- benchmarkdist(paretodist, title = "Pareto Dist")
 #> [1] "prop:0.327272727272727 nhead:18"
 #> [1] "prop:0.388888888888889 nhead:7"
 #> [1] "prop:0.142857142857143 nhead:1"
-#> [1] "Breaks found:  14 , Intervals:"
-#> Time difference of 0.278265 secs
+#> [1] "Breaks found:  14 , Intervals: 15"
+#>  [1]  7.000000  7.538849  8.119161  8.743518  9.416418 10.143382 10.929898
+#>  [8] 11.777121 12.679457 13.651872 14.734872 15.963453 17.311978 18.988971
+#> [15] 20.211755 23.807530
+#> Time difference of 0.282315 secs
 ```
 
-![](https://i.imgur.com/twt5fS6.png)
+![](https://i.imgur.com/tJnbAOW.png)
 
 ``` r
 testresults <-
   benchmarkdist(paretodist, 0, title = "Pareto Dist", plot = FALSE)
 #> [1] "prop:0.3543272 nhead:1771636"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.1866319 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1]  7.000000  7.538849 23.807530
+#> Time difference of 0.2040331 secs
 testresults <-
   benchmarkdist(paretodist, 1, title = "Pareto Dist", plot = FALSE)
 #> [1] "prop:0.3543272 nhead:1771636"
@@ -341,8 +347,11 @@ testresults <-
 #> [1] "prop:0.327272727272727 nhead:18"
 #> [1] "prop:0.388888888888889 nhead:7"
 #> [1] "prop:0.142857142857143 nhead:1"
-#> [1] "Breaks found:  14 , Intervals:"
-#> Time difference of 0.214011 secs
+#> [1] "Breaks found:  14 , Intervals: 15"
+#>  [1]  7.000000  7.538849  8.119161  8.743518  9.416418 10.143382 10.929898
+#>  [8] 11.777121 12.679457 13.651872 14.734872 15.963453 17.311978 18.988971
+#> [15] 20.211755 23.807530
+#> Time difference of 0.2337561 secs
 
 testresults <- benchmarkdist(expdist, title = "ExpDist")
 #> [1] "prop:0.3677448 nhead:1838724"
@@ -360,18 +369,23 @@ testresults <- benchmarkdist(expdist, title = "ExpDist")
 #> [1] "prop:0.387096774193548 nhead:12"
 #> [1] "prop:0.333333333333333 nhead:4"
 #> [1] "prop:0.5 nhead:2"
-#> [1] "Breaks found:  15 , Intervals:"
-#> Time difference of 0.2255881 secs
+#> [1] "Breaks found:  15 , Intervals: 16"
+#>  [1] 4.534944e-07 9.990109e-01 1.998383e+00 2.996829e+00 3.993308e+00
+#>  [6] 4.988082e+00 5.985162e+00 6.973514e+00 7.969093e+00 8.968558e+00
+#> [11] 9.974569e+00 1.096586e+01 1.203901e+01 1.307891e+01 1.402431e+01
+#> [16] 1.493760e+01 1.539196e+01
+#> Time difference of 0.2330081 secs
 ```
 
-![](https://i.imgur.com/JW8tNqA.png)
+![](https://i.imgur.com/09dAUL5.png)
 
 ``` r
 testresults <-
   benchmarkdist(expdist, 0, title = "ExpDist", plot = FALSE)
 #> [1] "prop:0.3677448 nhead:1838724"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.120697 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] 4.534944e-07 9.990109e-01 1.539196e+01
+#> Time difference of 0.1370931 secs
 testresults <-
   benchmarkdist(expdist, 1, title = "ExpDist", plot = FALSE)
 #> [1] "prop:0.3677448 nhead:1838724"
@@ -390,8 +404,12 @@ testresults <-
 #> [1] "prop:0.333333333333333 nhead:4"
 #> [1] "prop:0.5 nhead:2"
 #> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  16 , Intervals:"
-#> Time difference of 0.2559481 secs
+#> [1] "Breaks found:  16 , Intervals: 17"
+#>  [1] 4.534944e-07 9.990109e-01 1.998383e+00 2.996829e+00 3.993308e+00
+#>  [6] 4.988082e+00 5.985162e+00 6.973514e+00 7.969093e+00 8.968558e+00
+#> [11] 9.974569e+00 1.096586e+01 1.203901e+01 1.307891e+01 1.402431e+01
+#> [16] 1.493760e+01 1.536455e+01 1.539196e+01
+#> Time difference of 0.2491701 secs
 
 testresults <- benchmarkdist(lognormdist, 0.75, title = "LogNorm")
 #> [1] "prop:0.3087264 nhead:1543632"
@@ -408,18 +426,23 @@ testresults <- benchmarkdist(lognormdist, 0.75, title = "LogNorm")
 #> [1] "prop:0.277777777777778 nhead:5"
 #> [1] "prop:0.4 nhead:2"
 #> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  14 , Intervals:"
-#> Time difference of 0.2131069 secs
+#> [1] "Breaks found:  14 , Intervals: 15"
+#>  [1] 5.960499e-03 1.648513e+00 3.693475e+00 6.541902e+00 1.037196e+01
+#>  [6] 1.539770e+01 2.186603e+01 2.976225e+01 3.948552e+01 5.107634e+01
+#> [11] 6.517331e+01 8.141691e+01 1.075394e+02 1.514656e+02 1.960593e+02
+#> [16] 2.019891e+02
+#> Time difference of 0.220396 secs
 ```
 
-![](https://i.imgur.com/QVzM26X.png)
+![](https://i.imgur.com/zOd2soa.png)
 
 ``` r
 testresults <-
   benchmarkdist(lognormdist, 0, title = "LogNorm", plot = FALSE)
 #> [1] "prop:0.3087264 nhead:1543632"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.1389289 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] 5.960499e-03 1.648513e+00 2.019891e+02
+#> Time difference of 0.140208 secs
 testresults <-
   benchmarkdist(lognormdist, 1, title = "LogNorm", plot = FALSE)
 #> [1] "prop:0.3087264 nhead:1543632"
@@ -436,23 +459,29 @@ testresults <-
 #> [1] "prop:0.277777777777778 nhead:5"
 #> [1] "prop:0.4 nhead:2"
 #> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  14 , Intervals:"
-#> Time difference of 0.2225449 secs
+#> [1] "Breaks found:  14 , Intervals: 15"
+#>  [1] 5.960499e-03 1.648513e+00 3.693475e+00 6.541902e+00 1.037196e+01
+#>  [6] 1.539770e+01 2.186603e+01 2.976225e+01 3.948552e+01 5.107634e+01
+#> [11] 6.517331e+01 8.141691e+01 1.075394e+02 1.514656e+02 1.960593e+02
+#> [16] 2.019891e+02
+#> Time difference of 0.2298501 secs
 
 testresults <- benchmarkdist(weibulldist, 0.25, title = "Weibull")
 #> [1] "prop:0.3679468 nhead:1839734"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.200336 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] 2.735760e-07 5.001702e+00 7.673301e+01
+#> Time difference of 0.206583 secs
 ```
 
-![](https://i.imgur.com/4bomzpC.png)
+![](https://i.imgur.com/krpbspj.png)
 
 ``` r
 testresults <-
   benchmarkdist(weibulldist, 0, title = "Weibull", plot = FALSE)
 #> [1] "prop:0.3679468 nhead:1839734"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.1328502 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] 2.735760e-07 5.001702e+00 7.673301e+01
+#> Time difference of 0.1388488 secs
 testresults <-
   benchmarkdist(weibulldist, 1, title = "Weibull", plot = FALSE)
 #> [1] "prop:0.3679468 nhead:1839734"
@@ -471,8 +500,12 @@ testresults <-
 #> [1] "prop:0.363636363636364 nhead:4"
 #> [1] "prop:0.5 nhead:2"
 #> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  16 , Intervals:"
-#> Time difference of 0.2835648 secs
+#> [1] "Breaks found:  16 , Intervals: 17"
+#>  [1] 2.735760e-07 5.001702e+00 1.000405e+01 1.501010e+01 2.001468e+01
+#>  [6] 2.501961e+01 3.004452e+01 3.504632e+01 3.991777e+01 4.495168e+01
+#> [11] 4.986135e+01 5.441215e+01 5.900803e+01 6.358776e+01 6.870115e+01
+#> [16] 7.444729e+01 7.666662e+01 7.673301e+01
+#> Time difference of 0.2827499 secs
 
 testresults <- benchmarkdist(normdist, 0.8, title = "Normal")
 #> [1] "prop:0.5001914 nhead:2500957"
@@ -491,18 +524,23 @@ testresults <- benchmarkdist(normdist, 0.8, title = "Normal")
 #> [1] "prop:0.354838709677419 nhead:11"
 #> [1] "prop:0.272727272727273 nhead:3"
 #> [1] "prop:0.333333333333333 nhead:1"
-#> [1] "Breaks found:  16 , Intervals:"
-#> Time difference of 0.2873449 secs
+#> [1] "Breaks found:  16 , Intervals: 17"
+#>  [1] -4.9605354548 -0.0005467484  0.7967107507  1.3642943161  1.8241333245
+#>  [6]  2.2189491694  2.5678495216  2.8821718784  3.1713279927  3.4411382573
+#> [11]  3.6857094948  3.9189055988  4.1366848899  4.3482116520  4.5304538179
+#> [16]  4.7010151808  4.9286029511  5.2074184961
+#> Time difference of 0.2881289 secs
 ```
 
-![](https://i.imgur.com/ppPblbu.png)
+![](https://i.imgur.com/OehfnZE.png)
 
 ``` r
 testresults <-
   benchmarkdist(normdist, 0, title = "Normal", plot = FALSE)
 #> [1] "prop:0.5001914 nhead:2500957"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.163904 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] -4.9605354548 -0.0005467484  5.2074184961
+#> Time difference of 0.1546168 secs
 testresults <-
   benchmarkdist(normdist, 1, title = "Normal", plot = FALSE)
 #> [1] "prop:0.5001914 nhead:2500957"
@@ -521,8 +559,12 @@ testresults <-
 #> [1] "prop:0.354838709677419 nhead:11"
 #> [1] "prop:0.272727272727273 nhead:3"
 #> [1] "prop:0.333333333333333 nhead:1"
-#> [1] "Breaks found:  16 , Intervals:"
-#> Time difference of 0.281585 secs
+#> [1] "Breaks found:  16 , Intervals: 17"
+#>  [1] -4.9605354548 -0.0005467484  0.7967107507  1.3642943161  1.8241333245
+#>  [6]  2.2189491694  2.5678495216  2.8821718784  3.1713279927  3.4411382573
+#> [11]  3.6857094948  3.9189055988  4.1366848899  4.3482116520  4.5304538179
+#> [16]  4.7010151808  4.9286029511  5.2074184961
+#> Time difference of 0.2911232 secs
 
 
 testresults <-
@@ -549,18 +591,24 @@ testresults <-
 #> [1] "prop:0.4 nhead:4"
 #> [1] "prop:0.5 nhead:2"
 #> [1] "prop:0 nhead:0"
-#> [1] "Breaks found:  22 , Intervals:"
-#> Time difference of 0.311451 secs
+#> [1] "Breaks found:  22 , Intervals: 23"
+#>  [1] -4.9605354548 -0.7984148615 -0.3786370780 -0.1871224722 -0.0935267116
+#>  [6] -0.0470891909 -0.0238467336 -0.0121898326 -0.0063800214 -0.0034807516
+#> [11] -0.0020189035 -0.0012697479 -0.0009096890 -0.0007229499 -0.0006345192
+#> [16] -0.0005898488 -0.0005691473 -0.0005569817 -0.0005515657 -0.0005488630
+#> [21] -0.0005479547 -0.0005477666 -0.0005476086
+#> Time difference of 0.3238699 secs
 ```
 
-![](https://i.imgur.com/kHf8VXZ.png)
+![](https://i.imgur.com/20z7ph4.png)
 
 ``` r
 testresults <-
   benchmarkdist(leftnorm, 0, title = "Left. Trunc. Normal", plot = FALSE)
 #> [1] "prop:0.574960895030618 nhead:2873704"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.1655509 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] -4.9605354548 -0.7984148615 -0.0005476086
+#> Time difference of 0.1730981 secs
 testresults <-
   benchmarkdist(leftnorm, 1, title = "Left. Trunc. Normal", plot = FALSE)
 #> [1] "prop:0.574960895030618 nhead:2873704"
@@ -585,8 +633,52 @@ testresults <-
 #> [1] "prop:0.4 nhead:4"
 #> [1] "prop:0.5 nhead:2"
 #> [1] "prop:0 nhead:0"
-#> [1] "Breaks found:  22 , Intervals:"
-#> Time difference of 0.404407 secs
+#> [1] "Breaks found:  22 , Intervals: 23"
+#>  [1] -4.9605354548 -0.7984148615 -0.3786370780 -0.1871224722 -0.0935267116
+#>  [6] -0.0470891909 -0.0238467336 -0.0121898326 -0.0063800214 -0.0034807516
+#> [11] -0.0020189035 -0.0012697479 -0.0009096890 -0.0007229499 -0.0006345192
+#> [16] -0.0005898488 -0.0005691473 -0.0005569817 -0.0005515657 -0.0005488630
+#> [21] -0.0005479547 -0.0005477666 -0.0005476086
+#> Time difference of 0.4212549 secs
+
+testresults <-
+  benchmarkdist(leftnorm, 200, title = "Left. Trunc. Normal", plot = FALSE)
+#> [1] "prop:0.574960895030618 nhead:2873704"
+#> [1] "prop:0.51244526228171 nhead:1472616"
+#> [1] "prop:0.503100604638276 nhead:740874"
+#> [1] "prop:0.501235027818495 nhead:371352"
+#> [1] "prop:0.499935371291928 nhead:185652"
+#> [1] "prop:0.499935362937108 nhead:92814"
+#> [1] "prop:0.499730644083867 nhead:46382"
+#> [1] "prop:0.500452761847268 nhead:23212"
+#> [1] "prop:0.502240220575564 nhead:11658"
+#> [1] "prop:0.490478641276377 nhead:5718"
+#> [1] "prop:0.508219657222805 nhead:2906"
+#> [1] "prop:0.487267721954577 nhead:1416"
+#> [1] "prop:0.505649717514124 nhead:716"
+#> [1] "prop:0.494413407821229 nhead:354"
+#> [1] "prop:0.497175141242938 nhead:176"
+#> [1] "prop:0.488636363636364 nhead:86"
+#> [1] "prop:0.511627906976744 nhead:44"
+#> [1] "prop:0.454545454545455 nhead:20"
+#> [1] "prop:0.5 nhead:10"
+#> [1] "prop:0.4 nhead:4"
+#> [1] "prop:0.5 nhead:2"
+#> [1] "prop:0 nhead:0"
+#> [1] "Breaks found:  22 , Intervals: 23"
+#>  [1] -4.9605354548 -0.7984148615 -0.3786370780 -0.1871224722 -0.0935267116
+#>  [6] -0.0470891909 -0.0238467336 -0.0121898326 -0.0063800214 -0.0034807516
+#> [11] -0.0020189035 -0.0012697479 -0.0009096890 -0.0007229499 -0.0006345192
+#> [16] -0.0005898488 -0.0005691473 -0.0005569817 -0.0005515657 -0.0005488630
+#> [21] -0.0005479547 -0.0005477666 -0.0005476086
+#> Time difference of 0.32795 secs
+
+testresults <-
+  benchmarkdist(leftnorm, -100, title = "Left. Trunc. Normal", plot = FALSE)
+#> [1] "prop:0.574960895030618 nhead:2873704"
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1] -4.9605354548 -0.7984148615 -0.0005476086
+#> Time difference of 0.176193 secs
 
 
 testresults <-
@@ -597,13 +689,16 @@ testresults <-
 #> [1] "prop:0.363636363636364 nhead:4"
 #> [1] "prop:0.5 nhead:2"
 #> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  6 , Intervals:"
-#> Time difference of 0.1351271 secs
+#> [1] "Breaks found:  6 , Intervals: 7"
+#> [1]  0.000000e+00 3.600688e+302 1.137365e+307 5.236743e+307 9.915649e+307
+#> [6] 1.411160e+308 1.637900e+308 1.725945e+308
+#> Time difference of 0.1241889 secs
 testresults <-
   benchmarkdist(logcauchdist, 0, title = "LogCauchy", plot = FALSE)
 #> [1] "prop:3.16580735701571e-05 nhead:158"
-#> [1] "Breaks found:  1 , Intervals:"
-#> Time difference of 0.09632516 secs
+#> [1] "Breaks found:  1 , Intervals: 2"
+#> [1]  0.000000e+00 3.600688e+302 1.725945e+308
+#> Time difference of 0.123513 secs
 testresults <-
   benchmarkdist(logcauchdist, 1, title = "LogCauchy", plot = FALSE)
 #> [1] "prop:3.16580735701571e-05 nhead:158"
@@ -612,23 +707,16 @@ testresults <-
 #> [1] "prop:0.363636363636364 nhead:4"
 #> [1] "prop:0.5 nhead:2"
 #> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  6 , Intervals:"
-#> Time difference of 0.1050811 secs
+#> [1] "Breaks found:  6 , Intervals: 7"
+#> [1]  0.000000e+00 3.600688e+302 1.137365e+307 5.236743e+307 9.915649e+307
+#> [6] 1.411160e+308 1.637900e+308 1.725945e+308
+#> Time difference of 0.142693 secs
 
 # On non skewed or left tails thresold should be stressed beyond 50%,
 # otherwise just the first iter (i.e. min, mean, max) is returned.
 par(opar)
 
-ht_index(logcauchdist, thr = .7896)
-#> [1] "prop:3.16580735701571e-05 nhead:158"
-#> [1] "prop:0.20253164556962 nhead:32"
-#> [1] "prop:0.34375 nhead:11"
-#> [1] "prop:0.363636363636364 nhead:4"
-#> [1] "prop:0.5 nhead:2"
-#> [1] "prop:0.5 nhead:1"
-#> [1] "Breaks found:  6 , Intervals:"
-#> [1]  0.000000e+00 3.600688e+302 1.137365e+307 5.236743e+307 9.915649e+307
-#> [6] 1.411160e+308 1.637900e+308 1.725945e+308
+
 
 knitr::kable(testresults[-1, ], format = "markdown", row.names = FALSE)
 ```
@@ -649,147 +737,161 @@ knitr::kable(testresults[-1, ], format = "markdown", row.names = FALSE)
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.4000</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: left;">0.278264999389648</td>
+<td style="text-align: left;">0.282315015792847</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Pareto Dist</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.186631917953491</td>
+<td style="text-align: left;">0.204033136367798</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Pareto Dist</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: left;">0.214010953903198</td>
+<td style="text-align: left;">0.233756065368652</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ExpDist</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.4000</td>
 <td style="text-align: right;">16</td>
-<td style="text-align: left;">0.225588083267212</td>
+<td style="text-align: left;">0.233008146286011</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">ExpDist</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.120697021484375</td>
+<td style="text-align: left;">0.137093067169189</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ExpDist</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">17</td>
-<td style="text-align: left;">0.255948066711426</td>
+<td style="text-align: left;">0.249170064926147</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LogNorm</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.7500</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: left;">0.213106870651245</td>
+<td style="text-align: left;">0.220396041870117</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LogNorm</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.138928890228271</td>
+<td style="text-align: left;">0.140208005905151</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LogNorm</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: left;">0.22254490852356</td>
+<td style="text-align: left;">0.229850053787231</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Weibull</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.2500</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.20033597946167</td>
+<td style="text-align: left;">0.206583023071289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Weibull</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.132850170135498</td>
+<td style="text-align: left;">0.138848781585693</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Weibull</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">17</td>
-<td style="text-align: left;">0.283564805984497</td>
+<td style="text-align: left;">0.282749891281128</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Normal</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.8000</td>
 <td style="text-align: right;">17</td>
-<td style="text-align: left;">0.287344932556152</td>
+<td style="text-align: left;">0.288128852844238</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Normal</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.163903951644897</td>
+<td style="text-align: left;">0.154616832733154</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Normal</td>
 <td style="text-align: left;">5,000,000</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">17</td>
-<td style="text-align: left;">0.281584978103638</td>
+<td style="text-align: left;">0.291123151779175</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Left. Trunc. Normal</td>
 <td style="text-align: left;">4,998,086</td>
 <td style="text-align: right;">0.6000</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: left;">0.311450958251953</td>
+<td style="text-align: left;">0.323869943618774</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Left. Trunc. Normal</td>
 <td style="text-align: left;">4,998,086</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.165550947189331</td>
+<td style="text-align: left;">0.173098087310791</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Left. Trunc. Normal</td>
 <td style="text-align: left;">4,998,086</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: left;">0.404407024383545</td>
+<td style="text-align: left;">0.421254873275757</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Left. Trunc. Normal</td>
+<td style="text-align: left;">4,998,086</td>
+<td style="text-align: right;">200.0000</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">0.327950000762939</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Left. Trunc. Normal</td>
+<td style="text-align: left;">4,998,086</td>
+<td style="text-align: right;">-100.0000</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.176192998886108</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LogCauchy</td>
 <td style="text-align: left;">4,990,828</td>
 <td style="text-align: right;">0.7896</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: left;">0.135127067565918</td>
+<td style="text-align: left;">0.124188899993896</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LogCauchy</td>
 <td style="text-align: left;">4,990,828</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">0.096325159072876</td>
+<td style="text-align: left;">0.123512983322144</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LogCauchy</td>
 <td style="text-align: left;">4,990,828</td>
 <td style="text-align: right;">1.0000</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: left;">0.105081081390381</td>
+<td style="text-align: left;">0.142693042755127</td>
 </tr>
 </tbody>
 </table>
@@ -820,7 +922,7 @@ plot(density(nuts3$var),
      xlab = "")
 ```
 
-![](https://i.imgur.com/F2LRsNV.png)
+![](https://i.imgur.com/1szZqev.png)
 
 ``` r
 
@@ -834,24 +936,26 @@ brks_ht <- ht_index(nuts3$var)
 #> [1] "prop:0.32258064516129 nhead:10"
 #> [1] "prop:0.3 nhead:3"
 #> [1] "prop:0.333333333333333 nhead:1"
-#> [1] "Breaks found:  6 , Intervals:"
+#> [1] "Breaks found:  6 , Intervals: 7"
+#> [1]    15.4710   402.6459   862.5118  1638.0025  2979.9322  5084.1036  8035.3390
+#> [8] 12573.8360
 Sys.time() - init
-#> Time difference of 0.003319025 secs
+#> Time difference of 0.0009989738 secs
 
 init <- Sys.time()
 brks_fisher <-
   classIntervals(nuts3$var, style = "fisher", n = 7)$brks
 Sys.time() - init
-#> Time difference of 0.05268717 secs
+#> Time difference of 0.01714301 secs
 
 init <- Sys.time()
 brks_kmeans <-
   classIntervals(nuts3$var, style = "kmeans", n = 7)$brks
 Sys.time() - init
-#> Time difference of 0.01565886 secs
+#> Time difference of 0.003424168 secs
 
 
-cols = c(carto.pal("harmo.pal", 7))
+cols <- c(carto.pal("harmo.pal", 7))
 
 
 
@@ -867,7 +971,7 @@ choroLayer(
 )
 ```
 
-![](https://i.imgur.com/nL0PS9c.png)
+![](https://i.imgur.com/0OYtbGO.png)
 
 ``` r
 
@@ -882,7 +986,7 @@ choroLayer(
 )
 ```
 
-![](https://i.imgur.com/wOYVNqG.png)
+![](https://i.imgur.com/vo9C7dt.png)
 
 ``` r
 
@@ -897,13 +1001,13 @@ choroLayer(
 )
 ```
 
-![](https://i.imgur.com/bI7Iuxw.png)
+![](https://i.imgur.com/QkustYx.png)
 
 ``` r
 par(opar)
 
-print(paste0("Full running time:", Sys.time() - initrun))
-#> [1] "Full running time:17.9884831905365"
+paste0("Full running time:", Sys.time() - initrun)
+#> [1] "Full running time:15.4514448642731"
 ```
 
 <sup>Created on 2020-03-15 by the [reprex package](https://reprex.tidyverse.org) (v0.3.0)</sup>
