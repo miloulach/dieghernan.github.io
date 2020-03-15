@@ -78,7 +78,7 @@ Recursive function Head/tail Breaks:
 End Function
 ```
 
-My example in **R** (for illustrative purposes):
+A step-by-step example in **R** (for illustrative purposes):
 
 ```r
 #1. Characterization of heavy-tail distributions----
