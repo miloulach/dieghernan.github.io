@@ -476,7 +476,7 @@ plot(shape, col="grey95", border = NA)
 wordcloudLayer(points,
                txt="genre",
                freq="n",
-               cex.maxmin =  c(3, 0.4),
+               cex.maxmin =  c(3, 0.6),
                col=c("#ba478f", "#eb743b"),
                nclass=7,
                add=TRUE)
