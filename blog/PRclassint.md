@@ -1,87 +1,110 @@
+---
+layout: post
+title: "Head/Tails method on classIntervals"
+subtitle: "Draft Vignette"
+tags: [R,vignette]
+date: 2020-03-22
+permalink: /headtailsvignette/
+output: github_document
+---
+
 # Head/Tails breaks
 
-As an introductory remark, this method corresponds to "Head/tail breaks" 
-as per Jiang (2013). On Jiang (2019) this method is named 
-as 1.0 given that a 2.0 algorithm with 
-more relaxed conditions is presented.
+As an introductory remark, this method corresponds to “Head/tail breaks”
+as per Jiang (2013). On Jiang (2019) this method is named as 1.0 given
+that a 2.0 algorithm with more relaxed conditions is presented.
 
 ## Index
 
-- [Motivation](#motivation)
-- [Breaking method](#breaking-method)
-- [Step by step example](#step-by-step)
-- [Standalone version](#standalone-version)
-- [Tests and stress](#tests-and-stress)
-- [Case study](#case-study)
-- [References](#references)
-- [Annex: Test result](#test-results)
+  - [Motivation](#motivation)
+  - [Breaking method](#breaking-method)
+  - [Step by step example](#step-by-step)
+  - [Standalone version](#standalone-version)
+  - [Tests and stress](#tests-and-stress)
+  - [Case study](#case-study)
+  - [References](#references)
+  - [Annex: Test result](#test-results)
 
 ## Motivation
-[*Taken from of Jiang (2013)* - brief summary]
 
-> *"This paper introduces a new classification scheme – head/tail breaks – in order to find groupings or
-hierarchy for data with a heavy-tailed distribution. The heavy-tailed distributions are heavily right
-skewed, with a minority of large values in the head and a majority of small values in the tail,
-commonly characterized by a power law, a lognormal or an exponential function." (...)*
+\[*Taken from of Jiang (2013)* - brief summary\]
 
-> *"(...)This new classification scheme partitions all of the data values around the mean into two parts and 
-continues the process iteratively for the values (above the mean) in the head until the head part
- values are no longer heavy-tailed distributed. Thus, the number of classes and the class intervals are both 
-naturally determined."(...)*
+> *“This paper introduces a new classification scheme – head/tail breaks
+> – in order to find groupings or hierarchy for data with a heavy-tailed
+> distribution. The heavy-tailed distributions are heavily right skewed,
+> with a minority of large values in the head and a majority of small
+> values in the tail, commonly characterized by a power law, a lognormal
+> or an exponential function.” (…)*
 
-> *"The heavy-tailed distribution is commonly found in many societal and
-natural phenomena, including geographical systems. Small events are far more common in geographic
-spaces than large events (Jiang 2010), particularly in urban, architectural environments (Salingaros
-and West 1999, Jiang 2009). For example, there are far more small cities than large ones (Zipf 1949);
-far more short streets than long ones (Jiang 2009); far more small city blocks than large ones, and far
-more low-density areas than high-density ones (Jiang and Liu 2011). This is the pattern that underlies
-geographic spaces and which should be reflected in the map. "*
+> *“(…)This new classification scheme partitions all of the data values
+> around the mean into two parts and continues the process iteratively
+> for the values (above the mean) in the head until the head part values
+> are no longer heavy-tailed distributed. Thus, the number of classes
+> and the class intervals are both naturally determined.”(…)*
 
+> *“The heavy-tailed distribution is commonly found in many societal and
+> natural phenomena, including geographical systems. Small events are
+> far more common in geographic spaces than large events (Jiang 2010),
+> particularly in urban, architectural environments (Salingaros and West
+> 1999, Jiang 2009). For example, there are far more small cities than
+> large ones (Zipf 1949); far more short streets than long ones (Jiang
+> 2009); far more small city blocks than large ones, and far more
+> low-density areas than high-density ones (Jiang and Liu 2011). This is
+> the pattern that underlies geographic spaces and which should be
+> reflected in the map.”*
 
 ##### *[Back to Index](#index)*
+
 ## Breaking method
 
-The method itself consists on a four-step process performed recursively until a stopping condition is satisfied:
-1. Compute the `mean` of a range of values `values`.
-2. Break `values` into the `tail` (as `values < mean`) and the `head` (as `values > mean`).
-3. Assess it the proportion of `head` over `values` is lower or equal than a given threshold (i.e. `length(head)/length(values) <= thresold`)
-4. If 3 is `TRUE`, repeat 1 to 3 until the condition is `FALSE` or no more partitions are possible (i.e. `length(head) < 2`). 
+The method itself consists on a four-step process performed recursively
+until a stopping condition is satisfied: 1. Compute the `mean` of a
+range of values `values`. 2. Break `values` into the `tail` (as `values
+< mean`) and the `head` (as `values > mean`). 3. Assess it the
+proportion of `head` over `values` is lower or equal than a given
+threshold (i.e. `length(head)/length(values) <= thresold`) 4. If 3 is
+`TRUE`, repeat 1 to 3 until the condition is `FALSE` or no more
+partitions are possible (i.e. `length(head) < 2`).
 
-It is important to note that, at the beginning of a new iteration, `values` are replaced by `head`. 
-The underlying hypothesis is to create partitions until the `head` and the `tail` are balanced in terms of distribution.
-So the stopping criteria is satisfied when the last `head` and the last `tail` are evenly balanced. 
+It is important to note that, at the beginning of a new iteration,
+`values` are replaced by `head`. The underlying hypothesis is to create
+partitions until the `head` and the `tail` are balanced in terms of
+distribution. So the stopping criteria is satisfied when the last `head`
+and the last `tail` are evenly balanced.
 
-In terms of threshold, Jiang et al. (2013) set 40% as a good approximation, meaning that if the `head` 
-contains more than 40% of the observations the distribution is not considered heavy-tailed.
+In terms of threshold, Jiang et al. (2013) set 40% as a good
+approximation, meaning that if the `head` contains more than 40% of the
+observations the distribution is not considered heavy-tailed.
 
 The final breaks are the vector of `mean` values.
 
-
 ##### *[Back to Index](#index)*
+
 ## Step by step
+
 Pseudo-code as per Jiang (2019):
-```
-Recursive function Head/tail Breaks:
- Rank the input data from the largest to the smallest
- Break the data into the head and the tail around the mean;
- // the head for those above the mean
- // the tail for those below the mean
- While (head <= 40%):
- Head/tail Breaks (head);
-End Function
-```
+
+    Recursive function Head/tail Breaks:
+     Rank the input data from the largest to the smallest
+     Break the data into the head and the tail around the mean;
+     // the head for those above the mean
+     // the tail for those below the mean
+     While (head <= 40%):
+     Head/tail Breaks (head);
+    End Function
 
 My example in **R** (for illustrative purposes):
 
-```r
+``` r
 #1. Characterization of heavy-tail distributions----
 set.seed(1234)
 #Pareto distribution a=2 b=6 n=1000
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
 ```
+
 ![](https://i.imgur.com/pw6McvG.png)
 
-```r
+``` r
 #2. Step by step example----
 set.seed(1234)
 sample_par <- 2 / (1 - runif(1000)) ^ (1 / 6)
@@ -126,16 +149,17 @@ prop1 <= thr  & n1 > 1
 # End given that condition is FALSE
 ```
 
-| iter|    n| nhead|       mu|  prophead|   breaks|
-|----:|----:|-----:|--------:|---------:|--------:|
-|    1| 1000|   316| 2.422568| 0.3160000| 2.422568|
-|    2|  316|   118| 2.971249| 0.3734177| 2.971249|
-
+| iter |    n | nhead |       mu |  prophead |   breaks |
+| ---: | ---: | ----: | -------: | --------: | -------: |
+|    1 | 1000 |   316 | 2.422568 | 0.3160000 | 2.422568 |
+|    2 |  316 |   118 | 2.971249 | 0.3734177 | 2.971249 |
 
 ##### *[Back to Index](#index)*
+
 ## Standalone version
 
-This is the function to be implemented. Comments are likely to be removed.
+This is the function to be implemented. Comments are likely to be
+removed.
 
 ``` r
 # Default thresold = 0.4 as per Jiang et al. (2013)
@@ -174,26 +198,24 @@ ht_index(sample_par, 0.35)
 #> [1] 2.000114 2.422568 2.971249 6.716770
 ```
 
-Some inline checks:
-- Loop until `i == 100`. As per my tests, no more than 25 iterations has been observed. See also [Tests and stress](#tests-and-stress).
-- `thr` is restricted to `[0,.99)`.
-- If `head` has only one value (or even 0, observed on an initial test) the loop stops, given that no more partitions are possible
-- Another checks as `NA`, remove `class`, etc. are already implemented on `classIntervals`.
-
-
+Some inline checks: - Loop until `i == 100`. As per my tests, no more
+than 25 iterations has been observed. See also [Tests and
+stress](#tests-and-stress). - `thr` is restricted to `[0,.99)`. - If
+`head` has only one value (or even 0, observed on an initial test) the
+loop stops, given that no more partitions are possible - Another checks
+as `NA`, remove `class`, etc. are already implemented on
+`classIntervals`.
 
 ##### *[Back to Index](#index)*
+
 ## Tests and stress
 
-Testing has been performed over the next distributions:
-- Pareto
-- Exponential (with extra 10 extreme values)
-- Log-normal
-- Weibull
-- Normal (non heavy-tailed)
-- Truncated Normal (left-tailed)
+Testing has been performed over the next distributions: - Pareto -
+Exponential (with extra 10 extreme values) - Log-normal - Weibull -
+Normal (non heavy-tailed) - Truncated Normal (left-tailed)
 
-With sample = 5,000,000 observations. Corner cases of the threshold (i.e. 0,1) has been already tested.
+With sample = 5,000,000 observations. Corner cases of the threshold
+(i.e. 0,1) has been already tested.
 
 Performance is very good IMO, sampling not needed.
 
@@ -326,30 +348,27 @@ benchmarkdist(leftnorm, 0.6, "Trunc. Left,Normal Dist")
 # On non skewed or left tails thresold should be stressed beyond 50%, otherwise just the first iter (i.e. min, mean, max) is returned.
 ```
 
-
-
 ##### *[Back to Index](#index)*
+
 ## Case study
 
-
-
-
 ##### *[Back to Index](#index)*
+
 ## References
-- Jiang, B. (2013). "Head/tail breaks: A new classification scheme for data with a heavy-tailed distribution", *The Professional Geographer*, 65 (3), 482 – 494. https://arxiv.org/abs/1209.2801v1
-- Jiang, B. Liu, X. and Jia, T. (2013). "Scaling of geographic space as a universal rule for map generalization", *Annals of the Association of American Geographers*, 103(4), 844 – 855. https://arxiv.org/abs/1102.1561v3
-- Jiang, B. (2019). "A recursive definition of goodness of space for bridging the concepts of space and place for sustainability". *Sustainability*, 11(15), 4091. https://arxiv.org/abs/1909.01073v1
 
+  - Jiang, B. (2013). “Head/tail breaks: A new classification scheme for
+    data with a heavy-tailed distribution”, *The Professional
+    Geographer*, 65 (3), 482 – 494. <https://arxiv.org/abs/1209.2801v1>
+  - Jiang, B. Liu, X. and Jia, T. (2013). “Scaling of geographic space
+    as a universal rule for map generalization”, *Annals of the
+    Association of American Geographers*, 103(4), 844 – 855.
+    <https://arxiv.org/abs/1102.1561v3>
+  - Jiang, B. (2019). “A recursive definition of goodness of space for
+    bridging the concepts of space and place for sustainability”.
+    *Sustainability*, 11(15), 4091. <https://arxiv.org/abs/1909.01073v1>
 
 ##### *[Back to Index](#index)*
+
 ## Test results
-
-
-
-
-
-
-
-
 
 ##### *[Back to Index](#index)*

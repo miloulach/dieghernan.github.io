@@ -36,10 +36,11 @@ These functions don't handle `sp` objects on purpose, favoring `sf` instead.
 # Installation
 ```{r install, message=FALSE, warning=FALSE}
 library(devtools)
-devtools::install_github("dieghernan/cartography", ref="PRlayers")
+devtools::install_github("riatelab/cartography")
 
 
 library(cartography)
+packageVersion("cartography")
 
 ```
 
@@ -162,6 +163,7 @@ levels <- sort(unique(EUR$SUBREGION.EN))
 # First element with zigzag
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[1], ],
              add = TRUE,
+             density = 4,
              pattern = "zigzag")
 
 #dot with parms
@@ -171,7 +173,7 @@ hatchedLayer(
   pattern = "dot",
   pch = 4,
   cex = 0.5,
-  density = 2)
+  density = 3.5)
 
 #vertical
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[3], ],
@@ -184,7 +186,7 @@ hatchedLayer(EUR[EUR$SUBREGION.EN == levels[4], ],
              add = TRUE,
              pattern = "dot",
              pch= 15,
-             density = 2.5)
+             density = 3.5)
 
 #create legend
 legendHatched(
@@ -323,7 +325,7 @@ For high-quality png maps, **it is recommended to plot your map on a `.svg` devi
 
 ## Example 1
 
-```{r pnglayer, fig.height=7, fig.width=5, margin=TRUE}
+```{r pnglayer, fig.height=7, fig.width=5, margin=TRUE, dev="svg"}
 library(sf)
 library(cartography)
 
@@ -365,7 +367,7 @@ layoutLayer(
 
 ## Example 2
 
-```{r png-adv, fig.height=5, fig.width=7, margin=TRUE}
+```{r png-adv, fig.height=5, fig.width=7, margin=TRUE, dev="svg"}
 
 library(sf)
 library(cartography)

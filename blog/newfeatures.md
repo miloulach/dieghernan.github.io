@@ -1,52 +1,59 @@
----
-layout: post
-title: "New features on cartography package"
-subtitle: "Vignette of the package expansion"
-tags: [R,beautiful_maps, maps, sf, cartography, vignette]
-date: 2020-02-17
-permalink: /cartographyvignette/
-output: github_document
----
-
-  
-  
-
+New features on cartography package
+================
+2020-02-17
 
 # Introduction
 
-The aim of this document is to describe the new features added to `cartography` by
-[dieghernan](https://github.com/dieghernan/), basically:
-  
-* `hatchedLayer` and `legendHatched` functions.
-* `pngLayer` and `getPngLayer` functions.
-* `wordcloudLayer` function.
-* An image can be now found on /inst/img/, for testing purposes.
-* An image can be now found on `/inst/img/`, for testing purposes.
+The aim of this document is to describe the new features added to
+`cartography` by [dieghernan](https://github.com/dieghernan/),
+basically:
 
-These functions don't handle `sp` objects on purpose, favoring `sf` instead.
+  - `hatchedLayer` and `legendHatched` functions.
+  - `pngLayer` and `getPngLayer` functions.
+  - `wordcloudLayer` function.
+  - An image can be now found on /inst/img/, for testing purposes.
+  - An image can be now found on `/inst/img/`, for testing purposes.
+
+These functions don’t handle `sp` objects on purpose, favoring `sf`
+instead.
 
 # Installation
 
-```r
+``` r
 library(devtools)
-devtools::install_github("dieghernan/cartography", ref="PRlayers")
+devtools::install_github("riatelab/cartography")
 
 
 library(cartography)
+packageVersion("cartography")
+## [1] '2.4.0'
 ```
-
 
 # Hatched Map
 
-Version of typology/choropleth maps using a hatched filling. This is particularly useful for those maps that needs to be printed on black and white, as academic papers. This maps also are useful for representing overlapping dimensions on a map.
+Version of typology/choropleth maps using a hatched filling. This is
+particularly useful for those maps that needs to be printed on black and
+white, as academic papers. This maps also are useful for representing
+overlapping dimensions on a map.
 
 ## Example 1
 
-
-```r
+``` r
 library(sf)
+## Warning: package 'sf' was built under R version 3.5.3
+## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
 library(jsonlite)
+## Warning: package 'jsonlite' was built under R version 3.5.3
 library(dplyr)
+## Warning: package 'dplyr' was built under R version 3.5.3
+## 
+## Attaching package: 'dplyr'
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
 
 #Shape
 cntries = st_read("https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/geojson/CNTR_RG_20M_2016_3857.geojson",
@@ -125,15 +132,11 @@ layoutLayer(
 )
 ```
 
-![plot of chunk hatched-min](../assets/figs/hatched-min-1.svg)
-
-
-
+![](newfeatures_files/figure-gfm/hatched-min-1.png)<!-- -->
 
 ## Example 2
 
-
-```r
+``` r
 library(sf)
 library(cartography)
 
@@ -164,6 +167,7 @@ levels <- sort(unique(EUR$SUBREGION.EN))
 # First element with zigzag
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[1], ],
              add = TRUE,
+             density = 4,
              pattern = "zigzag")
 
 #dot with parms
@@ -173,7 +177,7 @@ hatchedLayer(
   pattern = "dot",
   pch = 4,
   cex = 0.5,
-  density = 2)
+  density = 3.5)
 
 #vertical
 hatchedLayer(EUR[EUR$SUBREGION.EN == levels[3], ],
@@ -186,7 +190,7 @@ hatchedLayer(EUR[EUR$SUBREGION.EN == levels[4], ],
              add = TRUE,
              pattern = "dot",
              pch= 15,
-             density = 2.5)
+             density = 3.5)
 
 #create legend
 legendHatched(
@@ -215,16 +219,19 @@ layoutLayer(
 ) 
 ```
 
-![plot of chunk hatched](../assets/figs/hatched-1.svg)
+![](newfeatures_files/figure-gfm/hatched-1.png)<!-- -->
 
-`legendHatched` honors the order on the parameters. In this case, two `dot` patterns are presents, so `pch = c(4,15)` takes care of that. Note that three line-type patterns are also plotted, as and in the previous case, `lty = c(1, 1, 3)` respect that order.
+`legendHatched` honors the order on the parameters. In this case, two
+`dot` patterns are presents, so `pch = c(4,15)` takes care of that. Note
+that three line-type patterns are also plotted, as and in the previous
+case, `lty = c(1, 1, 3)` respect that order.
 
 ## Example 3
 
-`hatchedLayer` also could be useful for plotting several dimensions on the same map, in combination with another functions of the package.
+`hatchedLayer` also could be useful for plotting several dimensions on
+the same map, in combination with another functions of the package.
 
-
-```r
+``` r
 
 library(sf)
 library(cartography)
@@ -317,20 +324,20 @@ layoutLayer(
 )
 ```
 
-![plot of chunk hatched-adv](../assets/figs/hatched-adv-1.svg)
-
+![](newfeatures_files/figure-gfm/hatched-adv-1.png)<!-- -->
 
 # png Layer
 
-This new capability geotags a `.png` file, effectively converting the image into a tile. This allows the user to create visual maps by masking an image to the shape of a `POLYGON/MULTIPOLYGON`.
+This new capability geotags a `.png` file, effectively converting the
+image into a tile. This allows the user to create visual maps by masking
+an image to the shape of a `POLYGON/MULTIPOLYGON`.
 
-For high-quality png maps, **it is recommended to plot your map on a `.svg` device**.
-
+For high-quality png maps, **it is recommended to plot your map on a
+`.svg` device**.
 
 ## Example 1
 
-
-```r
+``` r
 library(sf)
 library(cartography)
 
@@ -370,12 +377,11 @@ layoutLayer(
 ) 
 ```
 
-![plot of chunk pnglayer](../assets/figs/pnglayer-1.svg)
+![](newfeatures_files/figure-gfm/pnglayer-1.svg)<!-- -->
 
 ## Example 2
 
-
-```r
+``` r
 
 library(sf)
 library(cartography)
@@ -394,18 +400,22 @@ UKpng=getPngLayer(UK,urluk)
 pngLayer(UKpng, add=TRUE)
 ```
 
-![plot of chunk png-adv](../assets/figs/png-adv-1.svg)
+![](newfeatures_files/figure-gfm/png-adv-1.svg)<!-- -->
 
 # wordcloudLayer
 
-A word cloud (or tag cloud) is a visual representation of text data. On a mapping context, this representation is useful for including several information at a glance. 
+A word cloud (or tag cloud) is a visual representation of text data. On
+a mapping context, this representation is useful for including several
+information at a glance.
 
-Wordcloud layers fitted into a map shape provide a good trade-off between physical location, scale and labels. Size and colors of the words are also based on the frequency of the factor to be plotted, highlighting the most frequent terms over the rest.
+Wordcloud layers fitted into a map shape provide a good trade-off
+between physical location, scale and labels. Size and colors of the
+words are also based on the frequency of the factor to be plotted,
+highlighting the most frequent terms over the rest.
 
 ## Example 1
 
-
-```r
+``` r
 
 eu$dens=eu$pop/eu$area_km2
 
@@ -426,11 +436,11 @@ layoutLayer(
 ) 
 ```
 
-![plot of chunk wordcloud1](../assets/figs/wordcloud1-1.svg)
+![](newfeatures_files/figure-gfm/wordcloud1-1.png)<!-- -->
 
 ## Example 2
 
-```r
+``` r
 
 # Genres from MB--
 #Import genres
@@ -476,4 +486,4 @@ layoutLayer(title="Most frequent genres on US",
             theme="orange.pal")
 ```
 
-![plot of chunk wordcloud2](../assets/figs/wordcloud2-1.svg)
+![](newfeatures_files/figure-gfm/wordcloud2-1.png)<!-- -->
