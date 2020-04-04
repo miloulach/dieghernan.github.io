@@ -1,7 +1,7 @@
 ---
 layout: project
 title: COVID19 Microsite
-subtitle: Tracking the outbreak in Spain by region (Spanish)
+subtitle: Tracking the outbreak in Spain by region
 share-img: https://dieghernan.github.io/COVID19/figs/FallecidosAct.png
 featured: true
 donate: true
@@ -12,4 +12,4 @@ githuburl: https://github.com/dieghernan/COVID19
 output: github_document
 ---
 
-Visit the microsite: https://dieghernan.github.io/COVID19/
+Visit the microsite [Spanish]: (https://dieghernan.github.io/COVID19/)[https://dieghernan.github.io/COVID19/]
