@@ -11,5 +11,4 @@ date: 2020-04-04
 githuburl: https://github.com/dieghernan/COVID19
 output: github_document
 ---
-
-Visit the microsite [Spanish]: (https://dieghernan.github.io/COVID19/)[https://dieghernan.github.io/COVID19/]
+Visit the microsite [Spanish]: [https://dieghernan.github.io/COVID19/](https://dieghernan.github.io/COVID19/)
