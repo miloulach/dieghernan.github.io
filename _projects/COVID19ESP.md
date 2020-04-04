@@ -2,7 +2,7 @@
 layout: project
 title: COVID19 Microsite
 subtitle: Tracking the outbreak in Spain by region
-share-img: https://dieghernan.github.io/COVID19/figs/FallecidosAct.png
+share-img: https://raw.githubusercontent.com/dieghernan/COVID19/master/figs/FallecidosAct.png
 featured: true
 donate: true
 tags: [project,R,maps,sf,cartography]
