@@ -126,6 +126,7 @@ exclude:
 
 # prose.io config
 prose:
+  siteurl: 'https://dieghernan.github.io/'
   rooturl: '_posts'
   media: 'img'
   ignore:
