@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Beautiful Maps with R (III): Patterns"
 subtitle: "A solution for b/w and academic maps."
 tags: [R,beautiful_maps, maps, sf]
