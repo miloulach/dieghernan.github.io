@@ -8,4 +8,5 @@ permalink: /test/
 #NNNN
 
 
-{{ site.github.public_repositories }}
+{{ site.github.public_repositories | 
+where_exp: "item", "item.name" , site.github.repository_name }}
