@@ -654,6 +654,11 @@ footer .theme-by {
 
 table {
   padding: 0;
+  display: block;
+  margin-bottom: 1em;
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
 }
 table tr {
   border-top: 1px solid #cccccc;
